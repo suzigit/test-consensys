@@ -23,13 +23,6 @@ contract TradeableContract {
 
 	modifier onlyOwner { require(msg.sender == owner); 	_; 	}		
 
-	/*
- 	function getFeeAddress () public {
-
-	    if(!contractCreatorAddr.call(bytes4(keccak256("getFeeAddress()")))) revert();
-		
- 	}
-	*/
 
 	function kill() public onlyOwner {
 		selfdestruct(owner);
@@ -118,5 +111,9 @@ contract ContractCreator {
 	function setCircuitBreaker (bool b) public onlyOwner {
 		stopped = b;
 	} 	
+
+	function kill() public onlyOwner {
+		selfdestruct(owner);
+	}
 	
 }
