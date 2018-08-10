@@ -1,0 +1,15 @@
+  <div class="row">
+    <label>Selected Ethereum Account:
+      <input type="text" [ngModel]="getSelecteAccount()" readonly disabled size="45">
+    </label>
+    <a href="javascript:void(0)" (click)="refreshPage()">
+      <i class="fa fa-refresh" aria-hidden="true"></i>
+    </a>
+  </div>
+
+
+  <div class="row">
+    <label>Create a new tradeable wallet by clicking here <a href="javascript:void(0)" (click)="createWallet()">
+      <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>
+  </div>
+
