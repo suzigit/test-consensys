@@ -1,6 +1,6 @@
 export class Contract {
   address: string;
-  ABI: string;
+  ABI: any;
   instance: any;
-  
 }
+
