@@ -1,27 +1,27 @@
-pragma solidity ^0.4.14;
+pragma solidity ^0.4.18;
+
+import "./FeeContract.sol";
 
 contract TradeableContract {
     
 	address public owner;
-	address public contractCreatorAddr;
 
 	uint public priceToSell;
 	bool  public isAvailableToSell;
 
 	event NewOwnerWithoutTradeEvent(address  old, address current);
 	event NewOwnerWithTradeEvent(address old, address current, uint price);
-	event WithdrawTokensEvent(address owner, uint256 valueToWithdraw);
-	event WithdrawETHEvent(address owner);
-	event AvaliableToSellEvent(address owner, address contractAddr);
-	
+	event WithdrawTokensEvent(address contractoOwner, uint256 valueToWithdraw);
+	event WithdrawETHEvent(address contractoOwner);
+	event AvaliableToSellEvent(address contractoOwner, address contractAddr);
 
-	function TradeableContract ( address oaddr, address ccaddr) public {
-		owner = oaddr;
-		contractCreatorAddr = ccaddr;
+	function TradeableContract (address ownerAddr) public {
+		owner = ownerAddr;
 	}
 
 	modifier onlyOwner {
-		require(msg.sender == owner); 	_;
+		require(msg.sender == owner); 	
+		_;
 	}		
 
 
@@ -35,7 +35,8 @@ contract TradeableContract {
 	 */
  	function withdrawTokens (address tokensAddr, uint256 valueToWithdraw) public onlyOwner {
 
-	    if (!tokensAddr.call(bytes4(keccak256("transfer(address, uint256)")), owner, valueToWithdraw)) revert();
+	    if (!tokensAddr.call(bytes4(keccak256("transfer(address, uint256)")), owner, valueToWithdraw)) 
+			revert();
 		
 		WithdrawTokensEvent(owner, valueToWithdraw);
 		
@@ -47,9 +48,9 @@ contract TradeableContract {
 	 */
  	function withdrawETH () public onlyOwner {
  	    
-        owner.transfer(address(this).balance); 
+        owner.transfer((address(this)).balance); 
 		
-		WithdrawETHEvent(owner);		
+		WithdrawETHEvent(owner);
  	}
 
  	function setAvailableToSell (uint price) public onlyOwner {
@@ -66,10 +67,10 @@ contract TradeableContract {
         // fee is charged
         //TODO: alterar fee address
         address feeAddress = 0x0;
-        uint valueToFee = priceToSell/20;
-        feeAddress.transfer(valueToFee);
+        uint feeValue = priceToSell/20;
+        feeAddress.transfer(feeValue);
 
-        uint valueToOwner = priceToSell-valueToFee; 
+        uint valueToOwner = priceToSell-feeValue; 
         owner.transfer(valueToOwner);
 		
 		
