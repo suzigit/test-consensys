@@ -10,8 +10,8 @@ const Web3 = require('web3');
 var Accounts = require('web3-eth-accounts');
 
 
-import * as tradeableContractMetadata from './../../../../back-blockchain//build/contracts/TradeableContract.json';
 import * as contractCreatortMetadata from './../../../../back-blockchain//build/contracts/ContractCreator.json';
+import * as tradeableContractMetadata from './../../../../back-blockchain//build/contracts/TradeableContract.json';
 
 const TruffleContract = require('truffle-contract');
 
@@ -34,6 +34,13 @@ export class BlockchainService {
             this.web3 = new Web3(window.web3.currentProvider);
            console.log(this.web3);
 
+            this.contractCreator = new Contract();
+            this.contractCreator.address =  '0x62227531b82259561cc9ad4413188f08e536598a';
+            this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;;
+            console.log("vai instanciar contract creator");
+            this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
+            console.log(this.contractCreator.instance);    
+
 /*
             this.contractCreator = TruffleContract(contracCreatortMetadata); 
            	this.contractCreator.setProvider(window.web3.currentProvider);
@@ -49,18 +56,6 @@ export class BlockchainService {
                 console.log("result=");
                 console.log(result);
             });
-*/
-
-            this.contractCreator = new Contract();
-            this.contractCreator.address =  '0x62227531b82259561cc9ad4413188f08e536598a';
-            this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;;
-            console.log("vai instanciar contract creator");
-            this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
-            console.log(this.contractCreator.instance);    
-
-
-
-/*
             // Create Contract proxy class
 
             let proxyTradeableContract = new this.web3.eth.Contract(abi);
@@ -98,19 +93,17 @@ export class BlockchainService {
                 'Please use a dapp browser like mist or MetaMask plugin for chrome'
             );
         }
-       console.log("web3" + this.web3);
-
     }
    
-    getAccounts(fResult) {
-        this.web3.eth.getAccounts(fResult);
+    async getAccounts() {
+        return await this.web3.eth.getAccounts();
     }
 
 
     createTradeableWallet(fSucess: any, fError: any) {
             
         let self = this; 
-        this.web3.eth.getAccounts().then(accounts => {
+        this.getAccounts().then(accounts => {
             let selectedAccount = accounts[0]; 
 
             //TODO: casos de erro
@@ -118,7 +111,7 @@ export class BlockchainService {
             self.contractCreator.instance.methods.createTradeableContract().send({from: selectedAccount})
             .then( receipt => 
                 self.contractCreator.instance.methods.getLastCreatedContract(selectedAccount).call({from: selectedAccount})
-                .then(result => {
+                .then((error, result) => {
                     fSucess(result);
                 })
             )});
@@ -126,42 +119,23 @@ export class BlockchainService {
 
 
 
-/*
-                .on('confirmation', function(confirmationNumber, receipt){
-                    console.log(confirmationNumber);
-                    
-                    if (confirmationNumber==12) { //number of confirmation to make sure that the transaction will not roll back 
-
-                         console.log("entrou");
-                        self.contractCreator.instance.getContracts().call({from: selectedAccount}).then(
-                            function(result){
-                                 console.log("interno");
-                                 console.log(result);
-                            });
-
-                    }
-                    
-                })
-                .on('error', console.error)
-*/
-    //    });
-
-
-
-/*
-
    withdrawTokens(tokenAddr: number, valueToWithdraw: number, fSucess: any, fError: any) {
 
        console.log("withdrawTokens"); 
 
-//TODO: tirar o 1 e colocar o valueToWithdraw
-      this.tradeableContract.instance.withdrawTokens (tokenAddr, 1, { from:this.getSelecteAccount(),  gas: 500000 },
-            (error, result) => {
-                if (error) fError(error);
-                else fSucess(result);
-            });     
+        this.getAccounts().then(accounts => {
+            let selectedAccount = accounts[0];
+            
+            //TODO: tirar o 1 e colocar o valueToWithdraw
+            this.tradeableContract.instance.methods.withdrawTokens.send (tokenAddr, 1, { from:selectedAccount })
+            .then((error, result) => {
+                    if (error) fError(error);
+                    else fSucess(result);
+            })
+        });     
     }
 
+/*
    setAvailableToSell(price: string, fSucess: any, fError: any) {
 
        console.log("set available to sell"); 

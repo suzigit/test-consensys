@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {ChangeDetectorRef} from '@angular/core';
 
 import { BlockchainService } from './../service/blockchain-service';
 
@@ -14,16 +13,23 @@ export class NewWalletComponent implements OnInit {
   selectedAccount: any;  
   newTradeableWalletAddress: string;
   
-  constructor(private blockchainService: BlockchainService, public ref: ChangeDetectorRef) { 
+  constructor(private blockchainService: BlockchainService) { 
 
       let self = this;
-/*      setInterval(function () {
-          if (self.blockchainService.getSelecteAccount() !== self.selectedAccount && self.blockchainService.getSelecteAccount()) {
-            self.selectedAccount = self.blockchainService.getSelecteAccount();
-            console.log(self.selectedAccount);
-          }
-        }, 1000);
-*/
+
+      setInterval(function () {
+
+        self.blockchainService.getAccounts().then(accounts =>
+        {
+            let newSelectedAccount = accounts[0]; 
+
+
+            if (newSelectedAccount !== self.selectedAccount && newSelectedAccount) {
+              self.selectedAccount = newSelectedAccount;
+              console.log(self.selectedAccount);
+            }
+        }), 1000});
+
       this.newTradeableWalletAddress = null;
   }
 
@@ -36,11 +42,11 @@ export class NewWalletComponent implements OnInit {
     let self = this;
 
     this.blockchainService.createTradeableWallet(
-        function(result) {
+    function(result) {
           self.newTradeableWalletAddress = result;
-          console.log("sucesso: " + result);
+          console.log("sucess: " + result);
     }, function(e) {
-        console.log("erro: " + e);
+        console.log("error: " + e);
     });
 
   }

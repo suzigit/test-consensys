@@ -9,9 +9,11 @@ import { NewWalletComponent } from './new-wallet/new-wallet.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BlockchainService } from './service/blockchain-service';
 import { InitialPanelComponent } from './initial-panel/initial-panel.component';
-import { ManageWalletComponent } from './manage-wallet/manage-wallet.component';
 import { BuyWalletComponent } from './buy-wallet/buy-wallet.component';
 import { Web3Service } from './web3.service';
+import { WithdrawTokensComponent } from './withdraw-tokens/withdraw-tokens.component';
+import { AllWalletsComponent } from './all-wallets/all-wallets.component';
+import { PutWalletSaleComponent } from './put-wallet-sale/put-wallet-sale.component';
 
 
 
@@ -21,8 +23,10 @@ import { Web3Service } from './web3.service';
     AppComponent,
     NewWalletComponent,
     InitialPanelComponent,
-    ManageWalletComponent,
-    BuyWalletComponent
+    BuyWalletComponent,
+    WithdrawTokensComponent,
+    AllWalletsComponent,
+    PutWalletSaleComponent
   ],
   imports: [
     BrowserModule,

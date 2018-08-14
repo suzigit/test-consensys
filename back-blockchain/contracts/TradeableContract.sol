@@ -13,8 +13,17 @@ contract TradeableContract {
 	event NewOwnerWithoutTradeEvent(address  old, address current);
 	event NewOwnerWithTradeEvent(address old, address current, uint price);
 	event WithdrawTokensEvent(address contractoOwner, uint256 valueToWithdraw);
-	event WithdrawETHEvent(address contractoOwner);
+//	event WithdrawETHEvent(address contractoOwner);
 	event AvaliableToSellEvent(address contractoOwner, address contractAddr);
+
+
+incluir endereco do contrato no evento?
+evento de  criacao para pagina de seus contratos?
+pagina de contratos a venda
+pagina de evntos do contrato
+evento de kill,interface p kill?
+link ipfs de saft?
+
 
 	function TradeableContract (address ownerAddr) public {
 		owner = ownerAddr;

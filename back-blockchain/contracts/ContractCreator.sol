@@ -52,17 +52,5 @@ contract ContractCreator {
 	}
 
 
-/*
-	function getLastCreatedContract(address creator) public view returns (address) {
-		uint i = contracts.length-1;
-		while (i >= 0) {
 
-			if (contracts[i].getOwner()==creator && contracts[i].hasAlreadyChangedOwnerInItsLifetime()==false) {
-				return contracts[i];
-			}
-			i--;
-		}
-		return 0x0;
-	}
-*/
 }
