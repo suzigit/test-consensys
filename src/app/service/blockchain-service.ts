@@ -2,21 +2,25 @@ import { Injectable, Output, EventEmitter } from '@angular/core';
 
 import {Contract} from './contract';
 
-import * as data from './../../../../back-blockchain//build/contracts/TradeableContract.json';
-
 declare let require: any;
 
 declare let window: any;
 
-
 const Web3 = require('web3');
+var Accounts = require('web3-eth-accounts');
 
+
+import * as tradeableContractMetadata from './../../../../back-blockchain//build/contracts/TradeableContract.json';
+import * as contractCreatortMetadata from './../../../../back-blockchain//build/contracts/ContractCreator.json';
+
+const TruffleContract = require('truffle-contract');
 
 
 
 @Injectable()
 export class BlockchainService {
 
+    private contractCreator: any;
     private tradeableContract: any;
 
     private web3: any;
@@ -27,19 +31,40 @@ export class BlockchainService {
         if (typeof window.web3 !== 'undefined') {
 
             // Use Mist/MetaMask's provider
-            //this.web3 = new Web3(window.web3.currentProvider);
- //           this.web3 = new window['Web3'](window.web3.currentProvider);
             this.web3 = new Web3(window.web3.currentProvider);
            console.log(this.web3);
 
-            const abi = (<any>data).abi;
-            const code = (<any>data).bytecode;
-
-
-            // Create Contract proxy class
-            let proxyTradeableContract = new this.web3.eth.Contract(abi);
-        
 /*
+            this.contractCreator = TruffleContract(contracCreatortMetadata); 
+           	this.contractCreator.setProvider(window.web3.currentProvider);
+            console.log("this.contractCreator");
+            console.log(this.contractCreator);
+
+            var deployed;
+            this.contractCreator.deployed().then(function(instance) {
+                console.log("dentro do deployed");
+                var deployed = instance;
+                return instance.createTradeableContract();
+            }).then(function(result) {
+                console.log("result=");
+                console.log(result);
+            });
+*/
+
+            this.contractCreator = new Contract();
+            this.contractCreator.address =  '0x62227531b82259561cc9ad4413188f08e536598a';
+            this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;;
+            console.log("vai instanciar contract creator");
+            this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
+            console.log(this.contractCreator.instance);    
+
+
+
+/*
+            // Create Contract proxy class
+
+            let proxyTradeableContract = new this.web3.eth.Contract(abi);
+
            console.log("create....");
             this.tradeableContract = proxyTradeableContract.new({from: this.getSelecteAccount(), gas: 1000000, data: '0x' + code}, (err, res) => {
                 if (err) {
@@ -59,23 +84,15 @@ export class BlockchainService {
             });
             console.log(this.tradeableContract);
 
-*/
 
             this.tradeableContract = new Contract();
             this.tradeableContract.address =  '0x345ca3e014aaf5dca488057592ee47305d9b3e10';
             this.tradeableContract.ABI = abi;
             console.log("vai instanciar tradeable");
             this.tradeableContract.instance = new this.web3.eth.Contract(this.tradeableContract.ABI, this.tradeableContract.address);
-            console.log(this.tradeableContract);    
+            console.log(this.tradeableContract);                
 
-            
-            this.setAvailableToSell("1",
-               function(s) {
-                console.log("sucesso: " + s);
-            }, function(e) {
-                console.log("erro: " + e);
-            });
-
+*/
         } else {
             console.warn(
                 'Please use a dapp browser like mist or MetaMask plugin for chrome'
@@ -85,32 +102,53 @@ export class BlockchainService {
 
     }
    
-    getSelecteAccount() {
-        return this.web3.eth.accounts[0];
+    getAccounts(fResult) {
+        this.web3.eth.getAccounts(fResult);
     }
 
 
-   createWallet(fSucess: any, fError: any) {
+    createTradeableWallet(fSucess: any, fError: any) {
+            
+        let self = this; 
+        this.web3.eth.getAccounts().then(accounts => {
+            let selectedAccount = accounts[0]; 
+
+            //TODO: casos de erro
+            //TODO: questao de concorrencia do Last Created - fazer map com hash da transacao -> contrato 
+            self.contractCreator.instance.methods.createTradeableContract().send({from: selectedAccount})
+            .then( receipt => 
+                self.contractCreator.instance.methods.getLastCreatedContract(selectedAccount).call({from: selectedAccount})
+                .then(result => {
+                    fSucess(result);
+                })
+            )});
+    }
+
+
 
 /*
+                .on('confirmation', function(confirmationNumber, receipt){
+                    console.log(confirmationNumber);
+                    
+                    if (confirmationNumber==12) { //number of confirmation to make sure that the transaction will not roll back 
 
-      this.contractCreator.instance.setCircuitBreaker (false, { from:this.getSelecteAccount(),  gas: 500000 },
-            (error, result) => {
-                if (error) fError(error);
-                else fSucess(result);
-            });     
+                         console.log("entrou");
+                        self.contractCreator.instance.getContracts().call({from: selectedAccount}).then(
+                            function(result){
+                                 console.log("interno");
+                                 console.log(result);
+                            });
 
-      this.contractCreator.instance.methods.createTradeableContract ({ from:this.getSelecteAccount(),  gas: 500000 },
-            (error, result) => {
-                if (error) fError(error);
-                else fSucess(result);
-            });     
-       console.log("create wallet"); 
-
+                    }
+                    
+                })
+                .on('error', console.error)
 */
+    //    });
 
-    }
 
+
+/*
 
    withdrawTokens(tokenAddr: number, valueToWithdraw: number, fSucess: any, fError: any) {
 
@@ -154,5 +192,5 @@ export class BlockchainService {
     getBlockTimestamp(blockHash: number, fResult: any) {
         this.web3.eth.getBlock(blockHash, fResult);
     }
-
+*/
 }
