@@ -7,7 +7,8 @@ contract TradeableContract {
 	address public owner;
 
 	uint public priceToSell;
-	bool  public isAvailableToSell;
+	bool public isAvailableToSell;
+	bool public hasAlreadyChangedOwnerInItsLifetime; 
 
 	event NewOwnerWithoutTradeEvent(address  old, address current);
 	event NewOwnerWithTradeEvent(address old, address current, uint price);
@@ -29,6 +30,14 @@ contract TradeableContract {
 		selfdestruct(owner);
 	}
 	
+	function hasAlreadyChangedOwnerInItsLifetime() public view returns (bool) {
+		return hasAlreadyChangedOwnerInItsLifetime;
+	}
+
+	function getOwner() public view returns (address) {
+		return owner;
+	}
+
 	/*
 	 *	Transfer tokens to the owner
 	 *	It is necessary to call the transfer function of the original ERC20 contract code 
@@ -80,6 +89,7 @@ contract TradeableContract {
         owner = msg.sender;
  	    
         isAvailableToSell = false;
+		hasAlreadyChangedOwnerInItsLifetime = true;
  	}
  	
     function changeOwnershipWithoutTrade(address _new) public onlyOwner {    		
@@ -87,6 +97,8 @@ contract TradeableContract {
 		owner = _new; 
     	NewOwnerWithoutTradeEvent(owner, _new); 
 		isAvailableToSell = false;
+		hasAlreadyChangedOwnerInItsLifetime = true;
+
     }
 	
 } 
