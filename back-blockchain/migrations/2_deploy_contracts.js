@@ -12,7 +12,7 @@ module.exports = function(deployer) {
   deployer.link(ConvertLib, TestCoin);
   deployer.deploy(TestCoin);
   deployer.deploy(FeeContract);
-  deployer.deploy(TradeableContract);
+//  deployer.deploy(TradeableContract);
   deployer.deploy(ContractCreator);
 
 };

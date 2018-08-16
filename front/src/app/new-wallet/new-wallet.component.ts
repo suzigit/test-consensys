@@ -45,8 +45,8 @@ export class NewWalletComponent implements OnInit {
     function(result) {
           self.newTradeableWalletAddress = result;
           console.log("sucess: " + result);
-    }, function(e) {
-        console.warn("error during contract retrieval nw: " + e);
+    }, function(error) {
+        console.warn("error during contract retrieval nw: " + error);
     });
 
   }

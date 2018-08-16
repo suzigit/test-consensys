@@ -46,7 +46,7 @@ contract ContractCreator {
 		return contracts;
 	}
 
-	function getLastCreatedContract(address creator) public view returns (address) {
+	function getLastCreatedContract() public view returns (address) {
 		uint i = contracts.length-1;
 		return contracts[i];
 	}

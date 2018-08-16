@@ -5,17 +5,17 @@
   </div>
     <div class="row">
     <label>Enter the address of your Tradeable Wallet:
-      <input type="text" [(ngModel)]="tradeableWalletAddress"  placeholder="0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
+      <input type="text" [(ngModel)]="tradeableWalletAddress"  placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
     </label>
   </div>
     <div class="row">
     <label>Enter the address ERC-20 Tokens:
-      <input type="text" [(ngModel)]="tokensAddress"  placeholder="0x5A4865076BCF3A5357C56E395AB970B5B5409847" maxlength="42" size="50">
+      <input type="text" [(ngModel)]="tokensAddress"  placeholder="ex.: 0x5A4865076BCF3A5357C56E395AB970B5B5409847" maxlength="42" size="50">
     </label>
   </div>
    <div class="row">
     <label>Enter the number of ERC-20 tokens to Withdraw:
-      <input type="number" [(ngModel)]="numberOfTokens"  placeholder="1000" maxlength="20" size="10">
+      <input type="number" [(ngModel)]="numberOfTokens"  maxlength="20" size="10">
     </label>
   </div>
     <div class="row">
@@ -23,12 +23,14 @@
       <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>
   </div>
 
-
-  <div class="row" *ngIf="newWithdrawHash">
-    <label class="text-success">See your transaction on EtherScan by using this hash:
-            <input type="text" [ngModel]="newWithdrawHash" readonly disabled size="78">
+    <div class="row" *ngIf="newWithdrawHash">
+    <div class="card bg-light">
+    <label>See your transaction on EtherScan by using this hash: {{newWithdrawHash.transactionHash}}
       </label>
-  </div>
+      </div>
+  </div>     
+
+
 
     <div class="row">
     <a href="all-wallets">See all your wallets</a>

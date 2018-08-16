@@ -6,7 +6,7 @@ contract TradeableContract {
     
 	address public owner;
 
-	uint public priceToSell;
+	uint64 public priceToSell;
 	bool public isAvailableToSell;
 	bool public hasAlreadyChangedOwnerInItsLifetime; 
 
@@ -41,18 +41,27 @@ contract TradeableContract {
 		return owner;
 	}
 
+	function getPriceToSell() public view returns (int128) {		
+		if (isAvailableToSell) {
+			return priceToSell;
+		}  
+		return -1;
+	}
+
 	/*
 	 *	Transfer tokens to the owner
 	 *	It is necessary to call the transfer function of the original ERC20 contract code 
 	 */
- 	function withdrawTokens (address tokensAddr, uint256 valueToWithdraw) public onlyOwner {
+ 	function withdrawTokens (address tokensAddr, uint256 valueToWithdraw) public onlyOwner returns (bool) {
 
+		bool b = tokensAddr.call(bytes4(keccak256("transfer(address, uint256)")), owner, valueToWithdraw);
 
 //	    if (!tokensAddr.call(bytes4(keccak256("transfer(address, uint256)")), owner, valueToWithdraw)) 
 //			revert();
-		
+		//TODO
 		WithdrawTokensEvent(owner, valueToWithdraw);
-		
+		return b;
+
  	}
 
 	/*
@@ -64,7 +73,7 @@ contract TradeableContract {
         owner.transfer((address(this)).balance); 
  	}
 
- 	function setAvailableToSell (uint price) public onlyOwner {
+ 	function setAvailableToSell (uint64 price) public onlyOwner {
 		isAvailableToSell = true;
 		priceToSell = price;
 		AvaliableToSellEvent(owner, address(this));
@@ -76,7 +85,7 @@ contract TradeableContract {
  	    require (msg.value >= priceToSell);     
         
         // fee is charged
-        address feeAddress = 0x627306090abab3a6e1400e9345bc60c78a8bef57;
+        address feeAddress = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
         uint feeValue = priceToSell/20;
         feeAddress.transfer(feeValue);
 

@@ -1,3 +1,33 @@
-<p>
-  buy-wallet works!
-</p>
+  <div class="row">
+    <label>Selected Ethereum Account:
+      <input type="text" [ngModel]="selectedAccount" readonly disabled size="50">
+    </label>
+  </div>
+    <div class="row">
+    <label>Enter the address of the Tradeable Wallet you want to buy:
+      <input type="text" [(ngModel)]="tradeableWalletAddress" (ngModelChange)="getPrice()"  placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
+    </label>
+  </div>
+   <div class="row">
+    <label>Price of this Tradeable Wallet:
+      <input type="text" [ngModel]="price" readonly disabled maxlength="20" size="10">
+    </label>
+  </div>
+
+    <div class="row">
+    <label>See all events in the lifecycle of this Tradeable-Wallet <a href="javascript:void(0)" (click)="getEvents()">
+      <i class="fa fa-search" aria-hidden="true"></i></a></label>
+  </div>
+
+    <div class="row">
+    <label>Buy this Tradeable-Wallet by clicking here <a href="javascript:void(0)" (click)="buy()">
+      <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>
+  </div>
+
+    <div class="row" *ngIf="newBuyHash">
+    <div class="card bg-light">
+    <label>See your transaction on EtherScan by using this hash: {{newBuyHash.transactionHash}}
+      </label>
+      </div>
+  </div>     
+

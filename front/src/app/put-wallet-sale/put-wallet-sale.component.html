@@ -5,12 +5,12 @@
   </div>
     <div class="row">
     <label>Enter the address of your Tradeable Wallet:
-      <input type="text" [(ngModel)]="tradeableWalletAddress"  placeholder="0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
+      <input type="text" [(ngModel)]="tradeableWalletAddress"  placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
     </label>
   </div>
    <div class="row">
     <label>Enter the price of your Tradeable Wallet:
-      <input type="number" [(ngModel)]="price"  placeholder="1000" maxlength="20" size="10">
+      <input type="number" [(ngModel)]="price" maxlength="20" size="10">
     </label>
   </div>
     <div class="row">
@@ -20,9 +20,10 @@
 
 
   <div class="row" *ngIf="newSellHash">
-    <label class="text-success">See your transaction on EtherScan by using this hash:
-            <input type="text" [ngModel]="newSellHash.transactionHash" readonly disabled size="78">
+    <div class="card bg-light">
+    <label>See your transaction on EtherScan by using this hash: {{newSellHash.transactionHash}}
       </label>
+      </div>
   </div>     
 
     <div class="row">
