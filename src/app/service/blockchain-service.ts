@@ -33,7 +33,7 @@ export class BlockchainService {
            console.log(this.web3);
 
             this.contractCreator = new Contract();
-            this.contractCreator.address =  '0xde5bb8b8961faef05b2ab38a70c81bdbc91add29';
+            this.contractCreator.address =  '0x2c2b9c9a4a25e24b174f26114e8926a9f2128fe4';
             this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;
             console.log("vai instanciar contract creator");
             this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
@@ -113,7 +113,7 @@ export class BlockchainService {
                 console.log("criou wallet");
                 console.log(receipt);
 
-                self.contractCreator.instance.methods.getLastCreatedContract(selectedAccount).call({from: selectedAccount})
+                self.contractCreator.instance.methods.getLastCreatedContract().call()
                 .then(result => fSucess(result))
                 .catch (error => fError(error));
                                 
@@ -185,20 +185,66 @@ export class BlockchainService {
         });     
     }
 
+    getPriceToBuy(tradeableContractAddr: string, fSucess: any, fError: any) {
+    
+        this.getAccounts().then(accounts => {
 
-/*
-   buyWallet(fSucess: any, fError: any) {
+            let selectedAccount = accounts[0]; 
 
-       console.log("changeOwnershipWithTrade"); 
-       console.log(this.tradeableContract.instance); 
 
-      this.tradeableContract.instance.changeOwnershipWithTrade ({ from:this.getSelecteAccount(),  gas: 500000 },
-            (error, result) => {
-                if (error) fError(error);
-                else fSucess(result);
-            });     
+            console.log("get price to Buy ");
+
+            let tradeableContract = new Contract();
+            tradeableContract.address =  tradeableContractAddr;
+            tradeableContract.ABI = (<any>tradeableContractMetadata).abi;
+
+
+            console.log("vai instanciar tradeable");
+            tradeableContract.instance = new this.web3.eth.Contract(tradeableContract.ABI, tradeableContract.address);
+            console.log(tradeableContract);                
+
+            console.log("vai chamar get");
+
+            tradeableContract.instance.methods.getPriceToSell().call({ from:selectedAccount })
+            .then(result => fSucess(result))
+            .catch (error => fError(error));
+        });    
+    } 
+
+
+   buyWallet(tradeableContractAddr: string, price: number, fSucess: any, fError: any) {
+
+       console.log("Buy with price " + price); 
+
+        this.getAccounts().then(accounts => {
+            let selectedAccount = accounts[0];
+
+            let tradeableContract = new Contract();
+            tradeableContract.address =  tradeableContractAddr;
+            tradeableContract.ABI = (<any>tradeableContractMetadata).abi;
+
+
+            console.log("vai instanciar tradeable");
+            tradeableContract.instance = new this.web3.eth.Contract(tradeableContract.ABI, tradeableContract.address);
+            console.log(tradeableContract);                
+
+            console.log("vai chamar buy - changeOwner");
+
+            //PAYABLE FUNCTION
+            tradeableContract.instance.methods.changeOwnershipWithTrade().send ({ from:selectedAccount, value:price })
+            .then (result => 
+            {
+                fSucess(result);
+                console.log("result");
+                console.log(result);
+
+            })
+            .catch (error => fError(error));
+        });     
+
     }
 
+/*
     getBlockTimestamp(blockHash: number, fResult: any) {
         this.web3.eth.getBlock(blockHash, fResult);
     }
