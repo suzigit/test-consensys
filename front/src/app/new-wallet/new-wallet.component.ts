@@ -46,7 +46,7 @@ export class NewWalletComponent implements OnInit {
           self.newTradeableWalletAddress = result;
           console.log("sucess: " + result);
     }, function(e) {
-        console.log("error: " + e);
+        console.warn("error during contract retrieval nw: " + e);
     });
 
   }

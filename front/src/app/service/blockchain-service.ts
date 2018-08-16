@@ -21,8 +21,6 @@ const TruffleContract = require('truffle-contract');
 export class BlockchainService {
 
     private contractCreator: any;
-    private tradeableContract: any;
-
     private web3: any;
 
 
@@ -35,8 +33,8 @@ export class BlockchainService {
            console.log(this.web3);
 
             this.contractCreator = new Contract();
-            this.contractCreator.address =  '0x62227531b82259561cc9ad4413188f08e536598a';
-            this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;;
+            this.contractCreator.address =  '0xde5bb8b8961faef05b2ab38a70c81bdbc91add29';
+            this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;
             console.log("vai instanciar contract creator");
             this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
             console.log(this.contractCreator.instance);    
@@ -106,51 +104,89 @@ export class BlockchainService {
         this.getAccounts().then(accounts => {
             let selectedAccount = accounts[0]; 
 
-            //TODO: casos de erro
+            console.log("selected accont para create:" + selectedAccount);
+
             //TODO: questao de concorrencia do Last Created - fazer map com hash da transacao -> contrato 
             self.contractCreator.instance.methods.createTradeableContract().send({from: selectedAccount})
             .then( receipt => 
+            {
+                console.log("criou wallet");
+                console.log(receipt);
+
                 self.contractCreator.instance.methods.getLastCreatedContract(selectedAccount).call({from: selectedAccount})
-                .then((error, result) => {
-                    fSucess(result);
-                })
-            )});
+                .then(result => fSucess(result))
+                .catch (error => fError(error));
+                                
+            })
+            .catch (error => console.warn(error));
+
+        });
     }
 
 
+   withdrawTokens(tradeableContractAddr: string, tokenAddr: string, valueToWithdraw: number, fSucess: any, fError: any) {
 
-   withdrawTokens(tokenAddr: number, valueToWithdraw: number, fSucess: any, fError: any) {
-
-       console.log("withdrawTokens"); 
+       console.log("withdrawTokens do " + tradeableContractAddr); 
 
         this.getAccounts().then(accounts => {
             let selectedAccount = accounts[0];
-            
-            //TODO: tirar o 1 e colocar o valueToWithdraw
-            this.tradeableContract.instance.methods.withdrawTokens.send (tokenAddr, 1, { from:selectedAccount })
-            .then((error, result) => {
-                    if (error) fError(error);
-                    else fSucess(result);
+
+            let tradeableContract = new Contract();
+            tradeableContract.address =  tradeableContractAddr;
+            tradeableContract.ABI = (<any>tradeableContractMetadata).abi;
+
+
+            console.log("vai instanciar tradeable");
+            tradeableContract.instance = new this.web3.eth.Contract(tradeableContract.ABI, tradeableContract.address);
+            console.log(tradeableContract);                
+
+            console.log("vai chamar withdraw");
+
+            tradeableContract.instance.methods.withdrawTokens(tokenAddr, valueToWithdraw).send ({ from:selectedAccount })
+            .then (result => 
+            {
+                fSucess(result);
+                console.log("result");
+                console.log(result);
+
             })
+            .catch (error => fError(error));
         });     
     }
 
-/*
-   setAvailableToSell(price: string, fSucess: any, fError: any) {
 
-       console.log("set available to sell"); 
-       console.log(this.tradeableContract.instance); 
+   setAvailableToSell(tradeableContractAddr: string, price: number, fSucess: any, fError: any) {
 
-//TODO: tirar o 1 e colocar o valueToWithdraw
-      this.tradeableContract.instance.setAvailableToSell (1, { from:this.getSelecteAccount(),  gas: 500000 },
-            (error, result) => {
-                if (error) fError(error);
-                else fSucess(result);
-            });     
+       console.log("set available to sell with price " + price); 
+
+        this.getAccounts().then(accounts => {
+            let selectedAccount = accounts[0];
+
+            let tradeableContract = new Contract();
+            tradeableContract.address =  tradeableContractAddr;
+            tradeableContract.ABI = (<any>tradeableContractMetadata).abi;
+
+
+            console.log("vai instanciar tradeable");
+            tradeableContract.instance = new this.web3.eth.Contract(tradeableContract.ABI, tradeableContract.address);
+            console.log(tradeableContract);                
+
+            console.log("vai chamar set available to sell");
+
+            tradeableContract.instance.methods.setAvailableToSell(price).send ({ from:selectedAccount })
+            .then (result => 
+            {
+                fSucess(result);
+                console.log("result");
+                console.log(result);
+
+            })
+            .catch (error => fError(error));
+        });     
     }
 
 
-
+/*
    buyWallet(fSucess: any, fError: any) {
 
        console.log("changeOwnershipWithTrade"); 

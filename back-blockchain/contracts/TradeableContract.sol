@@ -10,23 +10,16 @@ contract TradeableContract {
 	bool public isAvailableToSell;
 	bool public hasAlreadyChangedOwnerInItsLifetime; 
 
+	event NewContract(address owner);
 	event NewOwnerWithoutTradeEvent(address  old, address current);
 	event NewOwnerWithTradeEvent(address old, address current, uint price);
 	event WithdrawTokensEvent(address contractoOwner, uint256 valueToWithdraw);
-//	event WithdrawETHEvent(address contractoOwner);
 	event AvaliableToSellEvent(address contractoOwner, address contractAddr);
-
-
-incluir endereco do contrato no evento?
-evento de  criacao para pagina de seus contratos?
-pagina de contratos a venda
-pagina de evntos do contrato
-evento de kill,interface p kill?
-link ipfs de saft?
-
+	event Kill();
 
 	function TradeableContract (address ownerAddr) public {
 		owner = ownerAddr;
+		NewContract(owner);
 	}
 
 	modifier onlyOwner {
@@ -36,6 +29,7 @@ link ipfs de saft?
 
 
 	function kill() public onlyOwner {
+		Kill();	
 		selfdestruct(owner);
 	}
 	
@@ -53,8 +47,9 @@ link ipfs de saft?
 	 */
  	function withdrawTokens (address tokensAddr, uint256 valueToWithdraw) public onlyOwner {
 
-	    if (!tokensAddr.call(bytes4(keccak256("transfer(address, uint256)")), owner, valueToWithdraw)) 
-			revert();
+
+//	    if (!tokensAddr.call(bytes4(keccak256("transfer(address, uint256)")), owner, valueToWithdraw)) 
+//			revert();
 		
 		WithdrawTokensEvent(owner, valueToWithdraw);
 		
@@ -67,8 +62,6 @@ link ipfs de saft?
  	function withdrawETH () public onlyOwner {
  	    
         owner.transfer((address(this)).balance); 
-		
-		WithdrawETHEvent(owner);
  	}
 
  	function setAvailableToSell (uint price) public onlyOwner {
@@ -83,15 +76,13 @@ link ipfs de saft?
  	    require (msg.value >= priceToSell);     
         
         // fee is charged
-        //TODO: alterar fee address
-        address feeAddress = 0x0;
+        address feeAddress = 0x627306090abab3a6e1400e9345bc60c78a8bef57;
         uint feeValue = priceToSell/20;
         feeAddress.transfer(feeValue);
 
         uint valueToOwner = priceToSell-feeValue; 
         owner.transfer(valueToOwner);
-		
-		
+				
     	NewOwnerWithTradeEvent(owner, msg.sender, priceToSell); 
         
         //Transfer the contract ownership 
