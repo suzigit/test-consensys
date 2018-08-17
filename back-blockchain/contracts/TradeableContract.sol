@@ -1,6 +1,7 @@
 pragma solidity ^0.4.18;
 
 import "./FeeContract.sol";
+import "./IERC20Token.sol";
 
 contract TradeableContract {
     
@@ -14,6 +15,7 @@ contract TradeableContract {
 	event NewOwnerWithoutTradeEvent(address  old, address current);
 	event NewOwnerWithTradeEvent(address old, address current, uint price);
 	event WithdrawTokensEvent(address contractoOwner, uint256 valueToWithdraw);
+	event WithdrawError();
 	event AvaliableToSellEvent(address contractoOwner, address contractAddr);
 	event Kill();
 
@@ -54,12 +56,13 @@ contract TradeableContract {
 	 */
  	function withdrawTokens (address tokensAddr, uint256 valueToWithdraw) public onlyOwner returns (bool) {
 
-		bool b = tokensAddr.call(bytes4(keccak256("transfer(address, uint256)")), owner, valueToWithdraw);
+		bool b = IERC20Token(tokensAddr).transfer(owner,valueToWithdraw);
 
-//	    if (!tokensAddr.call(bytes4(keccak256("transfer(address, uint256)")), owner, valueToWithdraw)) 
-//			revert();
-		//TODO
-		WithdrawTokensEvent(owner, valueToWithdraw);
+		if (b) {
+			WithdrawTokensEvent(owner, valueToWithdraw);
+		} else {
+			WithdrawError();
+		}
 		return b;
 
  	}

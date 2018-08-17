@@ -54,36 +54,7 @@ export class BlockchainService {
                 console.log("result=");
                 console.log(result);
             });
-            // Create Contract proxy class
 
-            let proxyTradeableContract = new this.web3.eth.Contract(abi);
-
-           console.log("create....");
-            this.tradeableContract = proxyTradeableContract.new({from: this.getSelecteAccount(), gas: 1000000, data: '0x' + code}, (err, res) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-
-                // Log the tx, you can explore status with eth.getTransaction()
-                console.log(res.transactionHash);
-
-                // If we have an address property, the contract was deployed
-                if (res.address) {
-                    console.log('Contract address: ' + res.address);
-                    // Let's test the deployed contract
-               //     testContract(res.address);
-                }
-            });
-            console.log(this.tradeableContract);
-
-
-            this.tradeableContract = new Contract();
-            this.tradeableContract.address =  '0x345ca3e014aaf5dca488057592ee47305d9b3e10';
-            this.tradeableContract.ABI = abi;
-            console.log("vai instanciar tradeable");
-            this.tradeableContract.instance = new this.web3.eth.Contract(this.tradeableContract.ABI, this.tradeableContract.address);
-            console.log(this.tradeableContract);                
 
 */
         } else {
@@ -130,26 +101,12 @@ export class BlockchainService {
 
         this.getAccounts().then(accounts => {
             let selectedAccount = accounts[0];
-
-            let tradeableContract = new Contract();
-            tradeableContract.address =  tradeableContractAddr;
-            tradeableContract.ABI = (<any>tradeableContractMetadata).abi;
-
-
-            console.log("vai instanciar tradeable");
-            tradeableContract.instance = new this.web3.eth.Contract(tradeableContract.ABI, tradeableContract.address);
-            console.log(tradeableContract);                
-
+            let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
+            
             console.log("vai chamar withdraw");
 
             tradeableContract.instance.methods.withdrawTokens(tokenAddr, valueToWithdraw).send ({ from:selectedAccount })
-            .then (result => 
-            {
-                fSucess(result);
-                console.log("result");
-                console.log(result);
-
-            })
+            .then (result => fSucess(result))
             .catch (error => fError(error));
         });     
     }
@@ -161,15 +118,7 @@ export class BlockchainService {
 
         this.getAccounts().then(accounts => {
             let selectedAccount = accounts[0];
-
-            let tradeableContract = new Contract();
-            tradeableContract.address =  tradeableContractAddr;
-            tradeableContract.ABI = (<any>tradeableContractMetadata).abi;
-
-
-            console.log("vai instanciar tradeable");
-            tradeableContract.instance = new this.web3.eth.Contract(tradeableContract.ABI, tradeableContract.address);
-            console.log(tradeableContract);                
+            let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
             console.log("vai chamar set available to sell");
 
@@ -190,18 +139,7 @@ export class BlockchainService {
         this.getAccounts().then(accounts => {
 
             let selectedAccount = accounts[0]; 
-
-
-            console.log("get price to Buy ");
-
-            let tradeableContract = new Contract();
-            tradeableContract.address =  tradeableContractAddr;
-            tradeableContract.ABI = (<any>tradeableContractMetadata).abi;
-
-
-            console.log("vai instanciar tradeable");
-            tradeableContract.instance = new this.web3.eth.Contract(tradeableContract.ABI, tradeableContract.address);
-            console.log(tradeableContract);                
+            let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
             console.log("vai chamar get");
 
@@ -219,14 +157,7 @@ export class BlockchainService {
         this.getAccounts().then(accounts => {
             let selectedAccount = accounts[0];
 
-            let tradeableContract = new Contract();
-            tradeableContract.address =  tradeableContractAddr;
-            tradeableContract.ABI = (<any>tradeableContractMetadata).abi;
-
-
-            console.log("vai instanciar tradeable");
-            tradeableContract.instance = new this.web3.eth.Contract(tradeableContract.ABI, tradeableContract.address);
-            console.log(tradeableContract);                
+            let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
             console.log("vai chamar buy - changeOwner");
 
@@ -242,6 +173,16 @@ export class BlockchainService {
             .catch (error => fError(error));
         });     
 
+    }
+
+    createTradeableContract(tradeableContractAddr: string) {
+
+        let tradeableContract = new Contract();
+        tradeableContract.address =  tradeableContractAddr;
+        tradeableContract.ABI = (<any>tradeableContractMetadata).abi;
+        tradeableContract.instance = new this.web3.eth.Contract(tradeableContract.ABI, tradeableContract.address);
+        console.log(tradeableContract);                
+        return tradeableContract;
     }
 
 /*

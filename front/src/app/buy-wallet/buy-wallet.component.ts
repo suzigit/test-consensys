@@ -14,6 +14,7 @@ export class BuyWalletComponent implements OnInit {
   tradeableWalletAddress: string;
   price: string; 
   newBuyHash: string;
+  error: string;
 
   lastTradeableWalletAddress: string;
   
@@ -72,8 +73,11 @@ export class BuyWalletComponent implements OnInit {
         function(result) {
               console.log("Buy sucess: " + result);
               self.newBuyHash = result;
+              self.error = undefined;
         }, function(e) {
             console.log("Buy  error: " + e);
+            self.error = e;
+            self.newBuyHash = undefined;
         });
   }     
 

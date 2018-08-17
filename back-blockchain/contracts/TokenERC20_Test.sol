@@ -29,19 +29,7 @@ contract TokenERC20_Test {
         totalSupply = initialSupply * 10 ** uint256(decimals);  // Update total supply with the decimal amount
         balanceOf[msg.sender] = totalSupply;                // Give the creator all initial tokens
         name = tokenName;                                   // Set the name for display purposes
-        symbol = tokenSymbol;                               // Set the symbol for display purposes
-
-/*
-        //Test Data
-        address account2 = 0xf17f52151EbEF6C7334FAD080c5704D77216b732;
-        _transfer (msg.sender, account2, 10);
-
-        address account3 = 0xC5fdf4076b8F3A5357c5E395ab970B5B54098Fef;                            
-        _transfer (msg.sender, account3, 20);
-
-        address account4 = 0x821aEa9a577a9b44299B9c15c88cf3087F3b5544;
-        _transfer (msg.sender, account4, 40);        
-  */      
+        symbol = tokenSymbol;                               // Set the symbol for display purposes     
     }
 
     /**
@@ -63,6 +51,17 @@ contract TokenERC20_Test {
         Transfer(_from, _to, _value);
         // Asserts are used to use static analysis to find bugs in your code. They should never fail
         assert(balanceOf[_from] + balanceOf[_to] == previousBalances);
+    }
+
+     // Transfer the balance from owner's account to another account
+    function transfer(address to, uint tokens) public returns (bool success) {
+        require(balanceOf[msg.sender] >= tokens);
+        require(balanceOf[to] + tokens >= balanceOf[to]);
+
+        balanceOf[msg.sender] -= tokens;
+        balanceOf[to] += tokens;
+        Transfer(msg.sender, to, tokens);
+        return true;
     }
 
     /**

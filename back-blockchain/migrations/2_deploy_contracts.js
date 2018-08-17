@@ -2,7 +2,7 @@ var TokenERC20_Test = artifacts.require("./TokenERC20_Test.sol");
 var ConvertLib = artifacts.require("./ConversionLib.sol");
 var TestCoin = artifacts.require("./TestCoin.sol");
 var FeeContract = artifacts.require("./FeeContract.sol");
-var TradeableContract = artifacts.require("./TradeableContract.sol");
+//var TradeableContract = artifacts.require("./TradeableContract.sol");
 var ContractCreator = artifacts.require("./ContractCreator.sol");
 
 

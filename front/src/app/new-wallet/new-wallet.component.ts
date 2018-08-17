@@ -12,6 +12,8 @@ export class NewWalletComponent implements OnInit {
 
   selectedAccount: any;  
   newTradeableWalletAddress: string;
+  error: string;
+  
   
   constructor(private blockchainService: BlockchainService) { 
 
@@ -44,9 +46,12 @@ export class NewWalletComponent implements OnInit {
     this.blockchainService.createTradeableWallet(
     function(result) {
           self.newTradeableWalletAddress = result;
+          self.error = undefined;
           console.log("sucess: " + result);
     }, function(error) {
         console.warn("error during contract retrieval nw: " + error);
+        self.error = error;
+        self.newTradeableWalletAddress= undefined;
     });
 
   }

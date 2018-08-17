@@ -15,6 +15,7 @@ export class WithdrawTokensComponent implements OnInit {
   tokensAddress: string;
   numberOfTokens: number; //TODO: Deal with floating point
   newWithdrawHash: string;
+  error: string;
 
 
   
@@ -48,10 +49,14 @@ export class WithdrawTokensComponent implements OnInit {
 
         this.blockchainService.withdrawTokens(self.tradeableWalletAddress, self.tokensAddress, self.numberOfTokens,
         function(result) {
-              console.log("withdraw sucess: " + result);
+              console.log("withdraw sucess!");
+              console.log(result);
               self.newWithdrawHash = result;
+              self.error = undefined;
         }, function(e) {
             console.log("withdraw  error: " + e);
+            self.error = e;
+            self.newWithdrawHash = undefined;
         });
 
     }
