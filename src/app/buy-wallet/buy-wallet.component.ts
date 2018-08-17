@@ -12,7 +12,7 @@ export class BuyWalletComponent implements OnInit {
 
   selectedAccount: any;  
   tradeableWalletAddress: string;
-  price: string; 
+  priceInGWei: string; 
   newBuyHash: string;
   error: string;
 
@@ -47,29 +47,45 @@ export class BuyWalletComponent implements OnInit {
 
             let self = this;
 
-            this.blockchainService.getPriceToBuy(self.tradeableWalletAddress,
+            this.blockchainService.getPriceToBuyInGWei(self.tradeableWalletAddress,
             function(result) {
                   console.log("Buy sucess: " + result);
                   if (result!=-1) {
-                      self.price = result;
+                      self.priceInGWei = result;
                   }
                   else {
-                      self.price = "N/A";
+                      self.priceInGWei = "N/A";
                       console.log("Wallet is not available to sell");                        
                   }
 
             }, function(e) {
                   console.log("Buy error: " + e);
-                  self.price = "N/A";
+                  self.priceInGWei = "N/A";
             });
       }
+  }
+
+  convertPriceToETH() {
+      if (this.priceInGWei) {
+          
+          let pETH = Number(this.priceInGWei)/1000000000;
+
+          if (isNaN(pETH) ) {
+            return "N/A";
+          }
+          else {
+              return pETH;
+          }
+      }
+      return "";
+
   }
 
   buy() {
 
         let self = this;
 
-        this.blockchainService.buyWallet(self.tradeableWalletAddress, Number(self.price),
+        this.blockchainService.buyWallet(self.tradeableWalletAddress, Number(self.priceInGWei),
         function(result) {
               console.log("Buy sucess: " + result);
               self.newBuyHash = result;

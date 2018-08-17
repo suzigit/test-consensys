@@ -12,7 +12,7 @@ export class PutWalletSaleComponent implements OnInit {
 
   selectedAccount: any;  
   tradeableWalletAddress: string;
-  price: number; //TODO: Deal with floating point
+  priceInGWei: number; //TODO: Deal with floating point
   newSellHash: string;
   error: string;
 
@@ -43,7 +43,7 @@ export class PutWalletSaleComponent implements OnInit {
 
         let self = this;
 
-        this.blockchainService.setAvailableToSell(self.tradeableWalletAddress, self.price,
+        this.blockchainService.setAvailableToSell(self.tradeableWalletAddress, self.priceInGWei,
         function(result) {
               console.log("sell sucess: " + result);
               self.newSellHash = result;
@@ -54,6 +54,23 @@ export class PutWalletSaleComponent implements OnInit {
             self.newSellHash = undefined;
         });
 
+
+  }
+
+  convertPriceToETH() {
+
+      if (this.priceInGWei) {
+          
+          let pETH = Number(this.priceInGWei)/1000000000;
+
+          if (isNaN(pETH) ) {
+            return "N/A";
+          }
+          else {
+              return pETH;
+          }
+      }
+      return "";
 
   }
 

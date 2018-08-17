@@ -32,30 +32,19 @@ export class BlockchainService {
             this.web3 = new Web3(window.web3.currentProvider);
            console.log(this.web3);
 
+
             this.contractCreator = new Contract();
-            this.contractCreator.address =  '0x2c2b9c9a4a25e24b174f26114e8926a9f2128fe4';
+            this.contractCreator.address =  '0x1411cb266fced1587b0aa29e9d5a9ef3db64a9c5';
             this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;
             console.log("vai instanciar contract creator");
             this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
             console.log(this.contractCreator.instance);    
 
 /*
-            this.contractCreator = TruffleContract(contracCreatortMetadata); 
+            this.contractCreator = TruffleContract(contractCreatortMetadata); 
            	this.contractCreator.setProvider(window.web3.currentProvider);
             console.log("this.contractCreator");
             console.log(this.contractCreator);
-
-            var deployed;
-            this.contractCreator.deployed().then(function(instance) {
-                console.log("dentro do deployed");
-                var deployed = instance;
-                return instance.createTradeableContract();
-            }).then(function(result) {
-                console.log("result=");
-                console.log(result);
-            });
-
-
 */
         } else {
             console.warn(
@@ -67,7 +56,6 @@ export class BlockchainService {
     async getAccounts() {
         return await this.web3.eth.getAccounts();
     }
-
 
     createTradeableWallet(fSucess: any, fError: any) {
             
@@ -112,9 +100,9 @@ export class BlockchainService {
     }
 
 
-   setAvailableToSell(tradeableContractAddr: string, price: number, fSucess: any, fError: any) {
+   setAvailableToSell(tradeableContractAddr: string, priceInGWei: number, fSucess: any, fError: any) {
 
-       console.log("set available to sell with price " + price); 
+       console.log("set available to sell with price (GWei) " + priceInGWei); 
 
         this.getAccounts().then(accounts => {
             let selectedAccount = accounts[0];
@@ -122,7 +110,12 @@ export class BlockchainService {
 
             console.log("vai chamar set available to sell");
 
-            tradeableContract.instance.methods.setAvailableToSell(price).send ({ from:selectedAccount })
+            let sPriceInGWei = String(priceInGWei);
+
+            let priceInWei = this.web3.utils.toWei(sPriceInGWei, 'GWei');
+            console.log(priceInWei);
+
+            tradeableContract.instance.methods.setAvailableToSell(priceInWei).send ({ from:selectedAccount })
             .then (result => 
             {
                 fSucess(result);
@@ -134,7 +127,7 @@ export class BlockchainService {
         });     
     }
 
-    getPriceToBuy(tradeableContractAddr: string, fSucess: any, fError: any) {
+    getPriceToBuyInGWei(tradeableContractAddr: string, fSucess: any, fError: any) {
     
         this.getAccounts().then(accounts => {
 
@@ -143,16 +136,20 @@ export class BlockchainService {
 
             console.log("vai chamar get");
 
-            tradeableContract.instance.methods.getPriceToSell().call({ from:selectedAccount })
-            .then(result => fSucess(result))
+            tradeableContract.instance.methods.getPriceToSellInWei().call({ from:selectedAccount })
+            .then(result => 
+                {
+                    let priceInGwei = this.web3.utils.fromWei(result, "GWei");
+                    fSucess(priceInGwei);
+                })
             .catch (error => fError(error));
-        });    
+        }); 
     } 
 
 
-   buyWallet(tradeableContractAddr: string, price: number, fSucess: any, fError: any) {
+   buyWallet(tradeableContractAddr: string, priceInGWei: number, fSucess: any, fError: any) {
 
-       console.log("Buy with price " + price); 
+       console.log("Buy with price (GWei) " + priceInGWei); 
 
         this.getAccounts().then(accounts => {
             let selectedAccount = accounts[0];
@@ -161,8 +158,13 @@ export class BlockchainService {
 
             console.log("vai chamar buy - changeOwner");
 
+            let sPriceInGWei = String(priceInGWei);
+
+            let priceInWei = this.web3.utils.toWei(sPriceInGWei, 'GWei');
+            console.log(priceInWei);
+
             //PAYABLE FUNCTION
-            tradeableContract.instance.methods.changeOwnershipWithTrade().send ({ from:selectedAccount, value:price })
+            tradeableContract.instance.methods.changeOwnershipWithTrade().send ({ from:selectedAccount, value:priceInWei })
             .then (result => 
             {
                 fSucess(result);
