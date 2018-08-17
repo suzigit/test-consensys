@@ -7,13 +7,13 @@ contract TradeableContract {
     
 	address public owner;
 
-	uint64 public priceToSell;
+	uint128 public priceToSellInWei;
 	bool public isAvailableToSell;
 	bool public hasAlreadyChangedOwnerInItsLifetime; 
 
 	event NewContract(address owner);
 	event NewOwnerWithoutTradeEvent(address  old, address current);
-	event NewOwnerWithTradeEvent(address old, address current, uint price);
+	event NewOwnerWithTradeEvent(address old, address current);
 	event WithdrawTokensEvent(address contractoOwner, uint256 valueToWithdraw);
 	event WithdrawError();
 	event AvaliableToSellEvent(address contractoOwner, address contractAddr);
@@ -43,9 +43,9 @@ contract TradeableContract {
 		return owner;
 	}
 
-	function getPriceToSell() public view returns (int128) {		
+	function getPriceToSellInWei() public view returns (int256) {		
 		if (isAvailableToSell) {
-			return priceToSell;
+			return priceToSellInWei;
 		}  
 		return -1;
 	}
@@ -76,42 +76,43 @@ contract TradeableContract {
         owner.transfer((address(this)).balance); 
  	}
 
- 	function setAvailableToSell (uint64 price) public onlyOwner {
+ 	function setAvailableToSell (uint128 priceInWei) public onlyOwner {
 		isAvailableToSell = true;
-		priceToSell = price;
+		priceToSellInWei = priceInWei;
 		AvaliableToSellEvent(owner, address(this));
 	}
 
- 	function changeOwnershipWithTrade () public payable {
+ 	function changeOwnershipWithTrade () payable public  {
 
+		//Checks-Effects-Interactions pattern
+
+        // CHECK - calculating values to transfer 
  	    require (isAvailableToSell==true);
- 	    require (msg.value >= priceToSell);     
-        
-        // fee is charged
-        address feeAddress = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
-        uint feeValue = priceToSell/20;
-        feeAddress.transfer(feeValue);
+ 	    require (msg.value >= priceToSellInWei);     
 
-        uint valueToOwner = priceToSell-feeValue; 
-        owner.transfer(valueToOwner);
-				
-    	NewOwnerWithTradeEvent(owner, msg.sender, priceToSell); 
+		//EFFECTS
+        address oldOwner = owner;
+
+    	NewOwnerWithTradeEvent(oldOwner, msg.sender); 	
         
-        //Transfer the contract ownership 
         owner = msg.sender;
- 	    
+
         isAvailableToSell = false;
 		hasAlreadyChangedOwnerInItsLifetime = true;
+        address feeAddress = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
+        
+
+        uint128 feeValueInWei = priceToSellInWei/20; 
+        uint128 valueToOwnerInWei = priceToSellInWei-feeValueInWei;
+
+		priceToSellInWei = 0; //Avoid reentrancy attack
+
+		//INTERACTION
+        feeAddress.transfer(feeValueInWei);
+        oldOwner.transfer(valueToOwnerInWei);
+
  	}
  	
-    function changeOwnershipWithoutTrade(address _new) public onlyOwner {    		
-    	
-		owner = _new; 
-    	NewOwnerWithoutTradeEvent(owner, _new); 
-		isAvailableToSell = false;
-		hasAlreadyChangedOwnerInItsLifetime = true;
-
-    }
 	
 } 
 

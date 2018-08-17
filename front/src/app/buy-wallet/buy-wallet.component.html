@@ -10,7 +10,12 @@
   </div>
    <div class="row">
     <label>Price of this Tradeable Wallet (in GWei):
-      <input type="text" [ngModel]="price" readonly disabled maxlength="20" size="10">
+      <input type="text" [ngModel]="priceInGWei" readonly disabled maxlength="20" size="10">
+    </label>
+  </div>
+   <div class="row">
+    <label>Price of this Tradeable Wallet (in Ether):
+      <input type="text" [ngModel]="convertPriceToETH()" readonly disabled maxlength="20" size="10">
     </label>
   </div>
 
