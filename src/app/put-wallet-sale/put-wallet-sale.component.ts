@@ -14,6 +14,7 @@ export class PutWalletSaleComponent implements OnInit {
   tradeableWalletAddress: string;
   price: number; //TODO: Deal with floating point
   newSellHash: string;
+  error: string;
 
   
   constructor(private blockchainService: BlockchainService) { 
@@ -46,8 +47,11 @@ export class PutWalletSaleComponent implements OnInit {
         function(result) {
               console.log("sell sucess: " + result);
               self.newSellHash = result;
+              self.error = undefined;
         }, function(e) {
             console.log("sell  error: " + e);
+            self.error = e;           
+            self.newSellHash = undefined;
         });
 
 

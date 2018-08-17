@@ -16,3 +16,13 @@
   </div>
 </div>
 
+    <div class="row" *ngIf="error">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+            <h5 class="card-title">Ops... Error</h5>
+            <p class="card-text">Be sure that your account has enough Ether to pay the gas cost.</p>
+            <p class="card-text">Details: {{error}}</p>
+          </div>
+      </div>
+    </div>     
+
