@@ -25,32 +25,40 @@ export class BlockchainService {
 
 
     constructor() {
- 
-        if (typeof window.web3 !== 'undefined') {
+
+  //      window.addEventListener('load', (event) => {
+            this.createWeb3();
+            this.createInitialObjects();
+ //       });
+
+
+    }
+
+    createWeb3() {
+        console.log("vai criar web3");
+            if (typeof window.web3 !== 'undefined') {
 
             // Use Mist/MetaMask's provider
             this.web3 = new Web3(window.web3.currentProvider);
            console.log(this.web3);
 
-
-            this.contractCreator = new Contract();
-            this.contractCreator.address =  '0x1411cb266fced1587b0aa29e9d5a9ef3db64a9c5';
-            this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;
-            console.log("vai instanciar contract creator");
-            this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
-            console.log(this.contractCreator.instance);    
-
-/*
-            this.contractCreator = TruffleContract(contractCreatortMetadata); 
-           	this.contractCreator.setProvider(window.web3.currentProvider);
-            console.log("this.contractCreator");
-            console.log(this.contractCreator);
-*/
         } else {
             console.warn(
                 'Please use a dapp browser like mist or MetaMask plugin for chrome'
             );
         }
+    }
+
+    createInitialObjects() {
+
+        console.log("vai instanciar contract creator");
+
+        this.contractCreator = new Contract();
+        this.contractCreator.address =  '0x2c2b9c9a4a25e24b174f26114e8926a9f2128fe4';
+        this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;
+        this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
+        console.log(this.contractCreator.instance);    
+
     }
    
     async getAccounts() {
@@ -177,7 +185,7 @@ export class BlockchainService {
 
     }
 
-    createTradeableContract(tradeableContractAddr: string) {
+    private createTradeableContract(tradeableContractAddr: string) {
 
         let tradeableContract = new Contract();
         tradeableContract.address =  tradeableContractAddr;
@@ -187,9 +195,23 @@ export class BlockchainService {
         return tradeableContract;
     }
 
-/*
+
     getBlockTimestamp(blockHash: number, fResult: any) {
         this.web3.eth.getBlock(blockHash, fResult);
     }
-*/
-}
+
+
+    getContractHistory(tradeableContractAddr: string, fEventOwner: any) {
+
+        let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
+
+        console.log("getPastEvents... ");
+  
+        tradeableContract.instance.getPastEvents('NewOwnerEvent', {
+                fromBlock: 0,
+                toBlock: 'latest'
+        })
+        .then(events =>  fEventOwner(events));
+    }
+ } 
+

@@ -1,3 +1,13 @@
+<h5>Wait until next version!</h5>
+
 <p>
-  all-wallets works!
+  Here you are going to see all Tradeable Wallets that the selected account is owner.
+  We have at least two ways to implement that:
 </p>
+<p>
+  (a) By storing in a database the ownership of each contract and updating the info when a NewOwnerEvent takes place. We should also listening KillEvent to show if the contract is alive. We can do that in a backend service and expose it using a REST service.
+</p>
+<p>
+  (b) By analyzing all Tradeable Contracts that exists in ContractCreator and verifying the ownership of each one.
+</p>
+

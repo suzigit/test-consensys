@@ -8,6 +8,8 @@ import {WithdrawTokensComponent} from './withdraw-tokens/withdraw-tokens.compone
 import {BuyWalletComponent} from './buy-wallet/buy-wallet.component';
 import {PutWalletSaleComponent} from './put-wallet-sale/put-wallet-sale.component';
 import {AllWalletsComponent} from './all-wallets/all-wallets.component';
+import {AllOwnersTwComponent} from './all-owners-tw/all-owners-tw.component';
+import {AvailableSellWalletComponent} from './available-sell-wallet/available-sell-wallet.component';
 
 
 const routes: Routes = [
@@ -32,9 +34,18 @@ const routes: Routes = [
         component: AllWalletsComponent,
     },   
     {
+        path: 'available-sell-wallet',
+        component: AvailableSellWalletComponent,
+    },   
+    {
+        path: 'all-owners/:address',
+        component: AllOwnersTwComponent,
+    },
+        {
         path: '',
         component: InitialPanelComponent,
     },
+
 ];
 
 

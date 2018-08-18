@@ -1,0 +1,15 @@
+<h5>Wait until next version!</h5>
+
+<p>
+  Here you are going to see all Tradeable Wallets that are available to sell.
+  We have at least two ways to implement that:
+</p>
+<p>
+  (a) By listen to the AvaliableToSellEvent, NewOwnerEvent and KillEvent, storing the info in a database and creating a REST service to list the contracts that satisfy this conditon: it has an AvaliableToSellEvent an does not have after this event none of the following events: NewOwnerEvent / KillEvent. 
+</p>
+<p>
+  (b) By analyzing all Tradeable Contracts that exists in ContractCreator and verifying if each one is available to sell.
+</p>
+<p>
+  In the future we can include the concept of reputation of each wallet owner. Good traders will become visible to anyone. It will help the decision of buying a wallet.
+</p>

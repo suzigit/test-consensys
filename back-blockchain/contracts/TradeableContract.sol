@@ -11,17 +11,14 @@ contract TradeableContract {
 	bool public isAvailableToSell;
 	bool public hasAlreadyChangedOwnerInItsLifetime; 
 
-	event NewContract(address owner);
-	event NewOwnerWithoutTradeEvent(address  old, address current);
-	event NewOwnerWithTradeEvent(address old, address current);
-	event WithdrawTokensEvent(address contractoOwner, uint256 valueToWithdraw);
-	event WithdrawError();
-	event AvaliableToSellEvent(address contractoOwner, address contractAddr);
-	event Kill();
+	event NewOwnerEvent(address old, address current);
+	event WithdrawTokensEvent(address tokensAddr, address owner, uint256 valueToWithdraw, bool sucess);
+	event AvaliableToSellEvent(address owner, address contractAddr);
+	event KillEvent();
 
 	function TradeableContract (address ownerAddr) public {
 		owner = ownerAddr;
-		NewContract(owner);
+		NewOwnerEvent(0x0,owner);
 	}
 
 	modifier onlyOwner {
@@ -31,7 +28,7 @@ contract TradeableContract {
 
 
 	function kill() public onlyOwner {
-		Kill();	
+		KillEvent();	
 		selfdestruct(owner);
 	}
 	
@@ -58,11 +55,8 @@ contract TradeableContract {
 
 		bool b = IERC20Token(tokensAddr).transfer(owner,valueToWithdraw);
 
-		if (b) {
-			WithdrawTokensEvent(owner, valueToWithdraw);
-		} else {
-			WithdrawError();
-		}
+		WithdrawTokensEvent(tokensAddr, owner, valueToWithdraw, b);
+
 		return b;
 
  	}
@@ -91,11 +85,10 @@ contract TradeableContract {
  	    require (msg.value >= priceToSellInWei);     
 
 		//EFFECTS
-        address oldOwner = owner;
-
-    	NewOwnerWithTradeEvent(oldOwner, msg.sender); 	
-        
+        address oldOwner = owner;      
         owner = msg.sender;
+    	NewOwnerEvent(oldOwner, owner); 	
+		
 
         isAvailableToSell = false;
 		hasAlreadyChangedOwnerInItsLifetime = true;
