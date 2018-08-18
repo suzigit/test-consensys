@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { BlockchainService } from './../service/blockchain-service';
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -18,7 +20,7 @@ export class BuyWalletComponent implements OnInit {
 
   lastTradeableWalletAddress: string;
   
-  constructor(private blockchainService: BlockchainService) { 
+  constructor(private blockchainService: BlockchainService, private router: Router) { 
 
       let self = this;
 
@@ -50,7 +52,7 @@ export class BuyWalletComponent implements OnInit {
             this.blockchainService.getPriceToBuyInGWei(self.tradeableWalletAddress,
             function(result) {
                   console.log("Buy sucess: " + result);
-                  if (result!=-1) {
+                  if (result>=0) {
                       self.priceInGWei = result;
                   }
                   else {
@@ -95,6 +97,7 @@ export class BuyWalletComponent implements OnInit {
             self.error = e;
             self.newBuyHash = undefined;
         });
-  }     
+  }
+  
 
 }

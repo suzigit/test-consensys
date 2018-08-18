@@ -20,7 +20,7 @@
   </div>
 
     <div class="row">
-    <label>See all events in the lifecycle of this Tradeable-Wallet <a href="javascript:void(0)" (click)="getEvents()">
+    <label>See all owners in the lifecycle of this Tradeable-Wallet <a routerLink="/all-owners/{{tradeableWalletAddress}}">
       <i class="fa fa-search" aria-hidden="true"></i></a></label>
   </div>
 
@@ -46,4 +46,9 @@
           </div>
       </div>
     </div>     
+
+  <div class="row">
+    <a href="available-sell-wallet">See all wallets available to sell</a>
+  </div>
+
 
