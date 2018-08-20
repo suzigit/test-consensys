@@ -26,7 +26,7 @@ contract ContractCreator {
 	}
 
   // deploy a new contract
-	function createTradeableContract () public stopInEmergency returns(address subcontractAddr) {
+	function createTradeableContract() public stopInEmergency returns(address subcontractAddr) {
 		TradeableContract tc = new TradeableContract(msg.sender); 
 		contracts.push(tc);
 		return tc;		
@@ -51,6 +51,8 @@ contract ContractCreator {
 		return contracts[i];
 	}
 
-
+	function getOwner() public view returns (address) {
+		return owner;
+	}
 
 }

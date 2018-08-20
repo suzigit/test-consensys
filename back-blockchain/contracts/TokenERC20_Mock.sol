@@ -32,11 +32,6 @@ contract TokenERC20_Mock {
         symbol = tokenSymbol;                               // Set the symbol for display purposes     
     }
 
-    function getAddr() view public returns (address) {
-        return address(this);
-
-    }
-
     /**
      * Internal transfer, only can be called by this contract
      */

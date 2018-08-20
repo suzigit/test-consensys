@@ -1,9 +1,6 @@
-require('babel-polyfill');
 var TradeableContract  = artifacts.require("./TradeableContract.sol");
 var TokenERC20_Mock = artifacts.require("./TokenERC20_Mock.sol");
 
-
-var contractInstance;
 
 contract('TradeableContract', function(accounts) {
 
@@ -17,16 +14,16 @@ contract('TradeableContract', function(accounts) {
         .then(function (instance) {
             return instance.getOwner.call();
         }).then(function (owner) {
-            assert.equal(owner, initialOwner, "Owner não é igual ao utilizado " + owner);      
+            assert.equal(owner, initialOwner, "Owner does not match");      
         })
   });
 
 
   it("should perform a withdraw operation using owner", function () {
     return TradeableContract.deployed()
-        .then(function (TCinstance) {
+        .then(function (tcInstance) {
             return TokenERC20_Mock.deployed().then(function(tokenInstance) {
-                    return TCinstance.withdrawTokens(tokenInstance.address, 0, {from: initialOwner});
+                    return tcInstance.withdrawTokens(tokenInstance.address, 0, {from: initialOwner});
             })             
         })
         .then(function (result) {
@@ -40,9 +37,9 @@ contract('TradeableContract', function(accounts) {
 
   it("should not perform a withdraw operation if not using owner", function () {
     return TradeableContract.deployed()
-        .then(function (TCinstance) {
+        .then(function (tcInstance) {
             return TokenERC20_Mock.deployed().then(function(tokenInstance) {
-                    return TCinstance.withdrawTokens(tokenInstance.address, 0, {from: alice})
+                    return tcInstance.withdrawTokens(tokenInstance.address, 0, {from: alice})
                             .then(function(r) {
                                 assert(false, 'should not performed withdraw!!!');
                                 return true;
@@ -58,10 +55,10 @@ contract('TradeableContract', function(accounts) {
   it("should put wallet for sale using owner", function () {
     let price = 20;
     return TradeableContract.deployed()
-        .then(function (TCinstance) {
-            return TCinstance.setAvailableToSell(price, {from: initialOwner})
+        .then(function (tcInstance) {
+            return tcInstance.setAvailableToSell(price, {from: initialOwner})
             .then(function() {
-                return TCinstance.getPriceToSellInWei.call();
+                return tcInstance.getPriceToSellInWei.call();
             })
         })
         .then(function (result) {
@@ -70,6 +67,22 @@ contract('TradeableContract', function(accounts) {
   });
 
 
+  it("should buy a sellable wallet", function () {
+    let price = 20;
+    return TradeableContract.deployed()
+        .then(function (tcInstance) {
+            return tcInstance.setAvailableToSell(price, {from: initialOwner})
+            .then(function() {
+                return tcInstance.changeOwnershipWithTrade({from: alice, value:price})
+                    .then(function() {
+                        return tcInstance.getOwner.call();
+                    });
+            });
+        })
+        .then(function (result) {
+            assert.equal(result, alice, "Owner is not who bought the wallet");      
+         });
+  });
 
 
 
