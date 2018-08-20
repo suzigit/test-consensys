@@ -1,6 +1,5 @@
 pragma solidity ^0.4.18;
 
-import "./FeeContract.sol";
 import "./IERC20Token.sol";
 
 contract TradeableContract {
@@ -8,11 +7,12 @@ contract TradeableContract {
 	address public owner;
 
 	uint128 public priceToSellInWei;
+
+	//It is used so priceToSellInWei can be uint 
 	bool public isAvailableToSell;
-	bool public hasAlreadyChangedOwnerInItsLifetime; 
 
 	event NewOwnerEvent(address old, address current);
-	event WithdrawTokensEvent(address tokensAddr, address owner, uint256 valueToWithdraw, bool sucess);
+	event WithdrawTokensEvent(address tokenAddr, address owner, uint256 value, bool sucess);
 	event AvaliableToSellEvent(address owner, address contractAddr);
 	event KillEvent();
 
@@ -32,10 +32,6 @@ contract TradeableContract {
 		selfdestruct(owner);
 	}
 	
-	function hasAlreadyChangedOwnerInItsLifetime() public view returns (bool) {
-		return hasAlreadyChangedOwnerInItsLifetime;
-	}
-
 	function getOwner() public view returns (address) {
 		return owner;
 	}
@@ -49,26 +45,26 @@ contract TradeableContract {
 
 	/*
 	 *	Transfer tokens to the owner
-	 *	It is necessary to call the transfer function of the original ERC20 contract code 
+	 *	It is necessary to call the transferfunction of the original ERC20 contract code 
 	 */
- 	function withdrawTokens (address tokensAddr, uint256 valueToWithdraw) public onlyOwner returns (bool) {
+ 	function withdrawTokens (address tokenAddr, uint256 value) public onlyOwner returns (bool) {
 
-		bool b = IERC20Token(tokensAddr).transfer(owner,valueToWithdraw);
+		bool b = IERC20Token(tokenAddr).transfer(owner,value);
 
-		WithdrawTokensEvent(tokensAddr, owner, valueToWithdraw, b);
+		WithdrawTokensEvent(tokenAddr, owner, value, b);
 
 		return b;
 
  	}
 
-	/*
-	 *	Transfer ETH to the owner
-	 *	It is necessary  to avoid lock funds the were send to the contract 
-	 */
- 	function withdrawETH () public onlyOwner {
- 	    
-        owner.transfer((address(this)).balance); 
- 	}
+
+	/**
+	* @dev Transfer all Ether held by the contract to the owner. It is necessary  to avoid lock funds the were send to the contract
+	*/
+	function reclaimEther() external onlyOwner {
+		owner.transfer(address(this).balance);
+	}
+		
 
  	function setAvailableToSell (uint128 priceInWei) public onlyOwner {
 		isAvailableToSell = true;
@@ -89,13 +85,10 @@ contract TradeableContract {
         owner = msg.sender;
     	NewOwnerEvent(oldOwner, owner); 	
 		
-
         isAvailableToSell = false;
-		hasAlreadyChangedOwnerInItsLifetime = true;
         address feeAddress = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
         
-
-        uint128 feeValueInWei = priceToSellInWei/20; 
+        uint128 feeValueInWei = priceToSellInWei/20;
         uint128 valueToOwnerInWei = priceToSellInWei-feeValueInWei;
 
 		priceToSellInWei = 0; //Avoid reentrancy attack
@@ -105,6 +98,7 @@ contract TradeableContract {
         oldOwner.transfer(valueToOwnerInWei);
 
  	}
+
  	
 	
 } 

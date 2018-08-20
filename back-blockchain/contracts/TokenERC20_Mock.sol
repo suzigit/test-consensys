@@ -1,6 +1,6 @@
 pragma solidity ^0.4.18;
 
-contract TokenERC20_Test {
+contract TokenERC20_Mock {
     // Public variables of the token
     string public name;
     string public symbol;
@@ -21,7 +21,7 @@ contract TokenERC20_Test {
      *
      * Initializes contract with initial supply tokens to the creator of the contract
      */
-    function TokenERC20_Test (
+    function TokenERC20_Mock (
         uint256 initialSupply,
         string tokenName,
         string tokenSymbol
@@ -30,6 +30,11 @@ contract TokenERC20_Test {
         balanceOf[msg.sender] = totalSupply;                // Give the creator all initial tokens
         name = tokenName;                                   // Set the name for display purposes
         symbol = tokenSymbol;                               // Set the symbol for display purposes     
+    }
+
+    function getAddr() view public returns (address) {
+        return address(this);
+
     }
 
     /**

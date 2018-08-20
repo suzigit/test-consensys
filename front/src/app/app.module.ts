@@ -15,6 +15,7 @@ import { AllWalletsComponent } from './all-wallets/all-wallets.component';
 import { PutWalletSaleComponent } from './put-wallet-sale/put-wallet-sale.component';
 import { AllOwnersTwComponent } from './all-owners-tw/all-owners-tw.component';
 import { AvailableSellWalletComponent } from './available-sell-wallet/available-sell-wallet.component';
+import { AllWithdrawComponent } from './all-withdraw/all-withdraw.component';
 
 
 
@@ -29,7 +30,8 @@ import { AvailableSellWalletComponent } from './available-sell-wallet/available-
     AllWalletsComponent,
     PutWalletSaleComponent,
     AllOwnersTwComponent,
-    AvailableSellWalletComponent
+    AvailableSellWalletComponent,
+    AllWithdrawComponent
   ],
   imports: [
     BrowserModule,

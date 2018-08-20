@@ -205,7 +205,7 @@ export class BlockchainService {
 
         let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
-        console.log("getPastEvents... ");
+        console.log("getPastEvents (owners)... ");
   
         tradeableContract.instance.getPastEvents('NewOwnerEvent', {
                 fromBlock: 0,
@@ -213,5 +213,19 @@ export class BlockchainService {
         })
         .then(events =>  fEventOwner(events));
     }
+
+    getWithdrawHistory(tradeableContractAddr: string, fEvents: any) {
+
+        let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
+
+        console.log("getPastEvents (withdraw)... ");
+  
+        tradeableContract.instance.getPastEvents('WithdrawTokensEvent', {
+                fromBlock: 0,
+                toBlock: 'latest'
+        })
+        .then(events =>  fEvents(events));
+    }
+    
  } 
 
