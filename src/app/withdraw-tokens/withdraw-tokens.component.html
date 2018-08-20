@@ -18,6 +18,13 @@
       <input type="number" [(ngModel)]="numberOfTokens"  maxlength="20" size="10">
     </label>
   </div>
+
+    <div class="row">
+    <label>See all your historic withdraws <a routerLink="/all-withdraw/{{tradeableWalletAddress}}">
+      <i class="fa fa-search" aria-hidden="true"></i></a></label>
+    </div>
+
+
     <div class="row">
     <label>Transfer your ERC-20 tokens from your tradeable wallet to the selected account by clicking here <a href="javascript:void(0)" (click)="withdrawTokens()">
       <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>

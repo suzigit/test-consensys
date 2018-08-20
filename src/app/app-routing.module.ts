@@ -10,6 +10,7 @@ import {PutWalletSaleComponent} from './put-wallet-sale/put-wallet-sale.componen
 import {AllWalletsComponent} from './all-wallets/all-wallets.component';
 import {AllOwnersTwComponent} from './all-owners-tw/all-owners-tw.component';
 import {AvailableSellWalletComponent} from './available-sell-wallet/available-sell-wallet.component';
+import {AllWithdrawComponent} from './all-withdraw/all-withdraw.component';
 
 
 const routes: Routes = [
@@ -41,7 +42,11 @@ const routes: Routes = [
         path: 'all-owners/:address',
         component: AllOwnersTwComponent,
     },
-        {
+    {
+        path: 'all-withdraw/:address',
+        component: AllWithdrawComponent,
+    },
+    {
         path: '',
         component: InitialPanelComponent,
     },
