@@ -9,6 +9,8 @@ contract ContractCreator {
 	address public owner;
 	
 	address[] public contracts;
+ //   mapping (address) hashToContract;
+ 	event NewTradeableWallet(address addr);
 
 
 	modifier onlyOwner { 
@@ -29,6 +31,7 @@ contract ContractCreator {
 	function createTradeableContract() public stopInEmergency returns(address subcontractAddr) {
 		TradeableContract tc = new TradeableContract(msg.sender); 
 		contracts.push(tc);
+		NewTradeableWallet(address(tc));
 		return tc;		
 	}
 
@@ -44,11 +47,6 @@ contract ContractCreator {
 
 	function getContracts() public view returns (address[]) {
 		return contracts;
-	}
-
-	function getLastCreatedContract() public view returns (address) {
-		uint i = contracts.length-1;
-		return contracts[i];
 	}
 
 	function getOwner() public view returns (address) {

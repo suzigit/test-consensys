@@ -1,7 +1,10 @@
 var TradeableContract  = artifacts.require("./TradeableContract.sol");
 var TokenERC20_Mock = artifacts.require("./TokenERC20_Mock.sol");
 
-
+/**
+ * @dev See Readme.md to more info regarding what the tests are covering and 
+ * why those tests were chosen.
+ */
 contract('TradeableContract', function(accounts) {
 
   const initialOwner = "0x627306090abab3a6e1400e9345bc60c78a8bef57";
@@ -67,7 +70,7 @@ contract('TradeableContract', function(accounts) {
   });
 
 
-  it("should buy a sellable wallet", function () {
+  it("any user should buy a sellable wallet paying enough", function () {
     let price = 20;
     return TradeableContract.deployed()
         .then(function (tcInstance) {
@@ -84,6 +87,38 @@ contract('TradeableContract', function(accounts) {
          });
   });
 
+  it("should not buy a wallet that is not sellable", function () {
+    let price = 20;
+    return TradeableContract.deployed()
+        .then(function (tcInstance) {
+                return tcInstance.changeOwnershipWithTrade({from: bob, value:price})
+                            .then(function(r) {
+                                assert(false, 'should not performed trade!!!');
+                                return true;
+                            },
+                            function(e) {
+                                assert.match(e, /VM Exception[a-zA-Z0-9 ]+: invalid opcode/, "trade with not not available to sell wallet should have raised VM exception");
+                            });
+        })
+  });
+
+  it("should not buy a sellable wallet paying if not paying enough", function () {
+    let price = 20;
+    return TradeableContract.deployed()
+        .then(function (tcInstance) {
+            return tcInstance.setAvailableToSell(price, {from: alice})
+            .then(function() {
+                return tcInstance.changeOwnershipWithTrade({from: bob, value:price-1})
+                            .then(function(r) {
+                                assert(false, 'should not performed trade!!!');
+                                return true;
+                            },
+                            function(e) {
+                                assert.match(e, /VM Exception[a-zA-Z0-9 ]+: invalid opcode/, "trade with not enough value should have raised VM exception");
+                            });
+            });
+        })
+  });
 
 
 });

@@ -21,3 +21,22 @@ How to set it up
 ----------------
 
 
+
+
+Tests
+-----
+There are two set of tests - one to each smart contract. Note that there are no tests to mock contracts.
+
+* Tradeable Wallet tests -> the most important issues are the 3 main functinalities - withdraw, sell and buy. The tests cover:
+- owner is who is supposed to be (in order to check the initial setup)
+- only the contract owner can withdraw tokens (two tests to assure this)
+- the contract owner can put his wallet(=tradeable wallet) for sale
+- any user can buy a wallet if and only if the owner put this wallet for sale and this user provide enough money. (three tests to assure this)
+
+* Contract Creator tests -> the most important issues to test are ownership, contract creation and circuit breaker. The tests cover:
+- owner is who is supposed to be (in order to check the initial setup)
+- any user can create new Tradeable Wallets and its creation is reflected in view functions (getContractCount, getContracts) 
+- it is possible to turn circuir breaker on, avoiding the creation of new Tradeable Wallets.
+
+
+

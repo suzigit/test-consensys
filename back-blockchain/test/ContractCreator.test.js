@@ -2,6 +2,10 @@ var ContractCreator  = artifacts.require("./ContractCreator.sol");
 
 var TradeableContract  = artifacts.require("./TradeableContract.sol");
 
+/**
+ * @dev See Readme.md to more info regarding what the tests are covering and 
+ * why those tests were chosen.
+ */
 contract('ContractCreator', function(accounts) {
 
   const initialOwner = "0x627306090abab3a6e1400e9345bc60c78a8bef57";
@@ -46,7 +50,7 @@ contract('ContractCreator', function(accounts) {
         })
   });
 
-  it("should return an 3 tradeable contracts", function () {
+  it("should return the same number of tradeable contracts that counter", function () {
     return ContractCreator.deployed()
         .then(function (instance) {
             return instance.getContracts.call() 
