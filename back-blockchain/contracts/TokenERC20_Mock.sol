@@ -1,5 +1,9 @@
 pragma solidity ^0.4.18;
 
+/**
+ * @title TokenERC20_Mock
+ * @dev Mock to a ERC20 Token to be used for testing purposes.
+ */
 contract TokenERC20_Mock {
     // Public variables of the token
     string public name;
