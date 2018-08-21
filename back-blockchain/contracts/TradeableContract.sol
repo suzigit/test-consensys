@@ -81,7 +81,7 @@ contract TradeableContract {
    * @param value - value of tokens to be withdraw.
    * @return - bool from the transfer function in the ERC-20 token.
    */
- 	function withdrawTokens (address tokenAddr, uint256 value) public onlyOwner returns (bool) {
+	function withdrawTokens (address tokenAddr, uint256 value) public onlyOwner returns (bool) {
 
 		bool b = IERC20Token(tokenAddr).transfer(owner,value);
 
@@ -89,14 +89,14 @@ contract TradeableContract {
 
 		return b;
 
- 	}
+	}
 
 
    /**
-	* @dev Transfer all Ether held by the contract to the owner. 
-	* It is necessary to avoid lock funds the were send (by mistake) to the contract and were not used.
+    * @dev Transfer all Ether held by the contract to the owner. 
+    * It is necessary to avoid lock funds the were send (by mistake) to the contract and were not used.
     * It can only be called by the owner.
-	*/
+    */
 	function reclaimEther() external onlyOwner {
 		owner.transfer(address(this).balance);
 	}
@@ -104,7 +104,7 @@ contract TradeableContract {
 
    /**
 	* @dev Indicate that this contract is available to sell.
-    * It can only be called by the owner.
+	* It can only be called by the owner.
 	* It emits an event in order to allow anyone to monitor new opportunities to buy.
 	* @param priceInWei - price that the owner wants to sell this contract (in Wei) 
 	*/
@@ -124,16 +124,16 @@ contract TradeableContract {
 	*/
  	function changeOwnershipWithTrade () payable public  {
 
-		//Checks-Effects-Interactions pattern
+	    //Checks-Effects-Interactions pattern
 
         // CHECK - calculating values to transfer 
  	    require (isAvailableToSell==true);
  	    require (msg.value >= priceToSellInWei);     
 
-		//EFFECTS
+	    //EFFECTS
         address oldOwner = owner;      
         owner = msg.sender;
-    	NewOwnerEvent(oldOwner, owner); 	
+        NewOwnerEvent(oldOwner, owner); 	
 		
         isAvailableToSell = false;
         address feeAddress = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
@@ -141,9 +141,9 @@ contract TradeableContract {
         uint128 feeValueInWei = priceToSellInWei/20;
         uint128 valueToOwnerInWei = priceToSellInWei-feeValueInWei;
 
-		priceToSellInWei = 0; //Avoid reentrancy attack
+	    priceToSellInWei = 0; //Avoid reentrancy attack
 
-		//INTERACTION
+	    //INTERACTION
         feeAddress.transfer(feeValueInWei);
         oldOwner.transfer(valueToOwnerInWei);
 
