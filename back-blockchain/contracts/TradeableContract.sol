@@ -122,32 +122,32 @@ contract TradeableContract {
 	* and a fee is collected. 
 	* It emits an event with the old and new owners.
 	*/
- 	function changeOwnershipWithTrade () payable public  {
+	function changeOwnershipWithTrade () payable public  {
 
-	    //Checks-Effects-Interactions pattern
+		//Checks-Effects-Interactions pattern
 
-        // CHECK - calculating values to transfer 
- 	    require (isAvailableToSell==true);
- 	    require (msg.value >= priceToSellInWei);     
+		// CHECK - calculating values to transfer 
+		require (isAvailableToSell==true);
+		require (msg.value >= priceToSellInWei);     
 
-	    //EFFECTS
-        address oldOwner = owner;      
-        owner = msg.sender;
-        NewOwnerEvent(oldOwner, owner); 	
-		
-        isAvailableToSell = false;
-        address feeAddress = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
-        
-        uint128 feeValueInWei = priceToSellInWei/20;
-        uint128 valueToOwnerInWei = priceToSellInWei-feeValueInWei;
+		//EFFECTS
+		address oldOwner = owner;      
+		owner = msg.sender;
+		NewOwnerEvent(oldOwner, owner); 	
 
-	    priceToSellInWei = 0; //Avoid reentrancy attack
+		isAvailableToSell = false;
+		address feeAddress = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
 
-	    //INTERACTION
-        feeAddress.transfer(feeValueInWei);
-        oldOwner.transfer(valueToOwnerInWei);
+		uint128 feeValueInWei = priceToSellInWei/20;
+		uint128 valueToOwnerInWei = priceToSellInWei-feeValueInWei;
 
- 	}
+		priceToSellInWei = 0; //Avoid reentrancy attack
+
+		//INTERACTION
+		feeAddress.transfer(feeValueInWei);
+		oldOwner.transfer(valueToOwnerInWei);
+
+	}
 
 } 
 
