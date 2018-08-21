@@ -9,12 +9,9 @@ declare let window: any;
 const Web3 = require('web3');
 var Accounts = require('web3-eth-accounts');
 
-
 import * as contractCreatortMetadata from './../../../../back-blockchain//build/contracts/ContractCreator.json';
 import * as tradeableContractMetadata from './../../../../back-blockchain//build/contracts/TradeableContract.json';
-
-const TruffleContract = require('truffle-contract');
-
+import * as constants from './../constants.json';
 
 
 @Injectable()
@@ -54,7 +51,10 @@ export class BlockchainService {
         console.log("vai instanciar contract creator");
 
         this.contractCreator = new Contract();
-        this.contractCreator.address =  '0x2c2b9c9a4a25e24b174f26114e8926a9f2128fe4';
+        this.contractCreator.address =  (<any>constants).ContractCreatorAddr;
+
+        console.log(this.contractCreator.address);
+
         this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;
         this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
         console.log(this.contractCreator.instance);    
@@ -64,6 +64,7 @@ export class BlockchainService {
     async getAccounts() {
         return await this.web3.eth.getAccounts();
     }
+
 
     createTradeableWallet(fSucess: any, fError: any) {
             
@@ -75,20 +76,24 @@ export class BlockchainService {
 
             //TODO: questao de concorrencia do Last Created - fazer map com hash da transacao -> contrato 
             self.contractCreator.instance.methods.createTradeableContract().send({from: selectedAccount})
-            .then( receipt => 
+            .once('receipt', function(receipt){ 
+                console.log("receipt");
+                console.log(receipt); 
+                console.log(receipt.events[0]);                                
+                console.log(receipt.events[0].address); 
+                fSucess(receipt.events[0].address);
+             })
+            .on('error', function(error){ 
+                fError(error);
+             })
+            .catch (error => 
             {
-                console.log("criou wallet");
-                console.log(receipt);
+                fError(error);
+            });
 
-                self.contractCreator.instance.methods.getLastCreatedContract().call()
-                .then(result => fSucess(result))
-                .catch (error => fError(error));
-                                
-            })
-            .catch (error => console.warn(error));
-
-        });
+        }); //close getAccounts
     }
+
 
 
    withdrawTokens(tradeableContractAddr: string, tokenAddr: string, valueToWithdraw: number, fSucess: any, fError: any) {

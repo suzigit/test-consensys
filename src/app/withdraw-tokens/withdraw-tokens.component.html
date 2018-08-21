@@ -19,7 +19,7 @@
     </label>
   </div>
 
-    <div class="row">
+    <div class="row" *ngIf="tradeableWalletAddress">
     <label>See all your historic withdraws <a routerLink="/all-withdraw/{{tradeableWalletAddress}}">
       <i class="fa fa-search" aria-hidden="true"></i></a></label>
     </div>
