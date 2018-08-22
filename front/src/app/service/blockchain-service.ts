@@ -1,6 +1,6 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 
-import {Contract} from './contract';
+import {Contract} from './Contract';
 
 declare let require: any;
 
@@ -9,8 +9,8 @@ declare let window: any;
 const Web3 = require('web3');
 var Accounts = require('web3-eth-accounts');
 
-import * as contractCreatortMetadata from './../../../../back-blockchain//build/contracts/ContractCreator.json';
-import * as tradeableContractMetadata from './../../../../back-blockchain//build/contracts/TradeableContract.json';
+import * as contractCreatortMetadata from './../../../../back-blockchain/build/contracts/ContractCreator.json';
+import * as tradeableContractMetadata from './../../../../back-blockchain/build/contracts/TradeableContract.json';
 import * as constants from './../constants.json';
 
 
