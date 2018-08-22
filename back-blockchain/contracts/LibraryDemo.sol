@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.23;
 
 import "./SafeMath.sol";
 
@@ -10,7 +10,7 @@ contract LibraryDemo {
 
 	mapping (uint => uint) booksToPrices;
 
-	function LibraryDemo() public {
+	constructor() public {
 
 	}
 

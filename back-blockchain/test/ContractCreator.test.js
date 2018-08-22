@@ -70,7 +70,7 @@ contract('ContractCreator', function(accounts) {
                     return true;
                 },
                 function(e) {
-                    assert.match(e, /VM Exception[a-zA-Z0-9 ]+: invalid opcode/, "create contract with circuit breaker should have raised VM exception");
+                    assert.match(e, /VM Exception/, "create contract with circuit breaker should have raised VM exception");
                 })
             }) 
         })

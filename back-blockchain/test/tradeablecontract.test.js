@@ -48,7 +48,7 @@ contract('TradeableContract', function(accounts) {
                                 return true;
                             },
                             function(e) {
-                                assert.match(e, /VM Exception[a-zA-Z0-9 ]+: invalid opcode/, "withdraw (1) not using owner should have raised VM exception");
+                                assert.match(e, /VM Exception/, "withdraw not using owner should have raised VM exception");
                             });
                     })             
         })
@@ -97,7 +97,7 @@ contract('TradeableContract', function(accounts) {
                                 return true;
                             },
                             function(e) {
-                                assert.match(e, /VM Exception[a-zA-Z0-9 ]+: invalid opcode/, "trade with not not available to sell wallet should have raised VM exception");
+                                assert.match(e, /VM Exception/, "trade with not not available to sell wallet should have raised VM exception");
                             });
         })
   });
@@ -114,7 +114,7 @@ contract('TradeableContract', function(accounts) {
                                 return true;
                             },
                             function(e) {
-                                assert.match(e, /VM Exception[a-zA-Z0-9 ]+: invalid opcode/, "trade with not enough value should have raised VM exception");
+                                assert.match(e, /VM Exception/, "trade with not enough value should have raised VM exception");
                             });
             });
         })

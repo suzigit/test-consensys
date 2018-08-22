@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.23;
 
 import "./TradeableContract.sol";
 
@@ -29,25 +29,25 @@ contract ContractCreator {
    * @dev Create a new contract. 
    * The owner is going to be msg.sender.   
    */
-	function ContractCreator () public {
+	constructor () public {
 		owner = msg.sender;
 	}
 
   /**
    * @dev create a new Tradeable Contract, stores its reference and emit an event with the same info 
-   * @return - the address of the create contract.
+   * @return the address of the create contract.
    */
 	function createTradeableContract() public stopInEmergency returns(address subcontractAddr) {
 		TradeableContract tc = new TradeableContract(msg.sender); 
 		contracts.push(tc);
-		NewTradeableWallet(address(tc));
+		emit NewTradeableWallet(address(tc));
 		return tc;		
 	}
 
   /**
    * @dev Useful to enable a pause in the creation of new Tradeable Contracts. 
    * It can only be called by the owner.
-   * @param b - if true, it is not possible to create new Tradeable Contracts.
+   * @param b If true, it is not possible to create new Tradeable Contracts.
    */
 	function setCircuitBreaker (bool b) public onlyOwner {
 		stopped = b;

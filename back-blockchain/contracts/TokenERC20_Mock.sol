@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.23;
 
 /**
  * @title TokenERC20_Mock
@@ -25,7 +25,7 @@ contract TokenERC20_Mock {
      *
      * Initializes contract with initial supply tokens to the creator of the contract
      */
-    function TokenERC20_Mock (
+    constructor (
         uint256 initialSupply,
         string tokenName,
         string tokenSymbol
@@ -52,7 +52,7 @@ contract TokenERC20_Mock {
         balanceOf[_from] -= _value;
         // Add the same to the recipient
         balanceOf[_to] += _value;
-        Transfer(_from, _to, _value);
+        emit Transfer(_from, _to, _value);
         // Asserts are used to use static analysis to find bugs in your code. They should never fail
         assert(balanceOf[_from] + balanceOf[_to] == previousBalances);
     }
@@ -64,7 +64,7 @@ contract TokenERC20_Mock {
 
         balanceOf[msg.sender] -= tokens;
         balanceOf[to] += tokens;
-        Transfer(msg.sender, to, tokens);
+        emit Transfer(msg.sender, to, tokens);
         return true;
     }
 

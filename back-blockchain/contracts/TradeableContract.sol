@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.23;
 
 import "./IERC20Token.sol";
 
@@ -32,12 +32,12 @@ contract TradeableContract {
 
   /**
    * @dev Create a new contract. 
-   * @param ownerAddr - is going to be the owner of this contract. 
+   * @param ownerAddr is going to be the owner of this contract. 
    * It emits an event with the new onwer. Since there is no old owner, it is represented by 0x0.  
    */
-	function TradeableContract (address ownerAddr) public {
+	constructor (address ownerAddr) public {
 		owner = ownerAddr;
-		NewOwnerEvent(0x0,owner);
+		emit NewOwnerEvent(0x0,owner);
 	}
 
 
@@ -46,7 +46,7 @@ contract TradeableContract {
    * It can only be called by the owner.   
    */
 	function kill() public onlyOwner {
-		KillEvent();	
+		emit KillEvent();	
 		selfdestruct(owner);
 	}
 
@@ -61,7 +61,7 @@ contract TradeableContract {
   /**
    * @dev Return the price for sell this contract, in Wei. 
    * If the current owner does not put it for sale, the returned value is going to be -1.
-   * @return -  price in Wei or -1.
+   * @return price in Wei or -1.
    */
 	function getPriceToSellInWei() public view returns (int256) {		
 		if (isAvailableToSell) {
@@ -78,14 +78,14 @@ contract TradeableContract {
    * It can only be called by the owner.
    * 
    * @param tokenAddr - IERC20 address of tokens to be transfered.
-   * @param value - value of tokens to be withdraw.
-   * @return - bool from the transfer function in the ERC-20 token.
+   * @param value Value of tokens to be withdraw.
+   * @return bool from the transfer function in the ERC-20 token.
    */
 	function withdrawTokens (address tokenAddr, uint256 value) public onlyOwner returns (bool) {
 
 		bool b = IERC20Token(tokenAddr).transfer(owner,value);
 
-		WithdrawTokensEvent(tokenAddr, owner, value, b);
+		emit WithdrawTokensEvent(tokenAddr, owner, value, b);
 
 		return b;
 
@@ -106,12 +106,12 @@ contract TradeableContract {
 	* @dev Indicate that this contract is available to sell.
 	* It can only be called by the owner.
 	* It emits an event in order to allow anyone to monitor new opportunities to buy.
-	* @param priceInWei - price that the owner wants to sell this contract (in Wei) 
+	* @param priceInWei Price that the owner wants to sell this contract (in Wei) 
 	*/
  	function setAvailableToSell (uint128 priceInWei) public onlyOwner {
 		isAvailableToSell = true;
 		priceToSellInWei = priceInWei;
-		AvaliableToSellEvent(owner, address(this));
+		emit AvaliableToSellEvent(owner, address(this));
 	}
 
    /**
@@ -133,9 +133,12 @@ contract TradeableContract {
 		//EFFECTS
 		address oldOwner = owner;      
 		owner = msg.sender;
-		NewOwnerEvent(oldOwner, owner); 	
+		emit NewOwnerEvent(oldOwner, owner); 	
 
 		isAvailableToSell = false;
+
+		//The option was to transfer to a constant address
+		//If this option was receive this address, someone atack by indicating other address 
 		address feeAddress = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
 
 		uint128 feeValueInWei = priceToSellInWei/20;
