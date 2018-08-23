@@ -106,7 +106,7 @@ export class BlockchainService {
             
             console.log("vai chamar withdraw");
 
-            tradeableContract.instance.methods.withdrawTokens(tokenAddr, valueToWithdraw).send ({ from:selectedAccount })
+            tradeableContract.instance.methods.makeUntrustedWithdrawalOfTokens(tokenAddr, valueToWithdraw).send ({ from:selectedAccount })
             .then (result => fSucess(result))
             .catch (error => fError(error));
         });     
@@ -177,7 +177,7 @@ export class BlockchainService {
             console.log(priceInWei);
 
             //PAYABLE FUNCTION
-            tradeableContract.instance.methods.changeOwnershipWithTrade().send ({ from:selectedAccount, value:priceInWei })
+            tradeableContract.instance.methods.untrustedChangeOwnershipWithTrade().send ({ from:selectedAccount, value:priceInWei })
             .then (result => 
             {
                 fSucess(result);

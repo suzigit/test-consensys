@@ -74,6 +74,11 @@ contract TradeableContract {
   /**
    * @dev Transfer tokens to the owner of its contract. 
    * It is necessary to call the transfer function of the original ERC20 contract code.
+   *
+   * This function is marked as untrusted since this smart contract cannot trust the original code of the ERC-20 token.
+   * It executes the external call as the last step in order to avoid attacks.
+   * It is important to note that who is going to invoke this function can see the tokenAddr before. 
+   *
    * It emits an event representing the withdraw. 
    * It can only be called by the owner.
    * 
@@ -81,10 +86,10 @@ contract TradeableContract {
    * @param value Value of tokens to be withdraw.
    * @return bool from the transfer function in the ERC-20 token.
    */
-	function withdrawTokens (address tokenAddr, uint256 value) public onlyOwner returns (bool) {
+	function makeUntrustedWithdrawalOfTokens (address tokenAddr, uint256 value) public onlyOwner returns (bool) {
 
 		bool b = IERC20Token(tokenAddr).transfer(owner,value);
-
+		
 		emit WithdrawTokensEvent(tokenAddr, owner, value, b);
 
 		return b;
@@ -117,12 +122,18 @@ contract TradeableContract {
    /**
 	* @dev Change the ownership of this contract. It happens when someone buys an available to sell contract.
 	* This functions is payable - It should receive necessary money to cover the contract price.
+	*
+    * This function is marked as untrusted since this smart contract cannot trust the oldOwner code during the transfer.
+    * It executes the external calls as the last steps in order to avoid attacks.
+	* FeeAddress is a well-know and safe address, so it must happen before the transfer to the oldOwner.
+    * It is important to note that who is going to invoke this function can see the oldOwner code before. 
+	*
 	* This function follows the pattern Checks-Effects-Interactions in order to avoid reentrancy attacks. 
 	* In this function, the ownership is changed, the old owner receives what price in Wei he asked for 
 	* and a fee is collected. 
 	* It emits an event with the old and new owners.
 	*/
-	function changeOwnershipWithTrade () payable public  {
+	function untrustedChangeOwnershipWithTrade () payable public  {
 
 		//Checks-Effects-Interactions pattern
 
@@ -141,6 +152,8 @@ contract TradeableContract {
 		//If this option was receive this address, someone atack by indicating other address 
 		address feeAddress = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
 
+		// All integer division rounds down to the nearest integer. 
+		// Then, the charged fee when someone buy a contract is, AT MOST, 5%.
 		uint128 feeValueInWei = priceToSellInWei/20;
 		uint128 valueToOwnerInWei = priceToSellInWei-feeValueInWei;
 

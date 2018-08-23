@@ -26,7 +26,7 @@ contract('TradeableContract', function(accounts) {
     return TradeableContract.deployed()
         .then(function (tcInstance) {
             return TokenERC20_Mock.deployed().then(function(tokenInstance) {
-                    return tcInstance.withdrawTokens(tokenInstance.address, 0, {from: initialOwner});
+                    return tcInstance.makeUntrustedWithdrawalOfTokens(tokenInstance.address, 0, {from: initialOwner});
             })             
         })
         .then(function (result) {
@@ -42,7 +42,7 @@ contract('TradeableContract', function(accounts) {
     return TradeableContract.deployed()
         .then(function (tcInstance) {
             return TokenERC20_Mock.deployed().then(function(tokenInstance) {
-                    return tcInstance.withdrawTokens(tokenInstance.address, 0, {from: alice})
+                    return tcInstance.makeUntrustedWithdrawalOfTokens(tokenInstance.address, 0, {from: alice})
                             .then(function(r) {
                                 assert(false, 'should not performed withdraw!!!');
                                 return true;
@@ -76,7 +76,7 @@ contract('TradeableContract', function(accounts) {
         .then(function (tcInstance) {
             return tcInstance.setAvailableToSell(price, {from: initialOwner})
             .then(function() {
-                return tcInstance.changeOwnershipWithTrade({from: alice, value:price})
+                return tcInstance.untrustedChangeOwnershipWithTrade({from: alice, value:price})
                     .then(function() {
                         return tcInstance.getOwner.call();
                     });
@@ -91,7 +91,7 @@ contract('TradeableContract', function(accounts) {
     let price = 20;
     return TradeableContract.deployed()
         .then(function (tcInstance) {
-                return tcInstance.changeOwnershipWithTrade({from: bob, value:price})
+                return tcInstance.untrustedChangeOwnershipWithTrade({from: bob, value:price})
                             .then(function(r) {
                                 assert(false, 'should not performed trade!!!');
                                 return true;
@@ -108,7 +108,7 @@ contract('TradeableContract', function(accounts) {
         .then(function (tcInstance) {
             return tcInstance.setAvailableToSell(price, {from: alice})
             .then(function() {
-                return tcInstance.changeOwnershipWithTrade({from: bob, value:price-1})
+                return tcInstance.untrustedChangeOwnershipWithTrade({from: bob, value:price-1})
                             .then(function(r) {
                                 assert(false, 'should not performed trade!!!');
                                 return true;

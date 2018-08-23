@@ -1,6 +1,5 @@
-const HDWalletProvider = require("truffle-hdwallet-provider");
-
-require('dotenv').config()  // Store environment-specific variable from '.env' to process.env
+//const HDWalletProvider = require("truffle-hdwallet-provider");
+//require('dotenv').config()  // Store environment-specific variable from '.env' to process.env
 
 
 
@@ -29,14 +28,13 @@ module.exports = {
         network_id: "*" // Match any network id
       },
       rinkeby: {
-        provider: () => new HDWalletProvider(process.env.MNENOMIC, "https://rinkeby.infura.io/v3/" + process.env.INFURA_API_KEY),
-/*        host: "127.0.0.1", // Connect to geth on the specified
+//        provider: () => new HDWalletProvider(process.env.MNENOMIC, "https://rinkeby.infura.io/v3/" + process.env.INFURA_API_KEY),
+        host: "127.0.0.1", // Connect to geth on the specified
         port: 8545,
         from: "0xbdb94645417aaffede5ee56f4d8f1d8449af0a5d", // default address to use for any transaction Truffle makes during migrations
-*/        network_id: 4,
-        gasPrice: 21,
-        gas: 3000000
-        //gas: 4612388  // Gas limit used for deploys
+        network_id: 4,
+        gasPrice: 200,
+        gas: 4612388  // Gas limit used for deploys
       }
     }
   
