@@ -39,7 +39,7 @@ How to set it up
 
 This is the official repository: https://github.com/suzigit/tradeable-wallet.git 
 
-There are two folders at the first level of the source code: front (Angular 4) and back-blockchain.
+There are two folders at the first level of the source code: front (Angular 4 + web3 1.0) and back-blockchain.
 
 If you want to set it up locally, you must first set your environment. If you still do not have, install truffle, ganache and metamask.
 
@@ -60,13 +60,15 @@ Unit tests
 
 There are two set of tests - one to each smart contract. Note that there are no tests to contracts developed with mocking purposes.
 
-* Tradeable Wallet tests -> the most important issues are the 3 main functinalities - withdraw, sell and buy. The tests cover:
+**Tradeable Wallet tests** 
+The most important issues are the 3 main functinalities - withdraw, sell and buy. The tests cover:
 - owner is who is supposed to be (in order to check the initial setup)
 - only the contract owner can withdraw tokens (two tests to assure this)
 - the contract owner can put his wallet(=tradeable wallet) for sale
 - any user can buy a wallet if and only if the owner put this wallet for sale and this user provide enough money. (three tests to assure this)
 
-* Contract Creator tests -> the most important issues to test are ownership, contract creation and circuit breaker. The tests cover:
+**Contract Creator tests**
+The most important issues to test are ownership, contract creation and circuit breaker. The tests cover:
 - owner is who is supposed to be (in order to check the initial setup)
 - any user can create new Tradeable Wallets and its creation is reflected in view functions (getContractCount, getContracts) 
 - it is possible to turn circuir breaker on, avoiding the creation of new Tradeable Wallets.
@@ -78,8 +80,14 @@ Integration with existing services - future plans
 
 This project can be expanded in the future to integrate with existing services on Ethereum. For example:
 
-a) ENS (Ethereum Name Service) - It could be included an option during the Wallet creation to create a Tradeable Wallet (=Smart Contract) with support to Namehashs. It should be an option (and not the unique option) since this kind of contract would have more functions and is going to consume more gas to create and do other functionalities.
+a) **ENS (Ethereum Name Service)**- It could be included an option during the Wallet creation to create a Tradeable Wallet (=Smart Contract) with support to Namehashs. It should be an option (and not the unique option) since this kind of contract would have more functions and is going to consume more gas to create and do other functionalities.
 
-b) IPFS - It could be included the possibility of annex an evidence that the Tradeable Wallet address is really going to be the place where the user is going to receive the ERC-20 tokens, in the future. The user can use the app to upload a doc to IPFS and the hash could be stored at her/his Tradeable Wallet.
+b) **IPFS** - It could be included the possibility of annex an evidence that the Tradeable Wallet address is really going to be the place where the user is going to receive the ERC-20 tokens, in the future. The user can use the app to upload a doc to IPFS and the hash could be stored at her/his Tradeable Wallet.
 
-c) Oracle - It could be interesting to have an oracle service of personal reputation, a kind of social score. This will only address the issue that the wallet owner could try to change actual arrangements in order to receive the future tokens in other address. For example, the user can create a Tradeable Wallet, include it on SAFT (a kind of ICO contract) and, after selling the Wallet, try to change the used address making an agreement with the ICO development team. We also have other ideas that is going to mitigate this risk.
+c) **Oracle** - It could be interesting to have an oracle service of personal reputation, a kind of social score. This will only address the issue that the wallet owner could try to change actual arrangements in order to receive the future tokens in other address. For example, the user can create a Tradeable Wallet, include it on SAFT (a kind of ICO contract) and, after selling the Wallet, try to change the used address making an agreement with the ICO development team. We also have other ideas that is going to mitigate this risk.
+
+
+
+Web3 1.0
+---------
+The front-end is using Web3.0 1.0! Exciting projects use new stech! :wink:
