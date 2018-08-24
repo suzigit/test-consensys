@@ -9,9 +9,9 @@ declare let window: any;
 const Web3 = require('web3');
 var Accounts = require('web3-eth-accounts');
 
-import * as contractCreatortMetadata from './../../../../back-blockchain/build/contracts/ContractCreator.json';
-import * as tradeableContractMetadata from './../../../../back-blockchain/build/contracts/TradeableContract.json';
-import * as constants from './../constants.json';
+import * as constants from './../../../constants.json';
+import * as contractCreatortMetadata from  './../../../ContractCreator.json';
+import * as tradeableContractMetadata from './../../../TradeableContract.json';
 
 
 @Injectable()

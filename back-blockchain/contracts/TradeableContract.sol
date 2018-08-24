@@ -165,5 +165,12 @@ contract TradeableContract {
 
 	}
 
+   /**
+	* @dev Since this contract represents a wallet it is worth to enable the possibility to receive ether.
+	*/
+	function() payable public { 
+
+	}
+
 } 
 
