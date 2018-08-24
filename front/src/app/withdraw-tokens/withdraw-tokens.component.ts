@@ -39,25 +39,45 @@ export class WithdrawTokensComponent implements OnInit {
 
       }
 
-
     ngOnInit() {
     }
 
     withdrawTokens(){
 
         let self = this;
+        self.error = undefined;
+        self.newWithdrawHash = undefined;
 
-        this.blockchainService.withdrawTokens(self.tradeableWalletAddress, self.tokensAddress, self.numberOfTokens,
-        function(result) {
-              console.log("withdraw sucess!");
-              console.log(result);
-              self.newWithdrawHash = result;
-              self.error = undefined;
-        }, function(e) {
-            console.log("withdraw  error: " + e);
-            self.error = e;
-            self.newWithdrawHash = undefined;
-        });
+        if (self.tradeableWalletAddress && self.tokensAddress && self.numberOfTokens) {
+
+            if (this.blockchainService.isAddress(self.tradeableWalletAddress)) {            
+
+              if (this.blockchainService.isAddress(self.tokensAddress)) { 
+
+                  this.blockchainService.withdrawTokens(self.tradeableWalletAddress, self.tokensAddress, self.numberOfTokens,
+                  function(result) {
+                        console.log("withdraw sucess!");
+                        console.log(result);
+                        self.newWithdrawHash = result;
+                  }, function(e) {
+                      console.log("withdraw  error: " + e);
+                      self.error = e;
+                  });
+              
+              }
+              else {
+                  self.error = "It is not a valid address - Token Address"
+              }
+
+            }
+            else {
+                self.error = "It is not a valid address - Tradeable Wallet"
+            }
+        }
+        else {
+          self.error = "All fields are required"
+        }
+
 
     }
 

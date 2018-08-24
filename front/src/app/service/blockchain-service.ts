@@ -31,13 +31,16 @@ export class BlockchainService {
 
     }
 
-    createWeb3() {
-        console.log("vai criar web3");
-            if (typeof window.web3 !== 'undefined') {
+    isAddress(text) {
+        return this.web3.utils.isAddress(text);
+    }
 
-            // Use Mist/MetaMask's provider
+    createWeb3() {
+
+        if (typeof window.web3 !== 'undefined') {
+
+             // Use Mist/MetaMask's provider
             this.web3 = new Web3(window.web3.currentProvider);
-           console.log(this.web3);
 
         } else {
             console.warn(
@@ -48,17 +51,11 @@ export class BlockchainService {
 
     createInitialObjects() {
 
-        console.log("vai instanciar contract creator");
-
         this.contractCreator = new Contract();
         this.contractCreator.address =  (<any>constants).ContractCreatorAddr;
 
-        console.log(this.contractCreator.address);
-
         this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;
         this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
-        console.log(this.contractCreator.instance);    
-
     }
    
     async getAccounts() {
@@ -104,9 +101,7 @@ export class BlockchainService {
             let selectedAccount = accounts[0];
             let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
             
-            console.log("vai chamar withdraw");
-
-            tradeableContract.instance.methods.makeUntrustedWithdrawalOfTokens(tokenAddr, valueToWithdraw).send ({ from:selectedAccount })
+            tradeableContract.instance.methods.makeUntrustedWithdrawalOfTokens(tokenAddr, valueToWithdraw).send ({ from:selectedAccount, gas:300000 })
             .then (result => fSucess(result))
             .catch (error => fError(error));
         });     
@@ -121,8 +116,6 @@ export class BlockchainService {
             let selectedAccount = accounts[0];
             let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
-            console.log("vai chamar set available to sell");
-
             let sPriceInGWei = String(priceInGWei);
 
             let priceInWei = this.web3.utils.toWei(sPriceInGWei, 'GWei');
@@ -132,7 +125,6 @@ export class BlockchainService {
             .then (result => 
             {
                 fSucess(result);
-                console.log("result");
                 console.log(result);
 
             })
@@ -147,13 +139,16 @@ export class BlockchainService {
             let selectedAccount = accounts[0]; 
             let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
-            console.log("vai chamar get");
-
             tradeableContract.instance.methods.getPriceToSellInWei().call({ from:selectedAccount })
             .then(result => 
                 {
-                    let priceInGwei = this.web3.utils.fromWei(result, "GWei");
-                    fSucess(priceInGwei);
+                    if (!isNaN(result)) {
+                        let priceInGwei = this.web3.utils.fromWei(result, "GWei");
+                        fSucess(priceInGwei);
+                    }
+                    else {
+                        fError("NAN")
+                    }
                 })
             .catch (error => fError(error));
         }); 
@@ -177,7 +172,7 @@ export class BlockchainService {
             console.log(priceInWei);
 
             //PAYABLE FUNCTION
-            tradeableContract.instance.methods.untrustedChangeOwnershipWithTrade().send ({ from:selectedAccount, value:priceInWei })
+            tradeableContract.instance.methods.untrustedChangeOwnershipWithTrade().send ({ from:selectedAccount, value:priceInWei, gas:300000 })
             .then (result => 
             {
                 fSucess(result);

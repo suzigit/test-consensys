@@ -20,7 +20,7 @@
   </div>
 
     <div class="row" *ngIf="tradeableWalletAddress">
-    <label>See all your historic withdraws <a routerLink="/all-withdraw/{{tradeableWalletAddress}}">
+    <label>See all historic withdraws of this wallet <a routerLink="/all-withdraw/{{tradeableWalletAddress}}">
       <i class="fa fa-search" aria-hidden="true"></i></a></label>
     </div>
 
@@ -41,8 +41,8 @@
       <div class="card text-white bg-danger">
         <div class="card-body">
             <h5 class="card-title">Ops... Error</h5>
-            <p class="card-text">Be sure that you provide a correct address of a Tradeable-Wallet and your are the owner of it.</p>
-            <p class="card-text">Also, be sure that you you provide the correct address of the ERC-20 tokens and you have enough tokens there.</p> 
+            <p class="card-text">If you approved the transaction on Metamask, be sure that you provided a correct address of a Tradeable-Wallet and your are the owner of it.</p>
+            <p class="card-text">Also, be sure that you provided the correct address of the ERC-20 tokens and you have enough tokens there.</p> 
             <p class="card-text">Finally, be sure your account has enough Ether to pay the gas cost.</p>
             <p class="card-text">Details: {{error}}</p>
           </div>

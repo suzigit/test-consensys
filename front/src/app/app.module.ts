@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { NewWalletComponent } from './new-wallet/new-wallet.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BlockchainService } from './service/blockchain-service';
+
 import { InitialPanelComponent } from './initial-panel/initial-panel.component';
 import { BuyWalletComponent } from './buy-wallet/buy-wallet.component';
 import { WithdrawTokensComponent } from './withdraw-tokens/withdraw-tokens.component';
@@ -31,7 +32,7 @@ import { AllWithdrawComponent } from './all-withdraw/all-withdraw.component';
     PutWalletSaleComponent,
     AllOwnersTwComponent,
     AvailableSellWalletComponent,
-    AllWithdrawComponent
+    AllWithdrawComponent,
   ],
   imports: [
     BrowserModule,

@@ -42,18 +42,32 @@ export class PutWalletSaleComponent implements OnInit {
   sale() {
 
         let self = this;
+        self.error = undefined;
+        self.newSellHash = undefined;
 
-        this.blockchainService.setAvailableToSell(self.tradeableWalletAddress, self.priceInGWei,
-        function(result) {
-              console.log("sell sucess: " + result);
-              self.newSellHash = result;
-              self.error = undefined;
-        }, function(e) {
-            console.log("sell  error: " + e);
-            self.error = e;           
-            self.newSellHash = undefined;
-        });
+        if (self.tradeableWalletAddress && self.priceInGWei) {
 
+            if (this.blockchainService.isAddress(self.tradeableWalletAddress)) {
+
+                this.blockchainService.setAvailableToSell(self.tradeableWalletAddress, self.priceInGWei,
+                function(result) {
+                    console.log("sell sucess: " + result);
+                    self.newSellHash = result;
+                }, function(e) {
+                    console.log("sell  error: " + e);
+                    self.error = e;           
+                });
+
+            }
+        
+            else {
+                self.error = "It is not a valid address - Tradeable Wallet"
+            }
+
+        }
+        else {
+          self.error = "All fields are required"
+        }
 
   }
 

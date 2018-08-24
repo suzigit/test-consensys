@@ -12,7 +12,8 @@
 
   <div class="row" *ngIf="newTradeableWalletAddress">
   <div class="card bg-light">
-    <label>Congratulations! You now have a new Tradeable-Wallet. Take note of this address: {{newTradeableWalletAddress}}</label>
+    <label>Congratulations! You now have a new Tradeable-Wallet.</label>
+    <label>Take note of your wallet address: {{newTradeableWalletAddress}}</label>
   </div>
 </div>
 
@@ -20,7 +21,7 @@
       <div class="card text-white bg-danger">
         <div class="card-body">
             <h5 class="card-title">Ops... Error</h5>
-            <p class="card-text">Be sure that your account has enough Ether to pay the gas cost.</p>
+            <p class="card-text">If you approved the transaction on Metamask, be sure that your account has enough Ether to pay the gas cost.</p>
             <p class="card-text">Details: {{error}}</p>
           </div>
       </div>

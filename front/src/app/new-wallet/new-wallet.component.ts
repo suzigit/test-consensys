@@ -42,16 +42,16 @@ export class NewWalletComponent implements OnInit {
 
   createWallet() {
     let self = this;
+    self.error = undefined;
+    self.newTradeableWalletAddress= undefined;
 
     this.blockchainService.createTradeableWallet(
     function(result) {
           self.newTradeableWalletAddress = result;
-          self.error = undefined;
           console.log("sucess: " + result);
     }, function(error) {
         console.warn("error during contract retrieval nw: " + error);
         self.error = error;
-        self.newTradeableWalletAddress= undefined;
     });
 
   }

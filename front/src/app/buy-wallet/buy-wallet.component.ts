@@ -48,22 +48,24 @@ export class BuyWalletComponent implements OnInit {
             this.lastTradeableWalletAddress = this.tradeableWalletAddress;
 
             let self = this;
+            if (this.blockchainService.isAddress(self.tradeableWalletAddress)) {            
 
-            this.blockchainService.getPriceToBuyInGWei(self.tradeableWalletAddress,
-            function(result) {
-                  console.log("Buy sucess: " + result);
-                  if (result>=0) {
-                      self.priceInGWei = result;
-                  }
-                  else {
-                      self.priceInGWei = "N/A";
-                      console.log("Wallet is not available to sell");                        
-                  }
+                this.blockchainService.getPriceToBuyInGWei(self.tradeableWalletAddress,
+                function(result) {
+                    console.log("Buy sucess: " + result);
+                    if (result>=0) {
+                        self.priceInGWei = result;
+                    }
+                    else {
+                        self.priceInGWei = "N/A";
+                        console.log("Wallet is not available to sell");                        
+                    }
 
-            }, function(e) {
-                  console.log("Buy error: " + e);
-                  self.priceInGWei = "N/A";
-            });
+                }, function(e) {
+                    console.log("Buy error: " + e);
+                    self.priceInGWei = "N/A";
+                });
+            }
       }
   }
 
@@ -86,17 +88,31 @@ export class BuyWalletComponent implements OnInit {
   buy() {
 
         let self = this;
+        self.error = undefined;
+        self.newBuyHash = undefined;
 
-        this.blockchainService.buyWallet(self.tradeableWalletAddress, Number(self.priceInGWei),
-        function(result) {
-              console.log("Buy sucess: " + result);
-              self.newBuyHash = result;
-              self.error = undefined;
-        }, function(e) {
-            console.log("Buy  error: " + e);
-            self.error = e;
-            self.newBuyHash = undefined;
-        });
+        if (self.tradeableWalletAddress) {
+
+            if (this.blockchainService.isAddress(self.tradeableWalletAddress)) {            
+            
+                this.blockchainService.buyWallet(self.tradeableWalletAddress, Number(self.priceInGWei),
+                function(result) {
+                    console.log("Buy sucess: " + result);
+                    self.newBuyHash = result;
+                }, function(e) {
+                    console.log("Buy  error: " + e);
+                    self.error = e;
+                });
+
+            }
+            else {
+                self.error = "It is not a valid address - Tradeable Wallet"
+            }                
+        }
+        else {
+          self.error = "All fields are required"
+        }
+        
   }
   
 
