@@ -150,7 +150,7 @@ contract TradeableContract {
 
 		//The option was to transfer to a constant address
 		//If this option was receive this address, someone atack by indicating other address 
-		address feeAddress = 0x627306090abaB3A6e1400e9345bC60c78a8BEf57;
+		address feeAddress = 0x91EB39f118dFf9AbE056FF58744AC67F238B3113;
 
 		// All integer division rounds down to the nearest integer. 
 		// Then, the charged fee when someone buy a contract is, AT MOST, 5%.

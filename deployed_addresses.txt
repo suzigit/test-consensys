@@ -1,19 +1,23 @@
 This doc describes where the Tradeable Wallet contracts live on the test net:
 
-* Contract Creator: 0x5b357b21631aa56d9328ef64d507f831faf1e18d
-It was created in this transaction: https://rinkeby.etherscan.io/tx/0xea3fb58fca4851b50d04575d5f64846e6eda7f15065dcdd4bd13d8cb829b223d
-Owner: 0x8816e671607f19eee6a400f07fcb562ee5150b46
+* Contract Creator: 0xe220145aeb36683b71280dc3e26cf4d61d8ff6b1
+It was created in this transaction: https://rinkeby.etherscan.io/tx/0x1ac1b7ca9606ab69cfd507ccde690a0ba0aab06e91e541994973502f3f989fe7
+Owner: 0x3190aeb50f4a42d62526b144708ad4919829d236
 
 
-* TokenERC20_Mock:0xc3994c5cbddf7ce38b8a2ec2830335fa8f3eea6a
-It was created in this transaction: https://rinkeby.etherscan.io/tx/0x4b889d97e317a7de7bf30a08e5e61717877d034e75b751c07e3c4d0c0d990e08
-It was tracked by EtherScan as a valid token: https://rinkeby.etherscan.io/token/0xc3994c5cbddf7ce38b8a2ec2830335fa8f3eea6a
-This symbol is TTW (Token for Tradeable Wallet)
-I also veriied its source code, so you can read/write using EtherScan by using Read Contract/Write Contract functionalities.
-Owner: 0x8816e671607f19eee6a400f07fcb562ee5150b46
+* TokenERC20_Mock: 0xf0df2a9712305a5e53244eba2a785e12f1cef8b3
+It was created in this transaction: https://rinkeby.etherscan.io/tx/0x0c9f194c4aeaf2f28c6ccdbd47703c4c855c018310a795ed767ea46182fbf170
+This symbol is MOCK.
+Owner: 0x3190aeb50f4a42d62526b144708ad4919829d236
 This Mock is used during the test of withdraw functionality.
 For this test, you can also use the address of any ERC20 token that you know at testnet.
+
+??????????????????
+It was tracked by EtherScan as a valid token: https://rinkeby.etherscan.io/token/0xc3994c5cbddf7ce38b8a2ec2830335fa8f3eea6a
+I also veriied its source code, so you can read/write using EtherScan by using Read Contract/Write Contract functionalities.
 At the time of this writing, the owner has 975 tokens and 0xC3ee4B592FD3EBD53ba757Ae2DAF484b20D75aE4 has 25 tokens
+????????????
+
 
 
 * Tradeable Contract
