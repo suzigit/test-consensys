@@ -18,8 +18,19 @@
       <input type="number" [ngModel]="convertPriceToETH()" maxlength="20" size="10" readonly disabled>
     </label>
   </div>
+   <div class="row">
+  
+    <label>Describe why someone should buy your wallet (to be saved on IPFS):
+      <textarea [(ngModel)]="description" rows="4" cols="50"></textarea><a href="javascript:void(0)" (click)="saveDescription()">
+      <i class="fa fa-floppy-o" aria-hidden="true"></i></a>
+      <p>
+      <span *ngIf="hashDescription">Hash to be saved on blockchain when you put for sale: {{hashDescription}}</span>
+      <span *ngIf="errorSaveDescription">Error: {{errorSaveDescription}}</span>
+      </p>
+    </label>
+  </div>
 
-    <div class="row">
+ <div class="row">
     <label>Put your Tradeable-Wallet for sale by clicking here <a href="javascript:void(0)" (click)="sale()">
       <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>
   </div>

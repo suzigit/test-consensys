@@ -5,7 +5,7 @@
   </div>
     <div class="row">
     <label>Enter the address of the Tradeable Wallet you want to buy:
-      <input type="text" [(ngModel)]="tradeableWalletAddress" (ngModelChange)="getPrice()"  placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
+      <input type="text" [(ngModel)]="tradeableWalletAddress" (ngModelChange)="getPriceAndDescription()"  placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
     </label>
   </div>
    <div class="row">
@@ -16,6 +16,12 @@
    <div class="row">
     <label>Price of this Tradeable Wallet (in Ether):
       <input type="text" [ngModel]="convertPriceToETH()" readonly disabled maxlength="20" size="10">
+    </label>
+  </div>
+
+  <div>
+    <label>The owner described you should buy this wallet because:
+      <textarea [ngModel]="description" readonly disabled rows="4" cols="50"></textarea>
     </label>
   </div>
 

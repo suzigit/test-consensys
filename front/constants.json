@@ -1,3 +1,4 @@
 {
-  "ContractCreatorAddr": "0x6e8b3a0c445b048d6c47f437dbb9e8e9dfe683d2"
+  "ContractCreatorAddr": "0xaa5722e8413680c1e250c40731fe4d8445494618",
+  "ServerUrl": "https://ipfs.infura.io:5001/api/v0/"
 }

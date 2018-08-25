@@ -31,6 +31,7 @@
     "core-js": "^2.4.1",
     "express": "^4.16.3",
     "font-awesome": "^4.7.0",
+    "ipfs-api": "^24.0.1",
     "js-sha3": "^0.8.0",
     "path": "^0.12.7",
     "rxjs": "^5.5.2",
@@ -45,7 +46,6 @@
     "@angular/language-service": "^5.0.0",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "~2.0.2",
-    "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
     "enhanced-resolve": "^3.3.0",
     "jasmine-core": "~2.6.2",
@@ -63,5 +63,6 @@
   "engines": {
     "node": "8.11.4",
     "npm": "5.6.0"
-  }
+  },
+  "homepage": "./"
 }

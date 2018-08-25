@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { BlockchainService } from './../service/blockchain-service';
+import { FilesService } from './../service/files.service';
+
 
 
 @Component({
@@ -15,9 +17,11 @@ export class PutWalletSaleComponent implements OnInit {
   priceInGWei: number; //TODO: Deal with floating point
   newSellHash: string;
   error: string;
-
+  description: string;
+  hashDescription: string;
+  errorSaveDescription: string;
   
-  constructor(private blockchainService: BlockchainService) { 
+  constructor(private blockchainService: BlockchainService, private filesService: FilesService ) { 
 
       let self = this;
 
@@ -26,7 +30,6 @@ export class PutWalletSaleComponent implements OnInit {
         self.blockchainService.getAccounts().then(accounts =>
         {
             let newSelectedAccount = accounts[0]; 
-
 
             if (newSelectedAccount !== self.selectedAccount && newSelectedAccount) {
               self.selectedAccount = newSelectedAccount;
@@ -39,6 +42,39 @@ export class PutWalletSaleComponent implements OnInit {
   ngOnInit() {
   }
 
+
+  saveDescription() {
+
+    let self = this;
+    self.hashDescription = "";
+    self.errorSaveDescription = "";
+
+    if (this.description) {
+
+        this.filesService.saveFile(this.description).subscribe(
+            data => {
+                if (data) {
+                    console.log("hash=" + data["Hash"]);
+                    self.hashDescription = data["Hash"];
+                }
+                else {
+                    self.errorSaveDescription = "No data";
+                    console.log("nao retornou data");
+                }
+            },
+            error => {
+                self.errorSaveDescription = error;
+                console.log("Erro ao inserir dado - excecao");
+                console.log("error");
+
+            });
+
+    }
+    
+  
+  }
+
+
   sale() {
 
         let self = this;
@@ -50,7 +86,8 @@ export class PutWalletSaleComponent implements OnInit {
             if (this.blockchainService.isAddress(self.tradeableWalletAddress)) {
 
                 this.blockchainService.setAvailableToSell(self.tradeableWalletAddress, self.priceInGWei,
-                function(result) {
+                self.hashDescription, function(result) {
+
                     console.log("sell sucess: " + result);
                     self.newSellHash = result;
                 }, function(e) {

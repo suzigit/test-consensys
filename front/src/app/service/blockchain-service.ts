@@ -108,7 +108,7 @@ export class BlockchainService {
     }
 
 
-   setAvailableToSell(tradeableContractAddr: string, priceInGWei: number, fSucess: any, fError: any) {
+   setAvailableToSell(tradeableContractAddr: string, priceInGWei: number, hashDescription: string, fSucess: any, fError: any) {
 
        console.log("set available to sell with price (GWei) " + priceInGWei); 
 
@@ -121,7 +121,7 @@ export class BlockchainService {
             let priceInWei = this.web3.utils.toWei(sPriceInGWei, 'GWei');
             console.log(priceInWei);
 
-            tradeableContract.instance.methods.setAvailableToSell(priceInWei).send ({ from:selectedAccount })
+            tradeableContract.instance.methods.setAvailableToSell(priceInWei, hashDescription).send ({ from:selectedAccount })
             .then (result => 
             {
                 fSucess(result);
@@ -149,6 +149,22 @@ export class BlockchainService {
                     else {
                         fError("NAN")
                     }
+                })
+            .catch (error => fError(error));
+        }); 
+    } 
+
+    getHashDescription(tradeableContractAddr: string, fSucess: any, fError: any) {
+    
+        this.getAccounts().then(accounts => {
+
+            let selectedAccount = accounts[0]; 
+            let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
+
+            tradeableContract.instance.methods.getHashDescription().call()
+            .then(result => 
+                {
+                    fSucess(result);
                 })
             .catch (error => fError(error));
         }); 

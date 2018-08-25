@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { BlockchainService } from './../service/blockchain-service';
-import { Router } from '@angular/router';
-
+import { FilesService } from './../service/files.service';
 
 
 @Component({
@@ -16,11 +15,12 @@ export class BuyWalletComponent implements OnInit {
   tradeableWalletAddress: string;
   priceInGWei: string; 
   newBuyHash: string;
+  description: any;
   error: string;
 
   lastTradeableWalletAddress: string;
   
-  constructor(private blockchainService: BlockchainService, private router: Router) { 
+  constructor(private blockchainService: BlockchainService, private filesService: FilesService ) { 
 
       let self = this;
 
@@ -42,7 +42,8 @@ export class BuyWalletComponent implements OnInit {
   ngOnInit() {
   }
 
-  getPrice() {
+
+  getPriceAndDescription() {
 
       if (this.tradeableWalletAddress != this.lastTradeableWalletAddress) {
             this.lastTradeableWalletAddress = this.tradeableWalletAddress;
@@ -65,6 +66,39 @@ export class BuyWalletComponent implements OnInit {
                     console.log("Buy error: " + e);
                     self.priceInGWei = "N/A";
                 });
+
+                this.blockchainService.getHashDescription(self.tradeableWalletAddress,
+                function(hash) {
+                    console.log("Hash sucess: " + hash);
+
+                    self.filesService.getFile(hash).subscribe(
+                        data => {
+                            if (data) {
+                                self.description = data;
+                                console.log("data from ipfs");
+                                console.log(data);
+
+                            }
+                            else {
+                                self.description = "";
+                                console.log("no data");
+                            }
+                        },
+                        error => {
+                            self.description = "";
+                            console.log("error getFile");
+                            console.log(error);
+                        });
+                    
+
+
+                }, function(e) {
+                    console.log("Hash error: " + e);
+                    self.description = "N/A";
+                });
+
+
+
             }
       }
   }
