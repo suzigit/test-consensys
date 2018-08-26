@@ -1,7 +1,6 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 
 import {Contract} from './Contract';
-import {ENSHelper} from './ENSHelper';
 
 declare let require: any;
 
@@ -13,7 +12,7 @@ var Accounts = require('web3-eth-accounts');
 import * as constants from './../../../constants.json';
 import * as contractCreatortMetadata from  './../../../ContractCreator.json';
 import * as interfaceTradeableContractMetadata from './../../../ITradeableContract.json';
-import * as ensContractMetadata from  './../../../ENSContract.json';
+import * as ensContractMetadata from  './../../../EnsContract.json';
 import * as resolverContractMetadata from './../../../ResolverContract.json';
 
 

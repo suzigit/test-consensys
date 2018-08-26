@@ -26,8 +26,8 @@ contract LibraryDemo {
   /**
    * @dev ilustrate the use of the library SafeMath.  
    * DO NOT REUSE THIS CODE: It function is vulnerable to DoS with Block Gas Limit. It is for illustrative purporses only.
-   * @param maxCode - value of max index (=code) whose price is going to be summed.
-   * @return -  the function is going to return the price sum of books from index 0 until index maxCode.
+   * @param maxCode value of max index (=code) whose price is going to be summed.
+   * @return the function is going to return the price sum of books from index 0 until index maxCode.
    */
 	function getTotalPriceUntilACode(uint maxCode) public view returns(uint) {
 

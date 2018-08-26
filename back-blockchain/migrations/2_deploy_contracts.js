@@ -10,7 +10,7 @@ module.exports = function(deployer) {
 
   deployer.deploy(TokenERC20_Mock, 100, "name", "sy");
   deployer.deploy(SafeMath);
-  deployer.link(SafeMath, [LibraryDemo]);
+  deployer.link(SafeMath, LibraryDemo);
   deployer.deploy(LibraryDemo);
 
   deployer.deploy(TradeableContract_OnlyForTests, "0x627306090abab3a6e1400e9345bc60c78a8bef57");

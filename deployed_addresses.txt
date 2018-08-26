@@ -1,8 +1,8 @@
 This doc describes where the Tradeable Wallet contracts live on the test net:
 
-* Contract Creator: 0x698a51fa6299b7732d7bcd13279a607f949322d8
-It was created in this transaction: https://rinkeby.etherscan.io/tx/0x5adfa731cbea08525572fc8598efae6601d1fe1370eb9a0491d5d457d13596f9
-Owner: 0x3190aeb50f4a42d62526b144708ad4919829d236
+* Contract Creator: 0x3c61c3be34f98fac4bb88f4f5e07bfcdb1dda3bf
+It was created in this transaction: https://rinkeby.etherscan.io/tx/0xf65b010ad4147bc40b6d2c1148c5b3082b48c94d72df14c0b7f740c0f46e1419
+Owner: 0xe4aaa0fc768fbbafaa15f3cf16530b1d082a95b0
 
 
 * TokenERC20_Mock: 0xf0df2a9712305a5e53244eba2a785e12f1cef8b3
@@ -12,11 +12,7 @@ Owner: 0x3190aeb50f4a42d62526b144708ad4919829d236
 This Mock is used during the test of withdraw functionality.
 For this test, you can also use the address of any ERC20 token that you know at testnet.
 It was tracked by EtherScan as a valid token: https://rinkeby.etherscan.io/token/0xf0df2a9712305a5e53244eba2a785e12f1cef8b3
-
-??????????????????
 It has _veriied source code_, so you can read/write using EtherScan by using Read Contract/Write Contract functionalities.
-????????????
-
 
 
 * Tradeable Contract

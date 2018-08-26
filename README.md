@@ -1,9 +1,9 @@
-Have you already transfer tokens? What about transfer your wallet with all you have within?
+Have you already buy&sell tokens? What about buy&sell your wallet with all you have within?
 How can we do that in a TRUSTLESS way? This project  - Tradeable Wallet - is the solution to that.
 
 Why it is useful?
 -----------------
-This project was created with a specific scenario in mind. Imagine you have bought some tokens during an ICO. You registered your address in the SAFT contract (or, in a Pool e.g. Primablock). But now you have to wait some days or even months before receive your tokens. If you had used the Tradeable Wallet you can sell your tokens EVEN BEFORE receive them. It works in a TRUSTLESS WAY, i.e., the peers do not need to trust each other in order to do trading.
+This project was created with a specific scenario in mind. Imagine you have bought some tokens during an ICO. You registered your address in the SAFT contract (or, in a Pool e.g. Primablock). But now you have to wait some days or even months before receive your tokens. If you had used the Tradeable Wallet (created by this project) you can sell your tokens EVEN BEFORE receive them. It works in a TRUSTLESS WAY, i.e., the peers do not need to trust each other in order to do trading.
 The magic is: The tradeable wallet is a Ethereum Smart Contract. The tokens (from the ICO) are going to be send to the address of your Tradeable Wallet. The Smart Contract has functions to sell/buy. At any time, the owner of the wallet can also withdraw the received tokens.
 
 
@@ -21,18 +21,19 @@ See the App
 -----------
 
 You can access the app at: https://tradeable-wallet.herokuapp.com/
-You have to use Metamask at Rinkeby. 
+You have to use Metamask and be connected on Rinkeby. 
 
-You have to create a Tradeable Wallet before try to use withdraw from it or put it for sale. You can try to buy my Tradeable Wallet. 
-I am selling the following Tradeable Wssallets (maybe it is already selled when you try):
+You start by creating a new Tradeable Wallet. Take note of its address in order to use the next functionalities. Or use ENS to create a namehash to it. I suggest you to use this link: https://michalzalecki.com/register-test-domain-with-ens/.
+If you create a namehash to your wallet, you can use it in the next functionalities, by clicking in ENS.
 
-xxxxxxxxxxxxxxxxxs
+Then, you can use sell/buy. Since you are the owner of the wallet, you can sell it. Besides informing its price, you can also add up a description - why someone should buy your wallet. You can explain what tokens this wallet is register to receive, for example. This description will be stored on IPFS and the hash of the IPFS information will be registered in your Tradeable Wallet. 
+When buying more wallets, you should change the account in metamask in order to simulate multiple users. This new acccount must have enough ether to pay the price of the wallet. Test and see the trade happening!
+You can do as many sell/buy as you want. You can also see all owners in the lifecycle of your Tradeable-Wallet.
 
-To test the withdraw functionality you can use the following ERC20 token: xxxxxxxxxxxxxxxxxx. You have to send tokens to your Tradeable Wallet before use the withdraw functionality (or you can try to do a withdraw of 0 tokens -- available in the test ERC20 token for convenience).
-
-The Contract Creator is available at: xxxxxxxxxxxxxxxx
-
-
+There is a problem to test the withdraw functionality. You Tradeable Wallet address must have tokens in a ERC-20 contract! So, you have two options:
+a) You can test doing withdraw of 0 tokens and the ERC-20 address specified at deployed_addresses.txt 
+b) You can deploy a new instance of TokenERC20_Mock in Rinkeby using your account X. Since X is going to receive ERC-20 tokens, you can transfer some of them to the address of your Tradeable Wallet using TokenERC20_Mock functions. Then, you can test withdraw functionality of this project.  
+You can also see all historic withdraws of your Tradeable Wallet. 
 
 How to set it up
 ----------------
@@ -71,23 +72,21 @@ The most important issues are the 3 main functinalities - withdraw, sell and buy
 The most important issues to test are ownership, contract creation and circuit breaker. The tests cover:
 - owner is who is supposed to be (in order to check the initial setup)
 - any user can create new Tradeable Wallets and its creation is reflected in view functions (getContractCount, getContracts) 
-- it is possible to turn circuir breaker on, avoiding the creation of new Tradeable Wallets.
+- it is possible to turn circuir breaker on, avoiding the creation of new Tradeable Wallets. It is also possible to set circuit breaker off and create new tokens again.
 
 
 
-Integration with existing services - future plans
--------------------------------------------------
+Technical Highlights
+---------------------
 
-This project can be expanded in the future to integrate with existing services on Ethereum. For example:
+The front-end is using **Web3.0 1.0**! Exciting projects use new tech! :wink:
 
-a) **ENS (Ethereum Name Service)**- It could be included an option during the Wallet creation to create a Tradeable Wallet (=Smart Contract) with support to Namehashs. It should be an option (and not the unique option) since this kind of contract would have more functions and is going to consume more gas to create and do other functionalities.
+The project uses different ways of smart contract external calls and emit events.
 
-b) **IPFS** - It could be included the possibility of annex an evidence that the Tradeable Wallet address is really going to be the place where the user is going to receive the ERC-20 tokens, in the future. The user can use the app to upload a doc to IPFS and the hash could be stored at her/his Tradeable Wallet.
+The solution is integrated with the following existing services. 
 
-c) **Oracle** - It could be interesting to have an oracle service of personal reputation, a kind of social score. This will only address the issue that the wallet owner could try to change actual arrangements in order to receive the future tokens in other address. For example, the user can create a Tradeable Wallet, include it on SAFT (a kind of ICO contract) and, after selling the Wallet, try to change the used address making an agreement with the ICO development team. We also have other ideas that is going to mitigate this risk.
+a) **ENS (Ethereum Name Service)**- You can search your wallet using ethereum address or namehash of ENS.
 
+b) **IPFS** - You can file information on IPFS and link its hash inside your smart contract.
 
-
-Web3 1.0
----------
-The front-end is using Web3.0 1.0! Exciting projects use new stech! :wink:
+It could be interesting to have an oracle service of personal reputation in the future, a kind of social score. This will only address the issue that the wallet owner could try to change actual arrangements in order to receive the future tokens in other address. For example, the user can create a Tradeable Wallet, include it on SAFT (a kind of ICO contract) and, after selling the Wallet, try to change the used address making an agreement with the ICO development team directly. But, we also have other ideas that is going to mitigate this risk.
