@@ -6,11 +6,13 @@
     <div class="row">
     <label>Enter the address of your Tradeable Wallet:
       <input type="text" [(ngModel)]="tradeableWalletAddress"  placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
+      <a href="javascript:void(0)" (click)="ensTranslationTW(tradeableWalletAddress)"><img height="30" width="30" src="./../../assets/ens.svg"></a>
     </label>
   </div>
     <div class="row">
     <label>Enter the address ERC-20 Tokens:
       <input type="text" [(ngModel)]="tokensAddress"  placeholder="ex.: 0x5A4865076BCF3A5357C56E395AB970B5B5409847" maxlength="42" size="50">
+      <a href="javascript:void(0)" (click)="ensTranslationToken(tokensAddress)"><img height="30" width="30" src="./../../assets/ens.svg"></a>
     </label>
   </div>
    <div class="row">

@@ -6,6 +6,7 @@
     <div class="row">
     <label>Enter the address of your Tradeable Wallet:
       <input type="text" [(ngModel)]="tradeableWalletAddress"  placeholder="ex.: 0xD2EDf4076B8F3A5357C5E395AB970B5B54098EEE" maxlength="42" size="50">
+      <a href="javascript:void(0)" (click)="ensTranslationTW()"><img height="30" width="30" src="./../../assets/ens.svg"></a>
     </label>
   </div>
    <div class="row">
@@ -24,7 +25,7 @@
       <textarea [(ngModel)]="description" rows="4" cols="50"></textarea><a href="javascript:void(0)" (click)="saveDescription()">
       <i class="fa fa-floppy-o" aria-hidden="true"></i></a>
       <p>
-      <span *ngIf="hashDescription">Hash to be saved on blockchain when you put for sale: {{hashDescription}}</span>
+      <span *ngIf="hashDescription">Hash to be saved on blockchain when you put your wallet for sale: {{hashDescription}}</span>
       <span *ngIf="errorSaveDescription">Error: {{errorSaveDescription}}</span>
       </p>
     </label>

@@ -12,7 +12,7 @@ var Accounts = require('web3-eth-accounts');
 
 import * as constants from './../../../constants.json';
 import * as contractCreatortMetadata from  './../../../ContractCreator.json';
-import * as tradeableContractMetadata from './../../../TradeableContract.json';
+import * as interfaceTradeableContractMetadata from './../../../ITradeableContract.json';
 import * as ensContractMetadata from  './../../../ENSContract.json';
 import * as resolverContractMetadata from './../../../ResolverContract.json';
 
@@ -220,7 +220,7 @@ export class BlockchainService {
 
         let tradeableContract = new Contract();
         tradeableContract.address =  tradeableContractAddr;
-        tradeableContract.ABI = (<any>tradeableContractMetadata).abi;
+        tradeableContract.ABI = (<any>interfaceTradeableContractMetadata).abi;
         tradeableContract.instance = new this.web3.eth.Contract(tradeableContract.ABI, tradeableContract.address);
         console.log(tradeableContract);                
         return tradeableContract;

@@ -1,6 +1,7 @@
 pragma solidity ^0.4.23;
 
 import "./TradeableContract.sol";
+import "./ITradeableContract.sol";
 
 /**
  * @title ContractCreator.
@@ -57,7 +58,7 @@ contract ContractCreator {
    * @return subcontractAddr the address of the create contract.
    */
 	function createTradeableContract() public stopInEmergency returns(address subcontractAddr) {
-		TradeableContract tc = new TradeableContract(msg.sender); 
+		ITradeableContract tc = new TradeableContract(msg.sender); 
 		contracts.push(tc);
 		emit NewTradeableWallet(address(tc));
 		return tc;		

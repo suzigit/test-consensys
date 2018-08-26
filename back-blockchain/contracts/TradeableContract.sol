@@ -1,14 +1,24 @@
 pragma solidity ^0.4.23;
 
 import "./IERC20Token.sol";
+import "./ITradeableContract.sol";
 
 /**
  * @title TradeableContract
  * @dev Contract that represent a Wallet, whose ownership can be traded (sell/buy).
- * This contract can be used to receive ERC20 tokens, and has a specific function to withdraw these tokens. 
+ * This contract can be used to receive ERC20 tokens. 
  */
-contract TradeableContract {
+contract TradeableContract is ITradeableContract {
     
+  /**
+   * @dev Assure that only the owner can invoke a function.   
+   */
+	modifier onlyOwner {
+		require(msg.sender == owner); 	
+		_;
+	}		
+
+
   /**
    * @dev Owner of this contract.   
    */	
@@ -35,35 +45,6 @@ contract TradeableContract {
 
 
   /**
-   * @dev Event to inform a new owner of this Contract. 
-   * When the contract is created, it is fired with the old owner 0x0.    
-   */ 
-	event NewOwnerEvent(address old, address current);
-	
-  /**
-   * @dev Event to inform a new withdraw of this contract. 
-   */ 
-	event WithdrawTokensEvent(address tokenAddr, address owner, uint256 value, bool sucess);
-	
-  /**
-   * @dev Event to inform that one contract became available to sell. 
-   */ 
-	event AvaliableToSellEvent(address owner, address contractAddr);
-
-  /**
-   * @dev Event to inform that one contract was killed. 
-   */ 
-	event KillEvent();
-
-  /**
-   * @dev Assure that only the owner can invoke a function.   
-   */
-	modifier onlyOwner {
-		require(msg.sender == owner); 	
-		_;
-	}		
-
-  /**
    * @dev Create a new contract. 
    * @param ownerAddr is going to be the owner of this contract. 
    * It emits an event with the new onwer. Since there is no old owner, it is represented by 0x0.  
@@ -88,7 +69,7 @@ contract TradeableContract {
    * @dev Return the current owner of this contract.
    * @return the owner of this contract.
    */	
-	function getOwner() public view returns (address) {
+	function getOwner() external view returns (address) {
 		return owner;
 	}
 
@@ -96,7 +77,7 @@ contract TradeableContract {
    * @dev Return the hash description of this contract.
    * @return the hash to the description of this contract.
    */	
-	function getHashDescription() public view returns (string) {
+	function getHashDescription() external view returns (string) {
 		return hashToDescription;
 	}
 
@@ -104,7 +85,7 @@ contract TradeableContract {
    * @dev Change the hash to the description to this wallet
    * @param hDescription new hash description to this wallet.
    */	
-	function changeHashDescription(string hDescription) public onlyOwner {
+	function changeHashDescription(string hDescription) external onlyOwner {
 		hashToDescription = hDescription;
 	}
 
@@ -113,7 +94,7 @@ contract TradeableContract {
    * If the current owner does not put it for sale, the returned value is going to be -1.
    * @return price in Wei or -1.
    */
-	function getPriceToSellInWei() public view returns (int256) {		
+	function getPriceToSellInWei() external view returns (int256) {		
 		if (isAvailableToSell) {
 			return priceToSellInWei;
 		}  
@@ -136,7 +117,7 @@ contract TradeableContract {
    * @param value Value of tokens to be withdraw.
    * @return bool from the transfer function in the ERC-20 token.
    */
-	function makeUntrustedWithdrawalOfTokens (address tokenAddr, uint256 value) public onlyOwner returns (bool) {
+	function makeUntrustedWithdrawalOfTokens (address tokenAddr, uint256 value) external onlyOwner returns (bool) {
 
 		bool b = IERC20Token(tokenAddr).transfer(owner,value);
 		
@@ -164,7 +145,7 @@ contract TradeableContract {
 	* @param priceInWei Price that the owner wants to sell this contract (in Wei)
 	* @param hDescription Hash to the description of this contract 
 	*/
- 	function setAvailableToSell (uint128 priceInWei, string hDescription) public onlyOwner {
+ 	function setAvailableToSell (uint128 priceInWei, string hDescription) external onlyOwner {
 		isAvailableToSell = true;
 		priceToSellInWei = priceInWei;
 		hashToDescription = hDescription;
@@ -185,7 +166,7 @@ contract TradeableContract {
 	* and a fee is collected. 
 	* It emits an event with the old and new owners.
 	*/
-	function untrustedChangeOwnershipWithTrade () payable public  {
+	function untrustedChangeOwnershipWithTrade () payable external  {
 
 		//Checks-Effects-Interactions pattern
 
@@ -220,7 +201,7 @@ contract TradeableContract {
    /**
 	* @dev Since this contract represents a wallet it is worth to enable the possibility to receive ether.
 	*/
-	function() payable public { 
+	function() payable external { 
 
 	}
 

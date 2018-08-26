@@ -42,6 +42,20 @@ export class BuyWalletComponent implements OnInit {
   ngOnInit() {
   }
 
+    ensTranslationTW() {
+        let self = this;
+
+        this.blockchainService.getAddr(self.tradeableWalletAddress,
+        function(result) {
+            self.tradeableWalletAddress = result;
+            console.log("ENS sucess: " + result);
+        }, function(error) {
+            console.warn("error during ENS: " + error);
+            self.tradeableWalletAddress = "N/A";
+        });
+
+    }
+
 
   getPriceAndDescription() {
 

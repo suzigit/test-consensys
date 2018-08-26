@@ -29,27 +29,43 @@ export class WithdrawTokensComponent implements OnInit {
         {
             let newSelectedAccount = accounts[0]; 
 
-
             if (newSelectedAccount !== self.selectedAccount && newSelectedAccount) {
               self.selectedAccount = newSelectedAccount;
               console.log(self.selectedAccount);
             }
         }), 1000});
 
-/*
-      this.blockchainService.getAddr("michalzaleckihj",
-      function(result) {
-//            self.newTradeableWalletAddress = result;
-            console.log("ENS sucess: " + result);
-      }, function(error) {
-          console.warn("error during ENS: " + error);
-//          self.error = error;
-      });
-        
-*/
    }
 
     ngOnInit() {
+    }
+
+    ensTranslationTW(field) {
+        let self = this;
+
+        this.blockchainService.getAddr(field,
+        function(result) {
+            self.tradeableWalletAddress = result;
+            console.log("ENS sucess: " + result);
+        }, function(error) {
+            console.warn("error during ENS: " + error);
+            self.tradeableWalletAddress = "N/A";
+        });
+
+    }
+
+    ensTranslationToken(field) {
+        let self = this;
+
+        this.blockchainService.getAddr(field,
+        function(result) {
+            self.tokensAddress = result;
+            console.log("ENS sucess: " + result);
+        }, function(error) {
+            console.warn("error during ENS: " + error);
+            self.tokensAddress = "N/A";
+        });
+
     }
 
     withdrawTokens(){
@@ -58,7 +74,11 @@ export class WithdrawTokensComponent implements OnInit {
         self.error = undefined;
         self.newWithdrawHash = undefined;
 
-        if (self.tradeableWalletAddress && self.tokensAddress && self.numberOfTokens) {
+        console.log("withdrawTokens");
+
+        if (self.tradeableWalletAddress && self.tokensAddress && (self.numberOfTokens || self.numberOfTokens===0)) {
+
+            console.log("all field filled!");
             
 
             if (this.blockchainService.isAddress(self.tradeableWalletAddress)) {            
