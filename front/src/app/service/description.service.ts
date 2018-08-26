@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 
 import * as ipfsAPI from 'ipfs-api';
@@ -9,13 +9,12 @@ import * as constants from './../../../constants.json';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/map';
 
 
 
 
 @Injectable()
-export class FilesService {
+export class DescriptionService {
 
   serverUrl: string;
   ipfs: any;
@@ -30,7 +29,7 @@ export class FilesService {
 
   }
   
-  saveFile(text): Observable<Object> {
+  save(text): Observable<Object> {
 
     let fdata = new FormData();
     fdata.append("text", text);
@@ -42,7 +41,7 @@ export class FilesService {
   }
 
 
-  getFile(hash): Observable<Object> {
+  get(hash): Observable<Object> {
     
       return this.http.get(this.serverUrl + 'cat?arg=' + hash, {responseType: 'text'});
 

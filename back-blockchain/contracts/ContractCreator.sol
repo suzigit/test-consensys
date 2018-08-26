@@ -8,18 +8,37 @@ import "./TradeableContract.sol";
  */
 contract ContractCreator {
 
+  /**
+   * @dev Stores the information if the some functions should be paused in case of some undesirable situation (circuit breaker).   
+   */
 	bool public stopped = false;
+	
+  /**
+   * @dev Owner of this contract.   
+   */
 	address public owner;	
+
+  /**
+   * @dev Stores all contracts already created (they can be alive of killed) .   
+   */
 	address[] public contracts;
  
- 
+  /**
+   * @dev Event to inform the creation of a new Tradeable  Wallet   
+   */ 
  	event NewTradeableWallet(address addr);
 
+  /**
+   * @dev Assure that only the owner can invoke a function.   
+   */
 	modifier onlyOwner { 
 		require(msg.sender == owner); 	
 		_; 	
 	}		
 	
+  /**
+   * @dev Safe mechanism check and pause the function in case of some undesirable situation (circuit breaker).   
+   */
 	modifier stopInEmergency { 
 		require(!stopped); 
 		_; 
@@ -35,7 +54,7 @@ contract ContractCreator {
 
   /**
    * @dev create a new Tradeable Contract, stores its reference and emit an event with the same info 
-   * @return the address of the create contract.
+   * @return subcontractAddr the address of the create contract.
    */
 	function createTradeableContract() public stopInEmergency returns(address subcontractAddr) {
 		TradeableContract tc = new TradeableContract(msg.sender); 
@@ -56,21 +75,28 @@ contract ContractCreator {
   /**
    * @dev Returns the number of Tradeable Contract created. 
    * This number does not consider if the Tradeable Contract is alive (it could be killed by its owner)
+   * @return contractCount the number of Tradeable Contract created.
    */
 	function getContractCount() public view returns(uint contractCount) {
 		return contracts.length;
 	}
 
   /**
-   * @dev Returns the address all Tradeable Contract created. 
-   * This set does not consider if the Tradeable Contract is alive (it could be killed by its owner)
+   * @dev Returns the address the Tradeable Contract created on a specific index. 
+   * The result does not consider if the Tradeable Contract is alive (it could be killed by its owner)
+   * @param index index of the desirable result
+   * @return the address of the desirable Tradeable contract or 0x0 (if not found)
    */
-	function getContracts() public view returns (address[]) {
-		return contracts;
+	function getContractAt(uint index) public view returns (address) {
+		if (index<contracts.length) {
+			return contracts[index];
+		}
+		return 0x0;
 	}
 
   /**
    * @dev Returns the owner of this contract.
+   * @return the owner of this contract.
    */
 	function getOwner() public view returns (address) {
 		return owner;

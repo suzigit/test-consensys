@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { NewWalletComponent } from './new-wallet/new-wallet.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BlockchainService } from './service/blockchain-service';
-import { FilesService } from './service/files.service';
+import { DescriptionService } from './service/description.service';
 
 import { InitialPanelComponent } from './initial-panel/initial-panel.component';
 import { BuyWalletComponent } from './buy-wallet/buy-wallet.component';
@@ -44,7 +44,7 @@ import { AllWithdrawComponent } from './all-withdraw/all-withdraw.component';
     AngularFontAwesomeModule,
     AppLoadModule 
   ],
-  providers: [BlockchainService, FilesService],
+  providers: [BlockchainService, DescriptionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

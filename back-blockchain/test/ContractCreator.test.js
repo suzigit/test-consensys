@@ -50,33 +50,40 @@ contract('ContractCreator', function(accounts) {
         })
   });
 
-  it("should return the same number of tradeable contracts that counter", function () {
-    return ContractCreator.deployed()
-        .then(function (instance) {
-            return instance.getContracts.call() 
-        }).then(function (contracts) { 
-            assert.equal(contracts.length, 3, "Total of Tradeable Contracts returned is 3.");      
-        })
-  });
-
-
   it("should set circuit breaker and do not allow more contract creation", function () {
     return ContractCreator.deployed()
         .then(function (instance) {
             return instance.setCircuitBreaker(true)
             .then(function() {
-                return instance.createTradeableContract().then(function (rSucess) {
+                return instance.createTradeableContract()
+                .then(function (rSucess) {
                     assert(false, 'should not performed creation!!!');
                     return true;
-                },
-                function(e) {
+                }, function(e) { //could not create a new tradeable contract
                     assert.match(e, /VM Exception/, "create contract with circuit breaker should have raised VM exception");
                 })
             }) 
         })
   });
 
-
-
+  it("should remove circuit breaker and allow more contract creation", function () {
+    return ContractCreator.deployed()
+        .then(function (instance) {
+            return instance.setCircuitBreaker(false)
+            .then(function() {
+                return instance.createTradeableContract()
+                .then(function () {
+                        return instance.getContractCount.call();                    
+                },
+                function(e) { //could not create a new tradeable contract
+                    assert.match(e, /VM Exception/, "should not have raised exception anyomore");
+                })
+            })
+          .then(function (total) {
+                assert.equal(total, 4, "Total of Tradeable Contracts should be 4.");      
+            })
+        });
+    });
 
 });
+

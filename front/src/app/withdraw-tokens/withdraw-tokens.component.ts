@@ -36,8 +36,18 @@ export class WithdrawTokensComponent implements OnInit {
             }
         }), 1000});
 
-
-      }
+/*
+      this.blockchainService.getAddr("michalzaleckihj",
+      function(result) {
+//            self.newTradeableWalletAddress = result;
+            console.log("ENS sucess: " + result);
+      }, function(error) {
+          console.warn("error during ENS: " + error);
+//          self.error = error;
+      });
+        
+*/
+   }
 
     ngOnInit() {
     }
@@ -49,6 +59,7 @@ export class WithdrawTokensComponent implements OnInit {
         self.newWithdrawHash = undefined;
 
         if (self.tradeableWalletAddress && self.tokensAddress && self.numberOfTokens) {
+            
 
             if (this.blockchainService.isAddress(self.tradeableWalletAddress)) {            
 

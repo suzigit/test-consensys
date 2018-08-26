@@ -1,6 +1,7 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 
 import {Contract} from './Contract';
+import {ENSHelper} from './ENSHelper';
 
 declare let require: any;
 
@@ -12,6 +13,9 @@ var Accounts = require('web3-eth-accounts');
 import * as constants from './../../../constants.json';
 import * as contractCreatortMetadata from  './../../../ContractCreator.json';
 import * as tradeableContractMetadata from './../../../TradeableContract.json';
+import * as ensContractMetadata from  './../../../ENSContract.json';
+import * as resolverContractMetadata from './../../../ResolverContract.json';
+
 
 
 @Injectable()
@@ -20,14 +24,14 @@ export class BlockchainService {
     private contractCreator: any;
     private web3: any;
 
+    private ensContract: any;
+    private resolverContract: any;
+
 
     constructor() {
 
-  //      window.addEventListener('load', (event) => {
-            this.createWeb3();
-            this.createInitialObjects();
- //       });
-
+        this.createWeb3();
+        this.createInitialObjects();
 
     }
 
@@ -53,9 +57,20 @@ export class BlockchainService {
 
         this.contractCreator = new Contract();
         this.contractCreator.address =  (<any>constants).ContractCreatorAddr;
-
         this.contractCreator.ABI = (<any> contractCreatortMetadata).abi;
         this.contractCreator.instance = new this.web3.eth.Contract(this.contractCreator.ABI, this.contractCreator.address);
+
+        this.ensContract = new Contract();
+        this.ensContract.address =  (<any>constants).ENSContractAddr;
+        this.ensContract.ABI = (<any> ensContractMetadata).abi;
+        this.ensContract.instance = new this.web3.eth.Contract(this.ensContract.ABI, this.ensContract.address);
+
+
+        this.resolverContract = new Contract();
+        this.resolverContract.address =   (<any>constants).ResolverContractAddr;
+        this.resolverContract.ABI = (<any> resolverContractMetadata).abi;
+        this.resolverContract.instance = new this.web3.eth.Contract(this.resolverContract.ABI, this.resolverContract.address);
+        
     }
    
     async getAccounts() {
@@ -134,12 +149,12 @@ export class BlockchainService {
 
     getPriceToBuyInGWei(tradeableContractAddr: string, fSucess: any, fError: any) {
     
-        this.getAccounts().then(accounts => {
+//        this.getAccounts().then(accounts => {
 
-            let selectedAccount = accounts[0]; 
+//            let selectedAccount = accounts[0]; 
             let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
-            tradeableContract.instance.methods.getPriceToSellInWei().call({ from:selectedAccount })
+            tradeableContract.instance.methods.getPriceToSellInWei().call()
             .then(result => 
                 {
                     if (!isNaN(result)) {
@@ -151,14 +166,14 @@ export class BlockchainService {
                     }
                 })
             .catch (error => fError(error));
-        }); 
+//        }); 
     } 
 
     getHashDescription(tradeableContractAddr: string, fSucess: any, fError: any) {
     
-        this.getAccounts().then(accounts => {
+//        this.getAccounts().then(accounts => {
 
-            let selectedAccount = accounts[0]; 
+//            let selectedAccount = accounts[0]; 
             let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
             tradeableContract.instance.methods.getHashDescription().call()
@@ -167,7 +182,7 @@ export class BlockchainService {
                     fSucess(result);
                 })
             .catch (error => fError(error));
-        }); 
+ //       }); 
     } 
 
 
@@ -243,5 +258,47 @@ export class BlockchainService {
         .then(events =>  fEvents(events));
     }
     
- } 
+
+
+  getAddr(name, fSucess: any, fError: any) {
+
+      name  = name + (<any>constants).ENSNetworkSufix;
+
+      var node = this.namehash(name)
+      this.ensContract.instance.methods.resolver(node).call()
+      .then(result =>
+        {
+            if (resolverAddress === '0x0000000000000000000000000000000000000000') {
+                return resolverAddress;
+            }
+
+            var resolverAddress = result;
+
+            this.resolverContract.instance.methods.addr(node).call()
+            .then(addr =>
+            {
+                fSucess(addr);
+            }) 
+            .catch (error => fError(error));
+
+        }) 
+       .catch (error => fError(error));
+      
+  }
+
+
+ namehash(name) {
+    var node = '0x0000000000000000000000000000000000000000000000000000000000000000';
+    if (name !== '') {
+        var labels = name.split(".");
+        for(var i = labels.length - 1; i >= 0; i--) {
+            node = this.web3.utils.sha3(node + this.web3.utils.sha3(labels[i]).slice(2), {encoding: 'hex'});
+        }
+    }
+    return node.toString(); 
+ }
+
+
+
+} 
 

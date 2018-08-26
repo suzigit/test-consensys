@@ -1,4 +1,6 @@
 {
   "ContractCreatorAddr": "0xaa5722e8413680c1e250c40731fe4d8445494618",
-  "ServerUrl": "https://ipfs.infura.io:5001/api/v0/"
+  "ENSContractAddr": "0xe7410170f87102df0055eb195163a03b7f2bff4a",
+  "ResolverContractAddr": "0x5d20cf83cb385e06d2f2a892f9322cd4933eacdc",
+  "ENSNetworkSufix": ".test"
 }

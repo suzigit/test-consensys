@@ -33,6 +33,8 @@ export class NewWalletComponent implements OnInit {
         }), 1000});
 
       this.newTradeableWalletAddress = null;
+
+
   }
 
   ngOnInit() {

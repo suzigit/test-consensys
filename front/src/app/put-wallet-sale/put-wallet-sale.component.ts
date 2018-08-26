@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { BlockchainService } from './../service/blockchain-service';
-import { FilesService } from './../service/files.service';
+import { DescriptionService } from './../service/description.service';
 
 
 
@@ -21,7 +21,7 @@ export class PutWalletSaleComponent implements OnInit {
   hashDescription: string;
   errorSaveDescription: string;
   
-  constructor(private blockchainService: BlockchainService, private filesService: FilesService ) { 
+  constructor(private blockchainService: BlockchainService, private descriptionService: DescriptionService ) { 
 
       let self = this;
 
@@ -51,7 +51,7 @@ export class PutWalletSaleComponent implements OnInit {
 
     if (this.description) {
 
-        this.filesService.saveFile(this.description).subscribe(
+        this.descriptionService.save(this.description).subscribe(
             data => {
                 if (data) {
                     console.log("hash=" + data["Hash"]);

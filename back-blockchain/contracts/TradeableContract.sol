@@ -9,8 +9,14 @@ import "./IERC20Token.sol";
  */
 contract TradeableContract {
     
+  /**
+   * @dev Owner of this contract.   
+   */	
 	address public owner;
 
+  /**
+   * @dev Price of this contract (the information is only valid if and only if the contract is available to sell.   
+   */
 	uint128 public priceToSellInWei;
 
   /**
@@ -20,11 +26,38 @@ contract TradeableContract {
    */	
 	bool public isAvailableToSell;
 
+  /**
+   * @dev Hash to the description of this contracts.    
+   * The description itself is stored off-chain.  
+   * It can be used during sell-buy transactions.
+   */	
+	string public hashToDescription;
+
+
+  /**
+   * @dev Event to inform a new owner of this Contract. 
+   * When the contract is created, it is fired with the old owner 0x0.    
+   */ 
 	event NewOwnerEvent(address old, address current);
+	
+  /**
+   * @dev Event to inform a new withdraw of this contract. 
+   */ 
 	event WithdrawTokensEvent(address tokenAddr, address owner, uint256 value, bool sucess);
+	
+  /**
+   * @dev Event to inform that one contract became available to sell. 
+   */ 
 	event AvaliableToSellEvent(address owner, address contractAddr);
+
+  /**
+   * @dev Event to inform that one contract was killed. 
+   */ 
 	event KillEvent();
 
+  /**
+   * @dev Assure that only the owner can invoke a function.   
+   */
 	modifier onlyOwner {
 		require(msg.sender == owner); 	
 		_;
@@ -53,9 +86,26 @@ contract TradeableContract {
 
   /**
    * @dev Return the current owner of this contract.
+   * @return the owner of this contract.
    */	
 	function getOwner() public view returns (address) {
 		return owner;
+	}
+
+  /**
+   * @dev Return the hash description of this contract.
+   * @return the hash to the description of this contract.
+   */	
+	function getHashDescription() public view returns (string) {
+		return hashToDescription;
+	}
+
+  /**
+   * @dev Change the hash to the description to this wallet
+   * @param hDescription new hash description to this wallet.
+   */	
+	function changeHashDescription(string hDescription) public onlyOwner {
+		hashToDescription = hDescription;
 	}
 
   /**
@@ -111,11 +161,13 @@ contract TradeableContract {
 	* @dev Indicate that this contract is available to sell.
 	* It can only be called by the owner.
 	* It emits an event in order to allow anyone to monitor new opportunities to buy.
-	* @param priceInWei Price that the owner wants to sell this contract (in Wei) 
+	* @param priceInWei Price that the owner wants to sell this contract (in Wei)
+	* @param hDescription Hash to the description of this contract 
 	*/
- 	function setAvailableToSell (uint128 priceInWei) public onlyOwner {
+ 	function setAvailableToSell (uint128 priceInWei, string hDescription) public onlyOwner {
 		isAvailableToSell = true;
 		priceToSellInWei = priceInWei;
+		hashToDescription = hDescription;
 		emit AvaliableToSellEvent(owner, address(this));
 	}
 
@@ -150,7 +202,7 @@ contract TradeableContract {
 
 		//The option was to transfer to a constant address
 		//If this option was receive this address, someone atack by indicating other address 
-		address feeAddress = 0x91EB39f118dFf9AbE056FF58744AC67F238B3113;
+		address feeAddress = 0xE4aaA0FC768FbBaFAa15f3cf16530b1D082a95b0;
 
 		// All integer division rounds down to the nearest integer. 
 		// Then, the charged fee when someone buy a contract is, AT MOST, 5%.
@@ -173,4 +225,3 @@ contract TradeableContract {
 	}
 
 } 
-

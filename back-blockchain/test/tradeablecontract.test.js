@@ -59,7 +59,7 @@ contract('TradeableContract', function(accounts) {
     let price = 20;
     return TradeableContract.deployed()
         .then(function (tcInstance) {
-            return tcInstance.setAvailableToSell(price, {from: initialOwner})
+            return tcInstance.setAvailableToSell(price,"", {from: initialOwner})
             .then(function() {
                 return tcInstance.getPriceToSellInWei.call();
             })
@@ -74,7 +74,7 @@ contract('TradeableContract', function(accounts) {
     let price = 20;
     return TradeableContract.deployed()
         .then(function (tcInstance) {
-            return tcInstance.setAvailableToSell(price, {from: initialOwner})
+            return tcInstance.setAvailableToSell(price, "", {from: initialOwner})
             .then(function() {
                 return tcInstance.untrustedChangeOwnershipWithTrade({from: alice, value:price})
                     .then(function() {
@@ -102,11 +102,11 @@ contract('TradeableContract', function(accounts) {
         })
   });
 
-  it("should not buy a sellable wallet paying if not paying enough", function () {
+  it("should not buy a sellable wallet if not paying enough", function () {
     let price = 20;
     return TradeableContract.deployed()
         .then(function (tcInstance) {
-            return tcInstance.setAvailableToSell(price, {from: alice})
+            return tcInstance.setAvailableToSell(price, "", {from: alice})
             .then(function() {
                 return tcInstance.untrustedChangeOwnershipWithTrade({from: bob, value:price-1})
                             .then(function(r) {
