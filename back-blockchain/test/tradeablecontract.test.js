@@ -32,8 +32,8 @@ contract('TradeableContract', function(accounts) {
         .then(function (result) {
             let eventName = result.logs[0].event;
             let args = result.logs[0].args;
-            assert.equal(eventName, "WithdrawTokensEvent", 'WithdrawTokensEvent event should fire.');
-            assert.equal(args.sucess, true, 'WithdrawTokensEvent should indicate sucess.');
+            assert.equal(eventName, "TransferTokensEvent", 'TransferTokensEvent event should fire.');
+            assert.equal(args.sucess, true, 'TransferTokensEvent should indicate sucess.');
         })
   });
 

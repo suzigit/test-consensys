@@ -9,19 +9,34 @@ interface ITradeableContract {
 
   /**
    * @dev Event to inform a new owner of this Contract. 
+   * Do not index the owner (old nor current) since it can assume too many values.   
    * When the contract is created, it is fired with the old owner 0x0.    
    */ 
 	event NewOwnerEvent(address old, address current);
 	
+
   /**
-   * @dev Event to inform a new withdraw of this contract. 
+   * @dev Event to inform a new transfer of tokens from/to this contract. 
    */ 
-	event WithdrawTokensEvent(address tokenAddr, address owner, uint256 value, bool sucess);
+	event TransferTokensEvent(address tokenAddr, address owner, uint256 value, bool indexed isWithdraw, bool sucess);
 	
+
+  /**
+   * @dev Event to inform a new transfer of ETH from/to this contract. 
+   */ 
+	event TransferETHEvent(address owner, uint256 value, bool indexed isWithdraw);
+
   /**
    * @dev Event to inform that one contract became available to sell. 
+   * Do not index the owner nor contractAdd since they can assume too many values.   
    */ 
 	event AvaliableToSellEvent(address owner, address contractAddr);
+
+  /**
+   * @dev Event to inform that a deposit of Ether was made in this contract. 
+   */ 
+  event	DepositReceivedEvent(address sender); 
+
 
   /**
    * @dev Return the current owner of this contract.
@@ -57,29 +72,6 @@ interface ITradeableContract {
 	function getDenominatorFee() external view returns (uint8);
 
 
-  /**
-   * @dev Transfer tokens from external contracts to the owner of its contract. 
-   *
-   * This function is marked as untrusted since this smart contract cannot trust external calls.
-   *
-   * It should emit an event representing the withdraw. 
-   * It should only be called by the owner.
-   * 
-   * @param tokenAddr address of tokens to be transfered.
-   * @param value Value of tokens to be withdraw.
-   * @return bool from the transfer function in tokenAddr.
-   */
-	function makeUntrustedWithdrawalOfTokens (address tokenAddr, uint256 value) external returns (bool);
-
-
-   /**
-    * @dev Transfer all Ether held by the contract to the owner. 
-    * It is necessary to avoid lock funds the were send to the contract and were not used.
-    * It should only be called by the owner.
-    */
-	function reclaimEther() external;
-
-
    /**
 	* @dev Indicate that this contract is available to sell.
 	* It should only be called by the owner.
@@ -104,4 +96,63 @@ interface ITradeableContract {
 	*/
 	function() payable external;
 
+
+  /**
+   * @dev Transfer tokens from external contracts to the owner of its contract. 
+   *
+   * This function is marked as untrusted since this smart contract cannot trust external calls.
+   *
+   * It should emit an event representing the withdraw. 
+   * It should only be called by the owner.
+   * 
+   * @param tokenAddr address of tokens to be transfered.
+   * @param value Value of tokens to be withdraw.
+   * @return bool from the transfer function in tokenAddr.
+   */
+	function makeUntrustedWithdrawalOfTokens(address tokenAddr, uint256 value) external returns (bool);
+
+
+  /**
+   * @dev Transfer ether from external contracts to the owner of its contract. 
+   *
+   * This function is marked as untrusted since this smart contract cannot trust external calls.
+   * It does not return any value, throwing an exception in case of failure.
+   *
+   * It should emit an event representing the withdraw. 
+   * It should only be called by the owner.
+   * 
+   * @param valueInWei Value of ether to be withdraw (in Wei).
+   */
+	function makeUntrustWithdrawOfEther(uint256 valueInWei) external;
+
+  /**
+   * @dev Transfer tokens from this contract to an external account. 
+   *
+   * This function is marked as untrusted since this smart contract cannot trust external calls.
+   *
+   * It should emit an event representing the transfer. 
+   * It should only be called by the owner.
+   * 
+   * @param tokenAddr address of tokens to be transfered.
+   * @param to address to be transfered.
+   * @param value Value of tokens to be transfered.
+   */
+	function makeUntrustedTokenTransferToOutside(address tokenAddr, address to, uint256 value) external returns (bool);
+
+
+  /**
+   * @dev Transfer tokens from this contract to an external account. 
+   *
+   * This function is marked as untrusted since this smart contract cannot trust external calls.
+   *
+   * It should emit an event representing the transfer. 
+   * It should only be called by the owner.
+   * 
+   * @param to address to be transfered.
+   * @param valueInWei Value of tokens to be transfered.
+   */
+	function makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei) external;
+
 }
+
+

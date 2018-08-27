@@ -110,44 +110,6 @@ contract TradeableContract is ITradeableContract {
 	}
 
 
-  /**
-   * @dev Transfer tokens to the owner of its contract. 
-   * It is necessary to call the transfer function of the original ERC20 contract code.
-   *
-   * This function is marked as untrusted since this smart contract cannot trust the original code of the ERC-20 token.
-   * It executes the external call as the last step in order to avoid attacks.
-   * It is important to note that who is going to invoke this function can see the tokenAddr before. 
-   *
-   * It emits an event representing the withdraw. 
-   * It can only be called by the owner.
-   * 
-   * @param tokenAddr - IERC20 address of tokens to be transfered.
-   * @param value Value of tokens to be withdraw.
-   * @return bool from the transfer function in the ERC-20 token.
-   */
-	function makeUntrustedWithdrawalOfTokens (address tokenAddr, uint256 value) external onlyOwner returns (bool) {
-
-		bool b = IERC20Token(tokenAddr).transfer(owner,value);
-		
-		emit WithdrawTokensEvent(tokenAddr, owner, value, b);
-
-		return b;
-
-	}
-
-
-   /**
-    * @dev Transfer all Ether held by the contract to the owner. 
-    * It is necessary to reclaim ether received by fallback function or remaining ethers 
-	* from an untrustedChangeOwnershipWithTrade. 
-    * It can only be called by the owner.
-	*
-    */
-	function reclaimEther() external onlyOwner {
-		owner.transfer(address(this).balance);
-	}
-
-
    /**
 	* @dev Indicate that this contract is available to sell.
 	* It can only be called by the owner.
@@ -213,7 +175,116 @@ contract TradeableContract is ITradeableContract {
 	* @dev Since this contract represents a wallet it is worth to enable the possibility to receive ether.
 	*/
 	function() payable external { 
+		
+		//avoid receive funds when someone just entered a wrong function name
+		require(msg.data.length == 0); 
+		
+		emit DepositReceivedEvent(msg.sender); 
+	}
+
+
+  /**
+   * @dev Transfer tokens to the owner of its contract. 
+   * It is necessary to call the transfer function of the original ERC20 contract code.
+   *
+   * This function is marked as untrusted since this smart contract cannot trust the original code of the ERC-20 token.
+   * It executes the external call as the last step in order to avoid attacks.
+   * It is important to note that who is going to invoke this function can see the tokenAddr before. 
+   *
+   * It emits an event representing the withdraw. 
+   * It can only be called by the owner.
+   * 
+   * @param tokenAddr IERC-20 address of tokens to be transfered.
+   * @param value Value of tokens to be withdraw.
+   * @return bool from the transfer function in the ERC-20 token.
+   */
+	function makeUntrustedWithdrawalOfTokens (address tokenAddr, uint256 value) external onlyOwner returns (bool) {
+
+		bool b = IERC20Token(tokenAddr).transfer(owner,value);
+		
+		emit TransferTokensEvent(tokenAddr, owner, value, true, b);
+
+		return b;
 
 	}
+
+  /**
+   * @dev Transfer ether from external contracts to the owner of its contract. 
+   *
+   * This function is marked as untrusted since this smart contract cannot trust external calls.
+   * It does not return any value, throwing an exception in case of failure.
+   *
+   * It should emit an event representing the withdraw. 
+   * It should only be called by the owner.
+   * 
+   * @param valueInWei Value of ether to be withdraw (in Wei).
+   */
+	function makeUntrustWithdrawOfEther(uint256 valueInWei) external onlyOwner {
+		
+		uint256 balance = address(this).balance; 
+		if (balance >= valueInWei) {
+						
+			emit TransferETHEvent(owner, valueInWei, true);
+
+			//Since it is Ether, the Ethereum plataform takes care of reentrancy attacks
+			owner.transfer(valueInWei);
+		}
+	}
+
+  /**
+   * @dev Transfer tokens from this contract to an external account. 
+   *
+   * This function is marked as untrusted since this smart contract cannot trust external calls.
+   *
+   * It should emit an event representing the transfer. 
+   * It should only be called by the owner.
+   * 
+   * @param tokenAddr IERC-20 address of tokens to be transfered.
+   * @param to address to be transfered.
+   * @param value Value of tokens to be transfered.
+   */
+	function makeUntrustedTokenTransferToOutside(address tokenAddr, address to, uint256 value) external onlyOwner returns (bool) {
+
+		//Did not check the same require as makeUntrustedEtherTransferToOutside in order to avoid 
+		//introducing any noise in the communication wih the ERC-20 token.
+		//For example, maybe there is a semantic related to do a transfer to itself in the token contract. 
+
+		bool b = IERC20Token(tokenAddr).transfer(to,value);
+		
+		emit TransferTokensEvent(tokenAddr, to, value, false, b);
+
+		return b;
+
+	}
+
+
+  /**
+   * @dev Transfer Ether from this contract to an external account. 
+   *
+   * This function is marked as untrusted since this smart contract cannot trust external calls.
+   * It does not return any value, throwing an exception in case of failure.
+   *
+   * It should emit an event representing the transfer. 
+   * It should only be called by the owner.
+   * 
+   * @param to address to be transfered.
+   * @param valueInWei Value of ether to be transfered.
+   */
+	function makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei) external onlyOwner {
+
+		require(to != address(0x0));
+        require(to != address(this));
+
+		uint256 balance = address(this).balance; 
+		if (balance >= valueInWei) {
+						
+			emit TransferETHEvent(to, valueInWei, false);
+
+			//Since it is Ether, the Ethereum plataform takes care of reentrancy attacks
+			to.transfer(valueInWei);
+		}
+
+	}
+	
 
 } 
