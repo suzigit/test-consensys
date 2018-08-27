@@ -54,6 +54,14 @@ contract ContractCreator {
 	}
 
   /**
+   * @dev Kill the contract creator.
+   * It can only be called by the owner.   
+   */
+	function kill() public onlyOwner {
+		selfdestruct(owner);
+	}
+
+  /**
    * @dev create a new Tradeable Contract, stores its reference and emit an event with the same info 
    * @return subcontractAddr the address of the create contract.
    */

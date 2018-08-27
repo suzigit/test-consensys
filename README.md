@@ -48,7 +48,7 @@ If you want to set it up locally, you must first set your environment. If you st
 
 Use truffle development configuration (see truffle.js) to run the contract on localhost at 8545. Configure Metamask to the same network, assuring you have ether in your accounts. When migrating the contracts, take note of the address of ContractCreator and TokenERC0_Mock.
 
-In order to run the front end you first need to configure your contract address at src/app/constansts.json. Change the variable "ContractCreatorAddr" to what you got during migration. You are going to need TokenERC0_Mock addr to test the withdraw functionality.
+In order to run the front end you first need to configure your contract address at src/app/constansts.json. Change the variables considering what you got during migration. You are going to need TokenERC0_Mock addr to test the withdraw functionality.
 
 To run Angular, you need to generate the node_modules do npm install inside the folder called front. 
 Then, use: 
