@@ -1,7 +1,7 @@
 This doc describes where the Tradeable Wallet contracts live on the test net:
 
-* Contract Creator: 0x3c61c3be34f98fac4bb88f4f5e07bfcdb1dda3bf
-It was created in this transaction: https://rinkeby.etherscan.io/tx/0xf65b010ad4147bc40b6d2c1148c5b3082b48c94d72df14c0b7f740c0f46e1419
+* Contract Creator: 0xaa5722e8413680c1e250c40731fe4d8445494618
+It was created in this transaction: https://rinkeby.etherscan.io/tx/0x275d37784b16b66bf7dec27fa7a3ebc647ebe6bdd2e1670085f0b26ae07e7699
 Owner: 0xe4aaa0fc768fbbafaa15f3cf16530b1d082a95b0
 
 
@@ -14,6 +14,9 @@ For this test, you can also use the address of any ERC20 token that you know at 
 It was tracked by EtherScan as a valid token: https://rinkeby.etherscan.io/token/0xf0df2a9712305a5e53244eba2a785e12f1cef8b3
 It has _veriied source code_, so you can read/write using EtherScan by using Read Contract/Write Contract functionalities.
 
+Other instance of the same contract is at: 0x69fd745fadf3ef60a91f9b76980f9a5ae9b0e74f
+It was created in this transaction: https://rinkeby.etherscan.io/tx/0x72a097535dbcd8019770c0fe7d3ba1387642fd482dec4f6b86f3be2173a90d83
+Owner: 0xe4aaa0fc768fbbafaa15f3cf16530b1d082a95b0
 
 * Tradeable Contract
 Obs: In general the Tradeable Contracts (representing the Tradeable Wallets) are created dinamically, by the use of this application.
