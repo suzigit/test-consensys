@@ -6,8 +6,8 @@ This explanation takes this link into consideration: https://consensys.github.io
 * Avoid state changes after external calls (Checks-Effects-Interactions). In the _TradeableContract_ it is true at the following functions: _makeUntrustedWithdrawalOfTokens_ and _untrustedChangeOwnershipWithTrade_. The function _makeUntrustedWithdrawalOfTokens_ has an additional line after the external call to emit an event. It is worth to mention that it is not a state change. 
 
 * Use of _transfer_, instead of _send_ or _call_ in the _changeOwnershipWithTrade_ because:
-- _call_ is not a safe option against reentrancy, since the executed code is given all available gas for execution
-- _send_ and _transfer_ are considered safe against reentrancy. While these methods still trigger code execution, the called contract is only given a stipend of 2,300 gas which is currently only enough to log an event. _x.transfer(y)_ is equivalent to _require(x.send(y))_;, it will automatically revert if the send fails. Since it is desirable that _untrustedChangeOwnershipWithTrade_ (from _TradeableContract_) fails if the operation fails, _transfer_ is a better option.
+ _call_ is not a safe option against reentrancy, since the executed code is given all available gas for execution
+ _send_ and _transfer_ are considered safe against reentrancy. While these methods still trigger code execution, the called contract is only given a stipend of 2,300 gas which is currently only enough to log an event. _x.transfer(y)_ is equivalent to _require(x.send(y))_;, it will automatically revert if the send fails. Since it is desirable that _untrustedChangeOwnershipWithTrade_ (from _TradeableContract_) fails if the operation fails, _transfer_ is a better option.
 
 
 2. **Transaction-Ordering Dependence (TOD) / Front Running**
