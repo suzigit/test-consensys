@@ -23,22 +23,41 @@
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "getBalanceOf",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
     }
   ],
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.4.23;\r\n\r\n\r\n/**\r\n * @title IERC20Token\r\n * @dev IERC20 parcial interface, to be used to invoke transfer function.\r\n */\r\ninterface IERC20Token {\r\n\r\n  /**\r\n   * @dev Reproduces the signature of a transfer function from a ERC-20 token.\r\n   * The token is transfer from the msg.sender.\r\n   * \r\n   * @param to The address of the recipient\r\n   * @param amount the amount to send\r\n   */\r\n    function transfer(address to, uint256 amount) external returns (bool);\r\n\r\n}",
+  "source": "pragma solidity ^0.4.23;\r\n\r\n\r\n/**\r\n * @title IERC20Token\r\n * @dev IERC20 parcial interface, to be used to invoke transfer function.\r\n */\r\ninterface IERC20Token {\r\n\r\n  /**\r\n   * @dev Reproduces the signature of a transfer function from a ERC-20 token.\r\n   * The token is transfer from the msg.sender.\r\n   * \r\n   * @param to The address of the recipient\r\n   * @param amount the amount to send\r\n   */\r\n    function transfer(address to, uint256 amount) external returns (bool);\r\n\r\n    /**\r\n     * @dev Return the token balance of a given address\r\n     * @param addr address to get the balance\r\n     * @return token balance of the address\r\n     */\r\n    function getBalanceOf(address addr) external view returns(uint256);\r\n\r\n}",
   "sourcePath": "C:\\workspace\\tradeable-wallet\\back-blockchain\\contracts\\IERC20Token.sol",
   "ast": {
     "absolutePath": "/C/workspace/tradeable-wallet/back-blockchain/contracts/IERC20Token.sol",
     "exportedSymbols": {
       "IERC20Token": [
-        146
+        153
       ]
     },
-    "id": 147,
+    "id": 154,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -58,9 +77,9 @@
         "contractKind": "interface",
         "documentation": "@title IERC20Token\r\n@dev IERC20 parcial interface, to be used to invoke transfer function.\r",
         "fullyImplemented": false,
-        "id": 146,
+        "id": 153,
         "linearizedBaseContracts": [
-          146
+          153
         ],
         "name": "IERC20Token",
         "nodeType": "ContractDefinition",
@@ -168,27 +187,110 @@
               ],
               "src": "466:6:1"
             },
-            "scope": 146,
+            "scope": 153,
             "src": "403:70:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Return the token balance of a given address\r\n@param addr address to get the balance\r\n@return token balance of the address\r",
+            "id": 152,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getBalanceOf",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 148,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 147,
+                  "name": "addr",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 152,
+                  "src": "670:12:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 146,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "670:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "669:14:1"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 151,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 150,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 152,
+                  "src": "706:7:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 149,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "706:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "705:9:1"
+            },
+            "scope": 153,
+            "src": "648:67:1",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
           }
         ],
-        "scope": 147,
-        "src": "138:340:1"
+        "scope": 154,
+        "src": "138:582:1"
       }
     ],
-    "src": "0:478:1"
+    "src": "0:720:1"
   },
   "legacyAST": {
     "absolutePath": "/C/workspace/tradeable-wallet/back-blockchain/contracts/IERC20Token.sol",
     "exportedSymbols": {
       "IERC20Token": [
-        146
+        153
       ]
     },
-    "id": 147,
+    "id": 154,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -208,9 +310,9 @@
         "contractKind": "interface",
         "documentation": "@title IERC20Token\r\n@dev IERC20 parcial interface, to be used to invoke transfer function.\r",
         "fullyImplemented": false,
-        "id": 146,
+        "id": 153,
         "linearizedBaseContracts": [
-          146
+          153
         ],
         "name": "IERC20Token",
         "nodeType": "ContractDefinition",
@@ -318,18 +420,101 @@
               ],
               "src": "466:6:1"
             },
-            "scope": 146,
+            "scope": 153,
             "src": "403:70:1",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": "@dev Return the token balance of a given address\r\n@param addr address to get the balance\r\n@return token balance of the address\r",
+            "id": 152,
+            "implemented": false,
+            "isConstructor": false,
+            "isDeclaredConst": true,
+            "modifiers": [],
+            "name": "getBalanceOf",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 148,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 147,
+                  "name": "addr",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 152,
+                  "src": "670:12:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 146,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "670:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "669:14:1"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 151,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 150,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 152,
+                  "src": "706:7:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 149,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "706:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "705:9:1"
+            },
+            "scope": 153,
+            "src": "648:67:1",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
           }
         ],
-        "scope": 147,
-        "src": "138:340:1"
+        "scope": 154,
+        "src": "138:582:1"
       }
     ],
-    "src": "0:478:1"
+    "src": "0:720:1"
   },
   "compiler": {
     "name": "solc",
@@ -337,5 +522,5 @@
   },
   "networks": {},
   "schemaVersion": "2.0.1",
-  "updatedAt": "2018-08-27T17:10:16.162Z"
+  "updatedAt": "2018-08-27T19:49:20.361Z"
 }

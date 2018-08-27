@@ -16,4 +16,11 @@ interface IERC20Token {
    */
     function transfer(address to, uint256 amount) external returns (bool);
 
+    /**
+     * @dev Return the token balance of a given address
+     * @param addr address to get the balance
+     * @return token balance of the address
+     */
+    function getBalanceOf(address addr) external view returns(uint256);
+
 }

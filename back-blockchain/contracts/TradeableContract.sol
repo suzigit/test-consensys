@@ -221,14 +221,12 @@ contract TradeableContract is ITradeableContract {
    */
 	function makeUntrustWithdrawOfEther(uint256 valueInWei) external onlyOwner {
 		
-		uint256 balance = address(this).balance; 
-		if (balance >= valueInWei) {
-						
-			emit TransferETHEvent(owner, valueInWei, true);
+		require (address(this).balance >= valueInWei);
 
-			//Since it is Ether, the Ethereum plataform takes care of reentrancy attacks
-			owner.transfer(valueInWei);
-		}
+		emit TransferETHEvent(owner, valueInWei, true);
+
+		//Since it is Ether, the Ethereum plataform takes care of reentrancy attacks
+		owner.transfer(valueInWei);
 	}
 
   /**
@@ -274,17 +272,32 @@ contract TradeableContract is ITradeableContract {
 
 		require(to != address(0x0));
         require(to != address(this));
+        require (address(this).balance >= valueInWei);
 
-		uint256 balance = address(this).balance; 
-		if (balance >= valueInWei) {
-						
-			emit TransferETHEvent(to, valueInWei, false);
+		emit TransferETHEvent(to, valueInWei, false);
 
-			//Since it is Ether, the Ethereum plataform takes care of reentrancy attacks
-			to.transfer(valueInWei);
-		}
+		//Since it is Ether, the Ethereum plataform takes care of reentrancy attacks
+		to.transfer(valueInWei);
 
 	}
+
+  /**
+   * @dev Return the ether balance of this contract. 
+   * @return ether balance of this contract
+   */
+	function getEtherBalance () external view returns (uint256) {
+	    return address(this).balance;
+	}
 	
+	
+  /**
+   * @dev Return the token balance of this contract.
+   * @param tokenAddr the address of the token which balance will be returned 
+   * @return token balance of this contract
+   */
+	function getTokenBalanceOf (address tokenAddr) external view returns (uint256){
+		return IERC20Token(tokenAddr).getBalanceOf(this);		
+	}
+
 
 } 

@@ -153,6 +153,19 @@ interface ITradeableContract {
    */
 	function makeUntrustedEtherTransferToOutside(address to, uint256 valueInWei) external;
 
+  /**
+   * @dev Return the ether balance of this contract. 
+   * @return ether balance of this contract
+   */
+	function getEtherBalance () external view returns (uint256);
+
+  /**
+   * @dev Return the token balance of this contract.
+   * @param tokenAddr the address of the token which balance will be returned 
+   * @return token balance of this contract
+   */
+	function getTokenBalanceOf (address tokenAddr) external view returns (uint256);
+
 }
 
 
