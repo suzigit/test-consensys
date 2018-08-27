@@ -20,10 +20,14 @@ export class PutWalletSaleComponent implements OnInit {
   description: string;
   hashDescription: string;
   errorSaveDescription: string;
+  percentualFee: string;
   
   constructor(private blockchainService: BlockchainService, private descriptionService: DescriptionService ) { 
 
       let self = this;
+
+      self.percentualFee = "XX";
+      self.hashDescription = "";
 
       setInterval(function () {
 
@@ -35,7 +39,7 @@ export class PutWalletSaleComponent implements OnInit {
               self.selectedAccount = newSelectedAccount;
               console.log(self.selectedAccount);
             }
-        }), 1000});
+        }), 1000});        
 
   }
 
@@ -87,6 +91,25 @@ export class PutWalletSaleComponent implements OnInit {
     
   
   }
+
+
+  getPercentualFee() {
+
+       let self = this;
+
+       if (this.blockchainService.isAddress(self.tradeableWalletAddress)) {
+
+            this.blockchainService.getPercentualFee(self.tradeableWalletAddress,
+            function(result) {
+                self.percentualFee = result;
+            }, function(error) {
+                console.error("could not retrieve percentual fee");
+            });
+
+       }
+  }
+
+
 
 
   sale() {

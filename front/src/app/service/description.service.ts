@@ -25,8 +25,6 @@ export class DescriptionService {
         // connect to ipfs daemon API server
         //TODO: extract these ctes 
         this.ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'}) // leaving out the arguments will default to these values
-        
-        console.log(this.ipfs);
 
   }
   

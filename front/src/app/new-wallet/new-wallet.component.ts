@@ -25,7 +25,6 @@ export class NewWalletComponent implements OnInit {
         {
             let newSelectedAccount = accounts[0]; 
 
-
             if (newSelectedAccount !== self.selectedAccount && newSelectedAccount) {
               self.selectedAccount = newSelectedAccount;
               console.log(self.selectedAccount);

@@ -19,11 +19,15 @@
       <input type="text" [ngModel]="convertPriceToETH()" readonly disabled maxlength="20" size="10">
     </label>
   </div>
+    <div class="row"><small>Obs.: This is the total you need to pay. The seller is going to pay {{percentualFee}}% fee.</small>
+    </div>
 
   <div class="row">
     <label>The owner described you should buy this wallet because:
-      <textarea [ngModel]="description" readonly disabled rows="4" cols="50"></textarea>
     </label>
+  </div>
+  <div class="row">
+      <textarea [ngModel]="description" readonly disabled rows="3" cols="100"></textarea>
   </div>
 
     <div class="row" *ngIf="tradeableWalletAddress">
@@ -35,6 +39,7 @@
     <label>Buy this Tradeable-Wallet by clicking here <a href="javascript:void(0)" (click)="buy()">
       <i class="fa fa-bullseye" aria-hidden="true"></i></a></label>
   </div>
+
 
     <div class="row" *ngIf="newBuyHash">
       <div class="card bg-light">

@@ -1,4 +1,4 @@
-Have you already buy&sell tokens? What about buy&sell your wallet with all you have within?
+Have you already buy & sell tokens? What about buy&sell your wallet with all you have within?
 How can we do that in a TRUSTLESS way? This project  - Tradeable Wallet - is the solution to that.
 
 Why it is useful?
@@ -11,7 +11,7 @@ User Stories:
 -------------
 As an ICO investor, I can open the web app using Metamask. The GUI recognizes the selected Ethereum address and show me a set of possibilities. I can create a new Tradeable Wallet and see its Ethereum address.
 
-I can use its address to indicate where I am going to receive my future tokens. Then, I can put my wallet for sale. Or wait and, after receive my tokens, withdraw them, i.e., transfer them from my Tradeable Wallet to my personal Ethereum address.
+I can use its address to indicate where I am going to receive my future tokens. Then, I can put my wallet for sale. Or wait and, after receive my tokens, withdraw them, e.g., transfer them from my Tradeable Wallet to my personal Ethereum address.
 
 I can also buy Tradeable Wallets created by other ICO investors. The trade is perfomed in a TRUSTLESS way.
 At any time, I can see information related to my Tradeable Wallets, like all withdraws and past owners.
@@ -30,9 +30,11 @@ Then, you can use sell/buy. Since you are the owner of the wallet, you can sell 
 When buying more wallets, you should change the account in metamask in order to simulate multiple users. This new acccount must have enough ether to pay the price of the wallet. Test and see the trade happening!
 You can do as many sell/buy as you want. You can also see all owners in the lifecycle of your Tradeable-Wallet.
 
-There is a problem to test the withdraw functionality. You Tradeable Wallet address must have tokens in a ERC-20 contract! So, you have two options:
+There is a problem to test the withdraw functionality. You Tradeable Wallet address must have tokens in a ERC-20 contract! So, you have the following options:
 a) You can test doing withdraw of 0 tokens and the ERC-20 address specified at deployed_addresses.txt 
-b) You can deploy a new instance of TokenERC20_Mock in Rinkeby using your account X. Since X is going to receive ERC-20 tokens, you can transfer some of them to the address of your Tradeable Wallet using TokenERC20_Mock functions. Then, you can test withdraw functionality of this project.  
+b) You can deploy a new instance of TokenERC20_Mock in Rinkeby using your account X. Since X is going to receive ERC-20 tokens, you can transfer some of them to the address of your Tradeable Wallet using TokenERC20_Mock functions. Then, you can test withdraw functionality of this project.
+c) Send me a message with your Tradeable Wallet on Rinkeby and I send you some ERC-20 tokens to test.
+
 You can also see all historic withdraws of your Tradeable Wallet. 
 
 How to set it up
@@ -81,7 +83,7 @@ Technical Highlights
 
 The front-end is using **Web3.0 1.0**! Exciting projects use new tech! :wink:
 
-The project uses different ways of smart contract external calls and emit events.
+The project uses different ways of smart contract external calls and emit/watch events.
 
 The solution is integrated with the following existing services. 
 
@@ -89,4 +91,5 @@ a) **ENS (Ethereum Name Service)**- You can search your wallet using ethereum ad
 
 b) **IPFS** - You can file information on IPFS and link its hash inside your smart contract.
 
-It could be interesting to have an oracle service of personal reputation in the future, a kind of social score. This will only address the issue that the wallet owner could try to change actual arrangements in order to receive the future tokens in other address. For example, the user can create a Tradeable Wallet, include it on SAFT (a kind of ICO contract) and, after selling the Wallet, try to change the used address making an agreement with the ICO development team directly. But, we also have other ideas that is going to mitigate this risk.
+It could be interesting to have an oracle service of personal reputation in the future, a kind of social score. One example is: https://github.com/iudex/iudex. This will only address the issue that the wallet owner could try to change actual arrangements in order to receive the future tokens in other address. For example, the user can create a Tradeable Wallet, include it on SAFT (a kind of ICO contract) and, after selling the Wallet, try to change the used address making an agreement with the ICO development team directly. But, we also have other ideas that is going to mitigate this risk.
+Since front-end was developed using a responsive framework, it can easily used in a mobile environment in the future. It could be done with **Cipher** for example.

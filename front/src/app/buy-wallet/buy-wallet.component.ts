@@ -17,12 +17,14 @@ export class BuyWalletComponent implements OnInit {
   newBuyHash: string;
   description: any;
   error: string;
+  percentualFee: string;
 
   lastTradeableWalletAddress: string;
   
   constructor(private blockchainService: BlockchainService, private descriptionService: DescriptionService ) { 
 
       let self = this;
+      self.percentualFee = "XX";      
 
       setInterval(function () {
 
@@ -59,6 +61,7 @@ export class BuyWalletComponent implements OnInit {
 
   getPriceAndDescription() {
 
+
       if (this.tradeableWalletAddress != this.lastTradeableWalletAddress) {
             this.lastTradeableWalletAddress = this.tradeableWalletAddress;
 
@@ -81,39 +84,46 @@ export class BuyWalletComponent implements OnInit {
                     self.priceInGWei = "N/A";
                 });
 
+                self.description = "";   
                 this.blockchainService.getHashDescription(self.tradeableWalletAddress,
                 function(hash) {
                     console.log("Hash sucess: " + hash);
 
-                    self.descriptionService.get(hash).subscribe(
-                        data => {
-                            if (data) {
-                                self.description = data;
-                                console.log("data from ipfs");
-                                console.log(data);
+                    if (hash) {
 
-                            }
-                            else {
-                                self.description = "";
-                                console.log("no data");
-                            }
-                        },
-                        error => {
-                            self.description = "";
-                            console.log("error getFile");
-                            console.log(error);
-                        });
-                    
+                        self.descriptionService.get(hash).subscribe(
+                            data => {
+                                if (data) {
+                                    self.description = data;
+                                    console.log("data from ipfs");
+                                    console.log(data);
 
+                                }
+                                else {
+                                    console.log("no data");
+                                }
+                            },
+                            error => {
+                                console.log("error getFile");
+                                console.log(error);
+                            });
+
+                    }  
 
                 }, function(e) {
                     console.log("Hash error: " + e);
-                    self.description = "N/A";
                 });
 
 
+                this.blockchainService.getPercentualFee(self.tradeableWalletAddress,
+                function(result) {
+                    self.percentualFee = result;
+                }, function(error) {
+                    console.error("could not retrieve percentual fee");
+                });
 
-            }
+
+            } //close if checking valid address
       }
   }
 

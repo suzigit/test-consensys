@@ -148,9 +148,6 @@ export class BlockchainService {
 
     getPriceToBuyInGWei(tradeableContractAddr: string, fSucess: any, fError: any) {
     
-//        this.getAccounts().then(accounts => {
-
-//            let selectedAccount = accounts[0]; 
             let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
             tradeableContract.instance.methods.getPriceToSellInWei().call()
@@ -165,14 +162,10 @@ export class BlockchainService {
                     }
                 })
             .catch (error => fError(error));
-//        }); 
     } 
 
     getHashDescription(tradeableContractAddr: string, fSucess: any, fError: any) {
     
-//        this.getAccounts().then(accounts => {
-
-//            let selectedAccount = accounts[0]; 
             let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
             tradeableContract.instance.methods.getHashDescription().call()
@@ -181,7 +174,23 @@ export class BlockchainService {
                     fSucess(result);
                 })
             .catch (error => fError(error));
- //       }); 
+    } 
+
+
+    getPercentualFee(tradeableContractAddr: string, fSucess: any, fError: any) {
+    
+            let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
+
+            tradeableContract.instance.methods.getDenominatorFee().call()
+            .then(result => 
+                {
+                    console.log("result denominator=" +result);
+
+                    let feePercent = 100.0/result;
+                    console.log("feePercent=" + feePercent);
+                    fSucess(feePercent);
+                })
+            .catch (error => fError(error));
     } 
 
 
@@ -257,7 +266,10 @@ export class BlockchainService {
         .then(events =>  fEvents(events));
     }
     
+    async getNetwork() {
 
+        return await this.web3.eth.net.getNetworkType();    
+    }
 
   getAddr(name, fSucess: any, fError: any) {
 

@@ -20,7 +20,7 @@ contract ContractCreator {
 	address public owner;	
 
   /**
-   * @dev Stores all contracts already created (they can be alive of killed) .   
+   * @dev Stores all contracts already created.
    */
 	address[] public contracts;
  
@@ -75,7 +75,6 @@ contract ContractCreator {
 
   /**
    * @dev Returns the number of Tradeable Contract created. 
-   * This number does not consider if the Tradeable Contract is alive (it could be killed by its owner)
    * @return contractCount the number of Tradeable Contract created.
    */
 	function getContractCount() public view returns(uint contractCount) {
@@ -84,7 +83,6 @@ contract ContractCreator {
 
   /**
    * @dev Returns the address the Tradeable Contract created on a specific index. 
-   * The result does not consider if the Tradeable Contract is alive (it could be killed by its owner)
    * @param index index of the desirable result
    * @return the address of the desirable Tradeable contract or 0x0 (if not found)
    */

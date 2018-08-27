@@ -45,23 +45,22 @@ contract TradeableContract is ITradeableContract {
 
 
   /**
+   * @dev Denominator to be used to caculate fee. 
+   * The fee value is calculated by priceToSellInWei/denominatorFee.
+   * Should be a number between >1 and <100
+   */	
+	uint8 public denominatorFee;
+
+
+  /**
    * @dev Create a new contract. 
    * @param ownerAddr is going to be the owner of this contract. 
    * It emits an event with the new onwer. Since there is no old owner, it is represented by 0x0.  
    */
 	constructor (address ownerAddr) public {
 		owner = ownerAddr;
+		denominatorFee = 40;
 		emit NewOwnerEvent(0x0,owner);
-	}
-
-
-  /**
-   * @dev Kill the contract and trasfer funds to its owner. It is also emit a KillEvent.
-   * It can only be called by the owner.   
-   */
-	function kill() public onlyOwner {
-		emit KillEvent();	
-		selfdestruct(owner);
 	}
 
 
@@ -79,6 +78,15 @@ contract TradeableContract is ITradeableContract {
    */	
 	function getHashDescription() external view returns (string) {
 		return hashToDescription;
+	}
+
+  /**
+   * @dev Returns denominator to be used in the calculation of fee value
+   * The fee value is calculated by price (in Wei)/(denominator fee).
+   * @return Denominator to calculate fee value 
+   */
+	function getDenominatorFee() view external returns (uint8) {
+		return denominatorFee;
 	}
 
   /**
@@ -130,8 +138,10 @@ contract TradeableContract is ITradeableContract {
 
    /**
     * @dev Transfer all Ether held by the contract to the owner. 
-    * It is necessary to avoid lock funds the were send (by mistake) to the contract and were not used.
+    * It is necessary to reclaim ether received by fallback function or remaining ethers 
+	* from an untrustedChangeOwnershipWithTrade. 
     * It can only be called by the owner.
+	*
     */
 	function reclaimEther() external onlyOwner {
 		owner.transfer(address(this).balance);
@@ -173,6 +183,7 @@ contract TradeableContract is ITradeableContract {
 		// CHECK - calculating values to transfer 
 		require (isAvailableToSell==true);
 		require (msg.value >= priceToSellInWei);     
+//		assert (denominatorFee > 1 && denominatorFee < 100);
 
 		//EFFECTS
 		address oldOwner = owner;      
@@ -187,7 +198,7 @@ contract TradeableContract is ITradeableContract {
 
 		// All integer division rounds down to the nearest integer. 
 		// Then, the charged fee when someone buy a contract is, AT MOST, 5%.
-		uint128 feeValueInWei = priceToSellInWei/20;
+		uint128 feeValueInWei = priceToSellInWei/denominatorFee;
 		uint128 valueToOwnerInWei = priceToSellInWei-feeValueInWei;
 
 		priceToSellInWei = 0; //Avoid reentrancy attack

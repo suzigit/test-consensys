@@ -24,12 +24,6 @@ interface ITradeableContract {
 	event AvaliableToSellEvent(address owner, address contractAddr);
 
   /**
-   * @dev Event to inform that one contract was killed.     
-   */ 
-	event KillEvent();
-
-
-  /**
    * @dev Return the current owner of this contract.
    * @return the owner of this contract.
    */	
@@ -54,6 +48,13 @@ interface ITradeableContract {
    * @return price in Wei or -1.
    */
 	function getPriceToSellInWei() external view returns (int256);
+
+  /**
+   * @dev Returns denominator to be used in the calculation of fee value
+   * The fee value is calculated by price (in Wei)/(denominator fee).
+   * @return Denominator to calculate fee value 
+   */
+	function getDenominatorFee() external view returns (uint8);
 
 
   /**

@@ -5,25 +5,31 @@ pragma solidity ^0.4.23;
  * @dev Mock to a ERC20 Token to be used for testing purposes.
  */
 contract TokenERC20_Mock {
+
     // Public variables of the token
     string public name;
     string public symbol;
     uint8 public decimals;
+    
     // 18 decimals is the strongly suggested default, avoid changing it
     uint256 public totalSupply;
 
-    // This creates an array with all balances
+    // Map with all balances
     mapping (address => uint256) public balanceOf;
 
+    // Map of Maps. Each address of the first map is mapped to a map from address 
+    //that are authorized to transfer up to a total in his behalf.
     mapping (address => mapping (address => uint256)) public allowance;    
 
     // This generates a public event on the blockchain that will notify clients
     event Transfer(address indexed from, address indexed to, uint256 value);    
 
     /**
-     * Constrctor function
-     *
+     * @dev Constructor function.
      * Initializes contract with initial supply tokens to the creator of the contract
+     * @param initialSupply The number of tokens to be created
+     * @param tokenName Name of the token to be created
+     * @param tokenSymbol Symbol of the token to be created
      */
     constructor (
         uint256 initialSupply,
@@ -57,7 +63,12 @@ contract TokenERC20_Mock {
         assert(balanceOf[_from] + balanceOf[_to] == previousBalances);
     }
 
-     // Transfer the balance from owner's account to another account
+  /**
+   * @dev Transfer the balance of the msg.sender account to another account.
+   * 
+   * @param to The address of the recipient
+   * @param tokens the amount to send
+   */
     function transfer(address to, uint tokens) public returns (bool success) {
         require(balanceOf[msg.sender] >= tokens);
         require(balanceOf[to] + tokens >= balanceOf[to]);
@@ -69,8 +80,7 @@ contract TokenERC20_Mock {
     }
 
     /**
-     * Transfer tokens from other address
-     *
+     * @dev Transfer tokens from other address
      * Send `_value` tokens to `_to` in behalf of `_from`
      *
      * @param _from The address of the sender
@@ -85,8 +95,7 @@ contract TokenERC20_Mock {
     }
 
     /**
-     * Set allowance for other address
-     *
+     * @dev Set allowance for other address
      * Allows `_spender` to spend no more than `_value` tokens in your behalf
      *
      * @param _spender The address authorized to spend
@@ -98,12 +107,20 @@ contract TokenERC20_Mock {
         return true;
     }
 
-
+    /**
+     * @dev Return the token balance of a given address
+     * @param _addr address to get the balance
+     * @return token balance of the address
+     */
     function getBalanceOf(address _addr) view public returns(uint256)
     {
         return balanceOf[_addr];
     }
 
+    /**
+     * @dev Return the total supply of the token
+     * @return total token supply
+     */
     function getTotalSupply() view public returns (uint256)
     {
         return totalSupply;
