@@ -23,8 +23,8 @@ See the App
 You can access the app at: https://tradeable-wallet.herokuapp.com/
 You have to use Metamask and be connected on Rinkeby. 
 
-You start by creating a new Tradeable Wallet. Take note of its address in order to use the next functionalities. Or use ENS to create a namehash to it. I suggest you to use this link: https://michalzalecki.com/register-test-domain-with-ens/.
-If you create a namehash to your wallet, you can use it in the next functionalities, by clicking in ENS.
+You start by creating a new Tradeable Wallet. Take note of its address in order to use the next functionalities. Or use ENS to create a namehash to it. I suggest you to use this link to create a namehash on Rinkeby: https://michalzalecki.com/register-test-domain-with-ens/.
+You can also test with my ENS - **suziwallet**. If you create a namehash to your wallet, you can use it in the next functionalities, by clicking in ENS.
 
 Then, you can use sell/buy. Since you are the owner of the wallet, you can sell it. Besides informing its price, you can also add up a description - why someone should buy your wallet. You can explain what tokens this wallet is register to receive, for example. This description will be stored on IPFS and the hash of the IPFS information will be registered in your Tradeable Wallet. 
 When buying more wallets, you should change the account in metamask in order to simulate multiple users. This new acccount must have enough ether to pay the price of the wallet. Test and see the trade happening!
@@ -32,10 +32,13 @@ You can do as many sell/buy as you want. You can also see all owners in the life
 
 There is a problem to test the withdraw functionality. You Tradeable Wallet address must have tokens in a ERC-20 contract! So, you have the following options:
 a) You can test doing withdraw of 0 tokens and the ERC-20 address specified at deployed_addresses.txt 
-b) You can deploy a new instance of TokenERC20_Mock in Rinkeby using your account X. Since X is going to receive ERC-20 tokens, you can transfer some of them to the address of your Tradeable Wallet using TokenERC20_Mock functions. Then, you can test withdraw functionality of this project.
+b) You can deploy a new instance of _TokenERC20_Mock_ (provided in this project) on Rinkeby using your account X. Since X is going to receive ERC-20 tokens, you can transfer some of them to the address of your Tradeable Wallet using _TokenERC20_Mock_ functions. Then, you can test withdraw functionality of this project.
 c) Send me a message with your Tradeable Wallet on Rinkeby and I send you some ERC-20 tokens to test.
 
 You can also see all historic withdraws of your Tradeable Wallet. 
+
+Note that I there are more functions in Smart Contract than there are function been used by the front-end. That is because this project will continue after this course.  
+
 
 How to set it up
 ----------------
@@ -59,7 +62,7 @@ See information about how to set up a Dapp with Angular front-end at: https://tr
 
 
 Unit tests
------------
+----------
 
 There are two set of tests - one to each smart contract. Note that there are no tests to contracts developed with mocking purposes.
 
@@ -83,13 +86,16 @@ Technical Highlights
 
 The front-end is using **Web3.0 1.0**! Exciting projects use new tech! :wink:
 
-The project uses different ways of smart contract external calls and emit/watch events.
+The project uses different ways of smart contract external calls, emit/watch events and filter some of them in the GUI. 
+
+Two links in the front-end are not developed yet. If you click you is going to see a rational about how they could be implemented, possibly using an external storage.
 
 The solution is integrated with the following existing services. 
 
 a) **ENS (Ethereum Name Service)**- You can search your wallet using ethereum address or namehash of ENS.
 
 b) **IPFS** - You can file information on IPFS and link its hash inside your smart contract.
+
 
 It could be interesting to have an oracle service of personal reputation in the future, a kind of social score. One example is: https://github.com/iudex/iudex. This will only address the issue that the wallet owner could try to change actual arrangements in order to receive the future tokens in other address. For example, the user can create a Tradeable Wallet, include it on SAFT (a kind of ICO contract) and, after selling the Wallet, try to change the used address making an agreement with the ICO development team directly. But, we also have other ideas that is going to mitigate this risk.
 Since front-end was developed using a responsive framework, it can easily used in a mobile environment in the future. It could be done with **Cipher** for example.

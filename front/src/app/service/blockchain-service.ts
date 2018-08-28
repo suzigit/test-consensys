@@ -253,13 +253,14 @@ export class BlockchainService {
         .then(events =>  fEventOwner(events));
     }
 
-    getWithdrawHistory(tradeableContractAddr: string, fEvents: any) {
+    getTokenTransferHistory(tradeableContractAddr: string, fEvents: any) {
 
         let tradeableContract =  this.createTradeableContract(tradeableContractAddr);
 
-        console.log("getPastEvents (withdraw)... ");
+        console.log("getTokenTransferHistory ... ");
   
-        tradeableContract.instance.getPastEvents('WithdrawTokensEvent', {
+        tradeableContract.instance.getPastEvents('TransferTokensEvent', {
+                filter: {isWithdraw: [true]},
                 fromBlock: 0,
                 toBlock: 'latest'
         })

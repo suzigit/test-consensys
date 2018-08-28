@@ -5,7 +5,8 @@
   We have at least two ways to implement that:
 </p>
 <p>
-  (a) By listen to the AvaliableToSellEvent and NewOwnerEvent, storing the info in a database and creating a REST service to list the contracts that satisfy this conditon: it has an AvaliableToSellEvent an does not have after this event an NewOwnerEvent. 
+  (a) By Events - the contract address is not indexed in the event since it can assume too many values.
+  It can be created a REST service to listen to the AvaliableToSellEvent and NewOwnerEvent events, storing the info and list the contracts that satisfy this conditon: it has an AvaliableToSellEvent an does not have after this event an NewOwnerEvent. 
 </p>
 <p>
   (b) By analyzing all Tradeable Contracts that exists in ContractCreator and verifying if each one is available to sell.

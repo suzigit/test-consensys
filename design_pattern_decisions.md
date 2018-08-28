@@ -21,7 +21,7 @@ The Mortal pattern was implemented at _ContractCreator_.
 
 5. **Favor pull over push payment** 
 The function _makeUntrustedWithdrawalOfTokens_ does it with a simple code. When necessary, the owner ask for his withdraw. Push payments would require for example listen events of ERC-20 token and invoke a way of push payments in all wallets registered to this token, for example.  
-The function _reclaimEther_ also is a way of implementing this pattern. During the execution of _untrustedChangeOwnershipWithTrade_ the new owner can send more ether that it was necessary to buy the wallet. So, it can _reclaimEther_ later.
+The function _makeUntrustWithdrawOfEther_ also is a way of implementing this pattern. During the execution of _untrustedChangeOwnershipWithTrade_ the new owner can send more ether that it was necessary to buy the wallet. So, it can _makeUntrustWithdrawOfEther_ later.
 
 
 Upgradable design
@@ -70,4 +70,4 @@ Front-end patterns used related to blockchain:
 
 2. **Network check**. The front-end shows what the network the user is in using by following Metamask pattern as documented at: https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md. It was adapted to web 3 1.0.  
 
-3. **Web3 layer**. Every comunication front-end x blockchain is concentrated at class src/app/service/blockchain-service.ts. This layer was created in order to easily change the way the communication takes place. For example, I choose to use web3 1.0 beta. However, if I had found a bug (since it is still in beta), I could have changed to use web3 version 0.2. It also helps to accomodate function name changes.
+3. **Web3 layer**. Every communication front-end x blockchain is concentrated at class src/app/service/blockchain-service.ts. This layer was created in order to easily change the way the communication takes place. For example, I choose to use web3 1.0 beta. However, if I had found a bug (since it is still in beta), I could have changed to use web3 version 0.2. It also helps to accommodate function name changes during development.

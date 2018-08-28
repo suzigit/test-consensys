@@ -2,12 +2,15 @@
 
 <p>
   Here you are going to see all Tradeable Wallets that the selected account is owner.
+  
   We have at least two ways to implement that:
 </p>
 <p>
-  (a) By storing in a database the ownership of each contract and updating the info when a NewOwnerEvent takes place. We can do that in a REST backend service.
+  (a) By events - the owners are not indexed in the event since they can assume many values. 
+  It can be created a REST service to store in a database the ownership of each contract and update the info when a NewOwnerEvent takes place. 
+  The front-end can ask this REST service what are the wallets of the selected account.
 </p>
 <p>
-  (b) By analyzing all Tradeable Contracts that exists in ContractCreator and verifying the ownership of each one.
+  (b) By analyzing all Tradeable Contracts that exists in ContractCreator and verifying if each one belogs to the selected account.
 </p>
 

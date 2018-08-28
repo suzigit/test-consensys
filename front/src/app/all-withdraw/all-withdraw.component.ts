@@ -28,11 +28,12 @@ export class AllWithdrawComponent implements OnInit {
 
     console.log("vai chamar getWithdrawHistory");
 
-    this.blockchainService.getWithdrawHistory(this.address, function(result) {
+    this.blockchainService.getTokenTransferHistory(this.address, function(result) {
 
       self.events = result;
       console.log("*** event");  
       console.log(result);  
+
 
           for (let event of self.events) {
 

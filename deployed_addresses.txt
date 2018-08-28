@@ -1,4 +1,4 @@
-This doc describes where the Tradeable Wallet contracts live on the test net:
+This doc describes where the Tradeable Wallet contracts live on the test net (Rinkeby):
 
 * Contract Creator: 0xaa5722e8413680c1e250c40731fe4d8445494618
 It was created in this transaction: https://rinkeby.etherscan.io/tx/0x275d37784b16b66bf7dec27fa7a3ebc647ebe6bdd2e1670085f0b26ae07e7699
@@ -18,9 +18,11 @@ Other instance of the same contract is at: 0x69fd745fadf3ef60a91f9b76980f9a5ae9b
 It was created in this transaction: https://rinkeby.etherscan.io/tx/0x72a097535dbcd8019770c0fe7d3ba1387642fd482dec4f6b86f3be2173a90d83
 Owner: 0xe4aaa0fc768fbbafaa15f3cf16530b1d082a95b0
 
+
 * Tradeable Contract
 Obs: In general the Tradeable Contracts (representing the Tradeable Wallets) are created dinamically, by the use of this application.
-Then, it does not need to be deployed a priori on test net
+Then, it does not need to be deployed a priori on test net.
+One example of a contract dinamically created on Rinkby was: 0xE4aaA0FC768FbBaFAa15f3cf16530b1D082a95b0.
 However, it was necessary to deploy it on localhost in order to make the unit tests
 
 
